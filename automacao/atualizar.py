@@ -46,7 +46,140 @@ def esc(s):
     return html.escape(str(s), quote=False)
 
 
-def editar_xlsx(caminho, cultos_novos):
+CANTORES = {'ana': 'Ana', 'bia': 'Bia', 'beatriz': 'Bia', 'debora': 'Débora', 'elisa': 'Elisa', 'leo': 'Léo', 'leonardo': 'Léo',
+            'levi': 'Pr. Levi', 'prlevi': 'Pr. Levi', 'pastorlevi': 'Pr. Levi', 'lucas': 'Lucas', 'marianne': 'Marianne', 'mariane': 'Marianne',
+            'iraci': 'Pra. Iraci', 'praiaci': 'Pra. Iraci', 'prairaci': 'Pra. Iraci', 'pastoraraci': 'Pra. Iraci', 'pastorairaci': 'Pra. Iraci',
+            'talita': 'Talita', 'wesley': 'Wesley'}
+
+
+def separar_cantores(texto):
+    """'Talita e Débora' -> ['Talita', 'Débora'] com os nomes como estão na planilha (cantores desconhecidos ficam de fora)."""
+    partes = re.split(r'\s*(?:,|\+|/|&|\be\b)\s*', str(texto or ''))
+    out = []
+    for p in partes:
+        c = CANTORES.get(chave(p))
+        if c and c not in out:
+            out.append(c)
+    return out
+
+
+class Aba:
+    """Edita uma aba do .xlsx direto no XML, preservando o resto do arquivo."""
+
+    def __init__(self, tmp, arquivo, strings):
+        self.p = os.path.join(tmp, 'xl', 'worksheets', arquivo)
+        self.s = open(self.p, encoding='utf8').read()
+        self.strings = strings
+        self.attrs = {int(r): a for r, a, _ in re.findall(r'<row r="(\d+)"([^>]*)>(.*?)</row>', self.s, re.S)}
+        self.linhas = {int(r): b for r, _, b in re.findall(r'<row r="(\d+)"([^>]*)>(.*?)</row>', self.s, re.S)}
+
+    def celulas(self, r):
+        return {m.group(1): m.group(0) for m in re.finditer(r'<c r="([A-Z]+)' + str(r) + r'"(?:[^>]*?/>|[^>]*?>.*?</c>)', self.linhas.get(r, ''), re.S)}
+
+    def valor(self, xml):
+        m = re.search(r't="s"[^>]*>.*?<v>(\d+)</v>', xml, re.S)
+        if m:
+            return self.strings[int(m.group(1))]
+        m = re.search(r'<is>.*?<t[^>]*>(.*?)</t>', xml, re.S)
+        if m:
+            return html.unescape(m.group(1))
+        m = re.search(r'<v>([^<]*)</v>', xml)
+        return m.group(1) if m else ''
+
+    def estilo(self, r, col):
+        m = re.search(r' s="(\d+)"', self.celulas(r).get(col, ''))
+        return m.group(1) if m else None
+
+    def texto(self, r, col, t, s=None):
+        s = s or self.estilo(r, col)
+        st = f' s="{s}"' if s else ''
+        self.definir(r, col, f'<c r="{col}{r}"{st} t="inlineStr"><is><t>{esc(t)}</t></is></c>')
+
+    def definir(self, r, col, xml):
+        corpo = self.linhas.get(r)
+        if corpo is None:
+            self.linhas[r] = xml
+            return
+        cs = self.celulas(r)
+        if col in cs:
+            self.linhas[r] = corpo.replace(cs[col], xml, 1)
+        else:
+            todas = list(cs.items()) + [(col, xml)]
+            self.linhas[r] = ''.join(x for _, x in sorted(todas, key=lambda t: (len(t[0]), t[0])))
+
+    def salvar(self):
+        corpo = ''.join(f'<row r="{r}"{self.attrs.get(r, "")}>{self.linhas[r]}</row>' for r in sorted(self.linhas))
+        self.s = re.sub(r'<sheetData>.*?</sheetData>|<sheetData/>', lambda m: '<sheetData>' + corpo + '</sheetData>', self.s, count=1, flags=re.S)
+        maior = max(self.linhas)
+        self.s = re.sub(r'<dimension ref="([A-Z]+)\d+:([A-Z]+)\d+"/>', lambda m: f'<dimension ref="{m.group(1)}1:{m.group(2)}{maior}"/>', self.s, count=1)
+        open(self.p, 'w', encoding='utf8').write(self.s)
+
+
+def letras(a, b):
+    out, c = [], a
+    while True:
+        out.append(c)
+        if c == b:
+            return out
+        c = chr(ord(c) + 1)
+
+
+def editar_tons(tmp, strings, mudancas, base):
+    """mudancas: lista de {musica, cantor, tom}. Atualiza a aba Tons (músicas do repertório base) ou a aba Outras (as demais)."""
+    feitos = []
+    tratadas = set()
+    abas = {
+        'Tons': (Aba(tmp, 'sheet2.xml', strings), 'A', letras('B', 'L'), 'table2.xml'),
+        'Outras': (Aba(tmp, 'sheet4.xml', strings), 'B', letras('C', 'M'), 'table4.xml'),
+    }
+    for nome_aba, (aba, col_m, cols, tabela) in abas.items():
+        cab = {CANTORES.get(chave(aba.valor(aba.celulas(1).get(c, ''))), aba.valor(aba.celulas(1).get(c, ''))): c for c in cols}
+        tp = os.path.join(tmp, 'xl', 'tables', tabela)
+        tab = open(tp, encoding='utf8').read()
+        m = re.search(r'ref="([A-Z]+)1:([A-Z]+)(\d+)"', tab)
+        fim = int(m.group(3))
+        linha_de = {}
+        for r in range(2, fim + 1):
+            v = aba.valor(aba.celulas(r).get(col_m, ''))
+            if v:
+                linha_de[chave(v)] = r
+        mexeu = False
+        for mu in mudancas:
+            noBase = mu['musica'] in base
+            ident = (chave(mu['musica']), mu['cantor'])
+            if ident in tratadas:
+                continue
+            if (nome_aba == 'Tons') != noBase and chave(mu['musica']) not in linha_de:
+                continue
+            col = cab.get(mu['cantor'])
+            if not col:
+                continue
+            tratadas.add(ident)
+            r = linha_de.get(chave(mu['musica']))
+            if r is None:
+                fim += 1
+                r = fim
+                modelo = r - 2 if r - 2 >= 2 else 2
+                aba.attrs[r] = aba.attrs.get(modelo, '').replace(f'r="{modelo}"', '')
+                aba.texto(r, col_m, mu['musica'], aba.estilo(modelo, col_m))
+                for c in cols:
+                    st = aba.estilo(modelo, c)
+                    aba.definir(r, c, f'<c r="{c}{r}"' + (f' s="{st}"' if st else '') + '/>')
+                linha_de[chave(mu['musica'])] = r
+            antes = aba.valor(aba.celulas(r).get(col, ''))
+            if antes.strip() == str(mu['tom']).strip():
+                continue
+            aba.texto(r, col, mu['tom'], aba.estilo(r, col) or aba.estilo(2, col))
+            feitos.append({'aba': nome_aba, 'musica': mu['musica'], 'cantor': mu['cantor'], 'antes': antes or '—', 'depois': mu['tom']})
+            mexeu = True
+        if mexeu:
+            tab = re.sub(r'ref="([A-Z]+)1:([A-Z]+)\d+"', lambda x: f'ref="{x.group(1)}1:{x.group(2)}{fim}"', tab)
+            open(tp, 'w', encoding='utf8').write(tab)
+            aba.salvar()
+    return feitos
+
+
+def editar_xlsx(caminho, cultos_novos, mudancas_tons=None, base=frozenset()):
     """Acrescenta os cultos na aba Registros (sheet3.xml) e as músicas novas ao ranking (Tabela8)."""
     tmp = tempfile.mkdtemp()
     with zipfile.ZipFile(caminho) as z:
@@ -140,6 +273,8 @@ def editar_xlsx(caminho, cultos_novos):
     s = re.sub(r'<dimension ref="([A-Z]+)\d+:([A-Z]+)\d+"/>', lambda m: f'<dimension ref="{m.group(1)}1:{m.group(2)}{maior}"/>', s, count=1)
     open(sp, 'w', encoding='utf8').write(s)
 
+    tons_feitos = editar_tons(tmp, strings, mudancas_tons or [], base) if mudancas_tons else []
+
     # pede ao Excel para recalcular ao abrir
     wp = os.path.join(tmp, 'xl', 'workbook.xml')
     w = open(wp, encoding='utf8').read()
@@ -156,7 +291,7 @@ def editar_xlsx(caminho, cultos_novos):
             z.write(os.path.join(tmp, n), n)
     os.replace(saida, caminho)
     shutil.rmtree(tmp)
-    return {'linhas_registros_ate': ultima_nova, 'novas_no_ranking': acrescentadas}
+    return {'linhas_registros_ate': ultima_nova, 'novas_no_ranking': acrescentadas, 'tons_alterados': tons_feitos}
 
 
 def gerar_html(repo):
@@ -177,6 +312,7 @@ def main():
     ap.add_argument('--repo', required=True)
     ap.add_argument('--novos', required=True)
     ap.add_argument('--xlsx')
+    ap.add_argument('--ajustes', help='correções de tom: lista de {musica, cantor, tom}')
     a = ap.parse_args()
     d = os.path.join(a.repo, 'dados')
     rep = carregar(os.path.join(d, 'repertorio.json'), [])
@@ -192,17 +328,24 @@ def main():
     novos = json.load(open(a.novos, encoding='utf8'))
     adicionados, ignorados, padronizados, fora = [], [], [], set()
     cultos_ok = []
+    mudancas_tons, cantores_desconhecidos = [], []
     for c in sorted(novos, key=lambda c: c['data']):
         if c['data'] in datas:
             ignorados.append(c['data'])
             continue
         musicas = []
-        for m in c['musicas']:
+        for item in c['musicas']:
+            m = (item.get('titulo') or item.get('musica') or '') if isinstance(item, dict) else item
             m = m.strip()
             n = alias_k.get(chave(m)) or canon.get(chave(m)) or m
             if n != m:
                 padronizados.append({'grupo': m, 'planilha': n})
             musicas.append(n)
+            if isinstance(item, dict) and str(item.get('tom') or '').strip():
+                for cantor in separar_cantores(item.get('cantor')):
+                    mudancas_tons.append({'musica': n, 'cantor': cantor, 'tom': str(item['tom']).strip()})
+                if item.get('cantor') and not separar_cantores(item.get('cantor')):
+                    cantores_desconhecidos.append(item.get('cantor'))
             if n not in base:
                 fora.add(n)
             canon.setdefault(chave(n), n)
@@ -213,10 +356,34 @@ def main():
         datas.add(c['data'])
         adicionados.append(c2)
     salvar(os.path.join(d, 'registros.json'), reg)
-    planilha = editar_xlsx(a.xlsx, cultos_ok) if a.xlsx and cultos_ok else None
+
+    # correções manuais de tom (valem por cima do repertório do grupo)
+    if a.ajustes:
+        for aj in carregar(a.ajustes, []):
+            n = alias_k.get(chave(aj['musica'])) or canon.get(chave(aj['musica'])) or aj['musica'].strip()
+            for cantor in separar_cantores(aj['cantor']):
+                mudancas_tons = [x for x in mudancas_tons if not (x['musica'] == n and x['cantor'] == cantor)]
+                mudancas_tons.append({'musica': n, 'cantor': cantor, 'tom': str(aj['tom']).strip()})
+
+    # tons.json
+    tons = carregar(os.path.join(d, 'tons.json'), [])
+    tons_alterados = []
+    for mu in mudancas_tons:
+        atual = next((x for x in tons if chave(x['musica']) == chave(mu['musica']) and x['cantor'] == mu['cantor']), None)
+        if atual and str(atual.get('tom', '')).strip() == mu['tom']:
+            continue
+        tons_alterados.append({'musica': mu['musica'], 'cantor': mu['cantor'], 'antes': (atual or {}).get('tom') or '—', 'depois': mu['tom']})
+        if atual:
+            atual['tom'] = mu['tom']
+        else:
+            tons.append({'musica': mu['musica'], 'cantor': mu['cantor'], 'tom': mu['tom'], 'origem': 'Repertório base' if mu['musica'] in base else 'Fora do repertório'})
+    salvar(os.path.join(d, 'tons.json'), tons)
+
+    planilha = editar_xlsx(a.xlsx, cultos_ok, mudancas_tons, base) if a.xlsx and (cultos_ok or mudancas_tons) else None
     gerar_html(a.repo)
     print(json.dumps({'adicionados': adicionados, 'ignorados_ja_registrados': ignorados, 'nomes_padronizados': padronizados,
-                      'fora_do_repertorio_base': sorted(fora), 'planilha': planilha}, ensure_ascii=False, indent=1))
+                      'fora_do_repertorio_base': sorted(fora), 'tons_alterados': tons_alterados,
+                      'cantores_nao_reconhecidos': cantores_desconhecidos, 'planilha': planilha}, ensure_ascii=False, indent=1))
 
 
 if __name__ == '__main__':
