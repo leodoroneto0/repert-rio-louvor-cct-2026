@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Repertório do Louvor CCT 2026</title>
+<style>
+  :root { --bg:#f6f7fb; --panel:#ffffff; --fg:#1d1f24; --muted:#6b7280; --line:#e5e7eb;
+    --c0:#4f7cf7; --c1:#e0743c; --c2:#2fa37a; --c3:#a35ee0; --c4:#d4a017; --c5:#e0567b; --ok:#2fa37a; --r:10px; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14161a; --panel:#1d2026; --fg:#eceef2; --muted:#9aa1ad; --line:#2d313a; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size:15px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 20px 16px 48px; display:flex; flex-direction:column; gap:18px; }
+  header { background: linear-gradient(135deg, color-mix(in srgb, var(--c0) 22%, var(--panel)), color-mix(in srgb, var(--c3) 12%, var(--panel))); border:1px solid var(--line); border-radius:var(--r); padding:24px 20px; }
+  .brand { display:flex; align-items:center; gap:16px; }
+  .logo { flex:none; width:72px; height:72px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 4px rgba(0,0,0,.18); }
+  .logo img { width:78%; height:78%; object-fit:contain; }
+  .kick { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-weight:400; font-size:30px; margin:0; }
+  h2 { font-size:18px; font-weight:600; margin:0; display:flex; align-items:center; }
+  .lead { color:var(--muted); margin:10px 0 0; }
+  .lead b { color:var(--fg); }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:12px; }
+  .tile, .card { background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:16px; min-width:0; border-top:4px solid var(--a, var(--c0)); }
+  .tile .lbl { color:var(--muted); font-size:12px; }
+  .tile .num { font-family: Georgia, serif; font-size:30px; color:var(--a); margin-top:4px; font-variant-numeric:tabular-nums; }
+  .tiles .tile:nth-child(1){--a:var(--c0)} .tiles .tile:nth-child(2){--a:var(--c1)} .tiles .tile:nth-child(3){--a:var(--c2)}
+  .tiles .tile:nth-child(4){--a:var(--c3)} .tiles .tile:nth-child(5){--a:var(--c4)} .tiles .tile:nth-child(6){--a:var(--c5)}
+  #mais-tocadas{--a:var(--c1)} #nunca-tocadas{--a:var(--c5)} #repertorio{--a:var(--c0)} #tons{--a:var(--c3)} #fora{--a:var(--c4)} #cultos{--a:var(--c2)}
+  .ic { display:inline-flex; align-items:center; justify-content:center; width:1.8em; height:1.8em; border-radius:50%; margin-right:8px; background:color-mix(in srgb, var(--a) 18%, transparent); font-size:.9em; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap:12px; }
+  .note { color:var(--muted); font-size:12.5px; margin:6px 0 12px; }
+  #nunca-tocadas .lead b { color:var(--c5); font-family:Georgia, serif; font-weight:400; font-size:30px; }
+  .controls { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .controls input, .controls select { font:inherit; color:var(--fg); background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:7px 10px; min-width:0; }
+  .controls input { flex:1 1 12rem; }
+  .tbox { max-height:28rem; overflow:auto; }
+  table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+  th { position:sticky; top:0; background:var(--panel); text-align:left; font-weight:600; color:var(--muted); font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; padding:6px 8px; border-bottom:1px solid var(--line); }
+  th.sort { cursor:pointer; user-select:none; }
+  td { padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tbody tr:hover td { background:color-mix(in srgb, var(--a) 7%, transparent); }
+  .n { text-align:right; } .c { text-align:center; }
+  a.ouvir { color:inherit; text-decoration:none; } a.ouvir::before { content:'▶ '; color:var(--muted); font-size:.8em; } a.ouvir:hover { text-decoration:underline; }
+  .pill { display:inline-block; font-size:12px; padding:1px 8px; border-radius:999px; border:1px solid var(--p, var(--line)); background:color-mix(in srgb, var(--p, var(--muted)) 16%, transparent); white-space:nowrap; }
+  .cat-teste{--p:var(--c5)} .cat-celebracao{--p:var(--c1)} .cat-transicao{--p:var(--c2)} .cat-contemplacao{--p:var(--c3)}
+  .bar { display:inline-block; height:.55em; border-radius:4px; margin-right:6px; vertical-align:middle; background:var(--c0); }
+  td.vz { white-space:nowrap; }
+  .cmeses { display:flex; flex-direction:column; gap:8px; }
+  .cmes { border:1px solid var(--line); border-radius:var(--r); }
+  .cmes summary { cursor:pointer; padding:10px 14px; font-weight:600; background:color-mix(in srgb, var(--c2) 12%, transparent); border-radius:var(--r); }
+  .cmes[open] summary { border-bottom-left-radius:0; border-bottom-right-radius:0; margin-bottom:8px; }
+  .cct { color:var(--muted); font-weight:400; font-size:12px; margin-left:8px; }
+  .cgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); gap:8px; padding:0 14px 14px; }
+  .ccard { background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--t, var(--c0)); border-radius:var(--r); padding:8px 12px; }
+  .t-quinta{--t:var(--c1)} .t-sexta{--t:var(--c3)} .t-sabado{--t:var(--c4)}
+  .chd { display:flex; justify-content:space-between; gap:8px; font-size:12px; color:var(--muted); margin-bottom:4px; }
+  .chd b { color:var(--fg); }
+  .chd span { background:color-mix(in srgb, var(--t, var(--c0)) 16%, transparent); border-radius:999px; padding:0 8px; color:var(--fg); }
+  .ccard ol { margin:0; padding-left:1.3em; } .ccard li::marker { color:var(--t, var(--c0)); font-weight:600; }
+  .ccard li.hit { font-weight:600; color:var(--ok); }
+  footer { color:var(--muted); font-size:12px; text-align:center; }
+  @media (max-width:640px) { .hide-narrow { display:none; } h1 { font-size:24px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <span class="logo"><img alt="Logo da igreja" src="data:image/png;base64,__LOGO__"></span>
+      <div>
+        <div class="kick">Ministério de Louvor · Comunidade Cristã de Taquaritinga</div>
+        <h1>Repertório do Louvor CCT 2026</h1>
+      </div>
+    </div>
+    <p class="lead">De janeiro até agora foram <b id="k-cultos">—</b> cultos registrados e <b id="k-tocadas">—</b> músicas tocadas. A mais tocada do ano é <b id="k-top">—</b>, com <b id="k-topv">—</b> vezes.</p>
+  </header>
+
+  <section class="tiles">
+    <div class="tile"><div class="lbl">Músicas no repertório base</div><div class="num" id="t-base">—</div></div>
+    <div class="tile"><div class="lbl">Cultos registrados</div><div class="num" id="t-cultos">—</div></div>
+    <div class="tile"><div class="lbl">Músicas tocadas</div><div class="num" id="t-tocadas">—</div></div>
+    <div class="tile"><div class="lbl">Músicas diferentes</div><div class="num" id="t-dist">—</div></div>
+    <div class="tile"><div class="lbl">Repertório base já tocado</div><div class="num" id="t-pct">—</div></div>
+    <div class="tile"><div class="lbl">Nunca tocadas este ano</div><div class="num" id="t-nunca">—</div></div>
+  </section>
+
+  <section class="grid">
+    <div class="card" id="mais-tocadas">
+      <h2><span class="ic">🔥</span>Mais tocadas</h2>
+      <p class="note">Todas as músicas tocadas nos cultos de 2026, da mais tocada para a menos tocada.</p>
+      <div class="tbox"><table><thead><tr><th class="n">#</th><th>Música</th><th>Vezes</th><th class="hide-narrow">Última vez</th></tr></thead><tbody id="rank-body"></tbody></table></div>
+    </div>
+    <div class="card" id="nunca-tocadas">
+      <h2><span class="ic">💤</span>Nunca tocadas este ano</h2>
+      <p class="lead"><b id="n-nunca">—</b> músicas do repertório base ainda não foram tocadas este ano.</p>
+      <p class="note">Ainda não apareceram em nenhum culto de 2026. Por categoria e em ordem alfabética.</p>
+      <div class="tbox"><table><thead><tr><th>Música</th><th class="hide-narrow">Artista</th><th>Categoria</th></tr></thead><tbody id="nunca-body"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="card" id="repertorio">
+    <h2><span class="ic">🎵</span>Repertório base</h2>
+    <p class="note">Música em teste no topo, depois em ordem de categoria (Celebração, Transição e Contemplação) e, dentro de cada uma, em ordem alfabética. Clique no nome para ouvir no YouTube ou no título de uma coluna para ordenar de outro jeito.</p>
+    <div class="controls">
+      <input id="q-base" type="search" placeholder="Buscar música ou artista…" aria-label="Buscar música ou artista">
+      <select id="cat" aria-label="Categoria"></select>
+    </div>
+    <div class="tbox"><table id="base-table"><thead><tr>
+      <th class="sort" data-sort="musica">Música</th>
+      <th class="sort hide-narrow" data-sort="artista">Artista</th>
+      <th class="sort c" data-sort="tom">Tom original</th>
+      <th class="sort c hide-narrow" data-sort="bpm">BPM</th>
+      <th class="sort c hide-narrow" data-sort="compasso">Compasso</th>
+      <th class="sort hide-narrow" data-sort="padrao">Categoria</th>
+      <th class="sort n" data-sort="vezes">Vezes</th>
+      <th class="sort" data-sort="ultima">Última vez</th>
+    </tr></thead><tbody id="base-body"></tbody></table></div>
+  </section>
+
+  <section class="card" id="tons">
+    <h2><span class="ic">🎤</span>Tons por cantor</h2>
+    <p class="note">Escolha o cantor para ver o tom de cada música. Inclui as músicas fora do repertório base.</p>
+    <div class="controls">
+      <select id="cantor" aria-label="Cantor"></select>
+      <input id="q-tons" type="search" placeholder="Buscar música…" aria-label="Buscar música">
+    </div>
+    <div class="tbox"><table><thead><tr><th>Música</th><th>Cantor</th><th>Tom</th><th class="hide-narrow">Origem</th></tr></thead><tbody id="tons-body"></tbody></table></div>
+  </section>
+
+  <section class="card" id="fora">
+    <h2><span class="ic">➕</span>Tocadas fora do repertório base</h2>
+    <p class="note">Músicas que apareceram nos cultos mas não estão na aba de repertório base. Boas candidatas para entrar nele.</p>
+    <div class="tbox"><table><thead><tr><th>Música</th><th class="n">Vezes</th><th>Última vez</th></tr></thead><tbody id="fora-body"></tbody></table></div>
+  </section>
+
+  <section class="card" id="cultos">
+    <h2><span class="ic">📅</span>Repertório de cada culto</h2>
+    <p class="note">Todos os cultos registrados desde o início do ano, agrupados por mês. Clique no mês para abrir ou fechar. A busca mostra só os cultos com aquela música.</p>
+    <div class="controls"><input id="q-cultos" type="search" placeholder="Buscar música ou culto…" aria-label="Buscar música ou culto"></div>
+    <div class="cmeses" id="cultos-view"></div>
+  </section>
+
+  <footer>Atualizado em <span id="upd">__ATUALIZADO__</span> · Dados da planilha do Ministério de Louvor CCT</footer>
+</div>
+
+<script>
+const REP = __REP__;
+const TONS = __TONS__;
+const REG = __REG__;
+
+const fmtDate = (s) => s ? s.slice(8,10) + '/' + s.slice(5,7) + '/' + s.slice(2,4) : '—';
+const slug = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
+const catOrdem = { 'Teste': 0, 'Celebração': 1, 'Transição': 2, 'Contemplação': 3 };
+const ordem = (r) => catOrdem[r.categoria] ?? 9;
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
+const pill = (cat) => el('span', 'pill cat-' + slug(cat), cat);
+
+// cálculos
+const base = new Set(REP.map(r => r.musica));
+const rankMap = new Map();
+for (const r of REG) {
+  const o = rankMap.get(r.musica) || { musica: r.musica, vezes: 0, ultima: '', fora: !base.has(r.musica) };
+  o.vezes++; if (r.data > o.ultima) o.ultima = r.data; rankMap.set(r.musica, o);
+}
+const ranking = [...rankMap.values()].sort((a,b) => b.vezes - a.vezes || a.musica.localeCompare(b.musica, 'pt'));
+ranking.forEach((r,i) => { r.pos = i > 0 && ranking[i-1].vezes === r.vezes ? ranking[i-1].pos : i + 1; });
+const tocadasBase = new Set(REG.filter(r => base.has(r.musica)).map(r => r.musica));
+const rep = REP.map(r => ({ ...r, vezes: rankMap.get(r.musica)?.vezes || 0, ultima: rankMap.get(r.musica)?.ultima || '' }));
+const nunca = rep.filter(r => r.vezes === 0).sort((a,b) => ordem(a) - ordem(b) || a.musica.localeCompare(b.musica, 'pt'));
+const datas = new Set(REG.map(r => r.data));
+
+const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+set('k-cultos', datas.size); set('k-tocadas', REG.length);
+if (ranking[0]) { set('k-top', ranking[0].musica); set('k-topv', ranking[0].vezes); }
+set('t-base', REP.length); set('t-cultos', datas.size); set('t-tocadas', REG.length);
+set('t-dist', rankMap.size); set('t-pct', Math.round(tocadasBase.size / base.size * 100) + '%');
+set('t-nunca', nunca.length); set('n-nunca', nunca.length);
+
+// mais tocadas
+const max = ranking.length ? ranking[0].vezes : 1;
+const rb = document.getElementById('rank-body');
+for (const r of ranking) {
+  const tr = el('tr'); tr.append(el('td', 'n', r.pos), el('td', '', r.musica));
+  const td = el('td', 'vz'); const b = el('span', 'bar'); b.style.width = Math.max(4, r.vezes / max * 80) + 'px'; td.append(b, document.createTextNode(r.vezes));
+  tr.append(td, el('td', 'hide-narrow', fmtDate(r.ultima))); rb.appendChild(tr);
+}
+// nunca tocadas
+const nb = document.getElementById('nunca-body');
+for (const r of nunca) { const tr = el('tr'); const td = el('td'); td.appendChild(pill(r.categoria)); tr.append(el('td', '', r.musica), el('td', 'hide-narrow', r.artista), td); nb.appendChild(tr); }
+// fora
+const fb = document.getElementById('fora-body');
+for (const r of ranking.filter(x => x.fora)) { const tr = el('tr'); tr.append(el('td', '', r.musica), el('td', 'n', r.vezes), el('td', '', fmtDate(r.ultima))); fb.appendChild(tr); }
+
+// repertório base
+let sortKey = 'padrao', sortDir = 1;
+const catSel = document.getElementById('cat');
+catSel.append(new Option('Todas as categorias', ''), ...[...new Set(REP.map(r => r.categoria))].filter(Boolean).sort((a,b) => ordem({categoria:a}) - ordem({categoria:b})).map(c => new Option(c, c)));
+function drawBase() {
+  const q = document.getElementById('q-base').value.toLowerCase(); const cat = catSel.value;
+  const rows = rep.filter(r => (!cat || r.categoria === cat) && (!q || (r.musica + ' ' + r.artista).toLowerCase().includes(q)));
+  if (sortKey === 'padrao') rows.sort((a,b) => ordem(a) - ordem(b) || a.musica.localeCompare(b.musica, 'pt'));
+  else { const num = sortKey === 'vezes' || sortKey === 'bpm'; rows.sort((a,b) => { const c = num ? (Number(a[sortKey]) || 0) - (Number(b[sortKey]) || 0) : String(a[sortKey]).localeCompare(String(b[sortKey]), 'pt'); return c * sortDir || a.musica.localeCompare(b.musica, 'pt'); }); }
+  const tb = document.getElementById('base-body'); tb.replaceChildren();
+  for (const r of rows) {
+    const tr = el('tr'); const t0 = el('td');
+    if (r.link && r.link.startsWith('https://')) { const a = el('a', 'ouvir', r.musica); a.href = r.link; a.target = '_blank'; a.rel = 'noopener'; t0.appendChild(a); } else t0.textContent = r.musica;
+    const tc = el('td', 'hide-narrow'); tc.appendChild(pill(r.categoria));
+    tr.append(t0, el('td', 'hide-narrow', r.artista), el('td', 'c', r.tom), el('td', 'c hide-narrow', r.bpm === '' ? '' : r.bpm), el('td', 'c hide-narrow', r.compasso), tc, el('td', 'n', r.vezes), el('td', '', r.ultima ? fmtDate(r.ultima) : ''));
+    tb.appendChild(tr);
+  }
+}
+for (const th of document.querySelectorAll('#base-table th[data-sort]')) th.addEventListener('click', () => { const k = th.dataset.sort; sortDir = sortKey === k ? -sortDir : (['vezes','ultima','bpm'].includes(k) ? -1 : 1); sortKey = k; drawBase(); });
+document.getElementById('q-base').addEventListener('input', drawBase); catSel.addEventListener('change', drawBase); drawBase();
+
+// tons
+const cSel = document.getElementById('cantor');
+cSel.append(new Option('Todos os cantores', ''), ...[...new Set(TONS.map(r => r.cantor))].sort((a,b) => a.localeCompare(b, 'pt')).map(c => new Option(c, c)));
+function drawTons() {
+  const q = document.getElementById('q-tons').value.toLowerCase(); const c = cSel.value;
+  const tb = document.getElementById('tons-body'); tb.replaceChildren();
+  for (const r of TONS.filter(x => (!c || x.cantor === c) && (!q || x.musica.toLowerCase().includes(q))).sort((a,b) => a.musica.localeCompare(b.musica, 'pt') || a.cantor.localeCompare(b.cantor, 'pt'))) {
+    const tr = el('tr'); tr.append(el('td', '', r.musica), el('td', '', r.cantor), el('td', '', r.tom), el('td', 'hide-narrow', r.origem)); tb.appendChild(tr);
+  }
+}
+cSel.addEventListener('change', drawTons); document.getElementById('q-tons').addEventListener('input', drawTons); drawTons();
+
+// cultos
+const cultosMap = new Map();
+for (const r of REG) { const o = cultosMap.get(r.data) || { data: r.data, culto: r.evento ? r.tipo + ' · ' + r.evento : r.tipo, lista: [] }; o.lista.push(r.musica); cultosMap.set(r.data, o); }
+const cultos = [...cultosMap.values()].sort((a,b) => b.data.localeCompare(a.data));
+const nomes = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const dias = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const abertos = new Set(cultos.length ? [cultos[0].data.slice(0,7)] : []);
+function drawCultos() {
+  const q = document.getElementById('q-cultos').value.toLowerCase();
+  const box = document.getElementById('cultos-view'); box.replaceChildren();
+  const rows = cultos.filter(x => !q || (x.lista.join(' ') + ' ' + x.culto).toLowerCase().includes(q));
+  const meses = new Map(); for (const c of rows) { const k = c.data.slice(0,7); if (!meses.has(k)) meses.set(k, []); meses.get(k).push(c); }
+  for (const [mes, lista] of meses) {
+    const det = el('details', 'cmes'); det.open = q ? true : abertos.has(mes);
+    det.addEventListener('toggle', () => { if (!q) det.open ? abertos.add(mes) : abertos.delete(mes); });
+    const nm = nomes[Number(mes.slice(5,7)) - 1];
+    const sum = el('summary', '', nm.charAt(0).toUpperCase() + nm.slice(1) + ' de ' + mes.slice(0,4)); sum.appendChild(el('span', 'cct', lista.length + (lista.length === 1 ? ' culto' : ' cultos')));
+    const grid = el('div', 'cgrid');
+    for (const c of lista) {
+      const card = el('div', 'ccard t-' + slug(c.culto.split(' ')[0]));
+      const dt = new Date(c.data + 'T12:00:00');
+      const h = el('div', 'chd'); h.append(el('b', '', dias[dt.getDay()] + ' ' + c.data.slice(8,10) + '/' + c.data.slice(5,7)), el('span', '', c.culto));
+      const ol = el('ol'); for (const m of c.lista) { const li = el('li', q && m.toLowerCase().includes(q) ? 'hit' : '', m); ol.appendChild(li); }
+      card.append(h, ol); grid.appendChild(card);
+    }
+    det.append(sum, grid); box.appendChild(det);
+  }
+}
+document.getElementById('q-cultos').addEventListener('input', drawCultos); drawCultos();
+</script>
+</body>
+</html>

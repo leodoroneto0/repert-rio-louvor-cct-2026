@@ -1,0 +1,223 @@
+#!/usr/bin/env python3
+"""Atualiza o repertório do Louvor CCT a partir de cultos novos.
+
+Uso:
+  python3 -I automacao/atualizar.py --repo <pasta do repositório> --novos <novos.json> [--xlsx <planilha.xlsx>]
+
+novos.json: lista de cultos já realizados, por exemplo
+  [{"data": "2026-11-01", "tipo": "Domingo", "evento": "", "musicas": ["Meu Lugar", "Tu és Deus (A Ele)"]}]
+
+O que faz:
+  1. Padroniza o nome de cada música pela grafia do repertório base (dados/repertorio.json),
+     usando dados/aliases.json para os casos conhecidos de grafia diferente.
+  2. Ignora cultos cuja data já está registrada.
+  3. Acrescenta os cultos em dados/registros.json.
+  4. Se --xlsx for passado, acrescenta as linhas na aba Registros da planilha (editando o XML,
+     para não perder os botões de link) e acrescenta ao ranking as músicas que ainda não estão nele.
+  5. Gera de novo o index.html (página pública) a partir de automacao/template.html.
+  6. Imprime um resumo em JSON.
+Nunca altera a aba Repertório Base nem a aba Tons.
+"""
+import argparse, datetime, html, json, os, re, shutil, tempfile, unicodedata, zipfile
+
+
+def chave(s):
+    s = str(s).replace('’', "'").replace('´', "'")
+    s = unicodedata.normalize('NFKD', s.lower())
+    s = ''.join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r'[^a-z0-9]', '', s)
+
+
+def carregar(p, padrao):
+    return json.load(open(p, encoding='utf8')) if os.path.exists(p) else padrao
+
+
+def salvar(p, obj):
+    with open(p, 'w', encoding='utf8') as f:
+        json.dump(obj, f, ensure_ascii=False, indent=0)
+
+
+def serial_excel(data):
+    d = datetime.date.fromisoformat(data)
+    return (d - datetime.date(1899, 12, 30)).days
+
+
+def esc(s):
+    return html.escape(str(s), quote=False)
+
+
+def editar_xlsx(caminho, cultos_novos):
+    """Acrescenta os cultos na aba Registros (sheet3.xml) e as músicas novas ao ranking (Tabela8)."""
+    tmp = tempfile.mkdtemp()
+    with zipfile.ZipFile(caminho) as z:
+        nomes = z.namelist()
+        z.extractall(tmp)
+    sp = os.path.join(tmp, 'xl', 'worksheets', 'sheet3.xml')
+    s = open(sp, encoding='utf8').read()
+    ss = open(os.path.join(tmp, 'xl', 'sharedStrings.xml'), encoding='utf8').read()
+    strings = [html.unescape(''.join(re.findall(r'<t[^>]*>(.*?)</t>', si, re.S))) for si in re.findall(r'<si>(.*?)</si>', ss, re.S)]
+
+    def valor(celula_xml):
+        m = re.search(r't="s"[^>]*>.*?<v>(\d+)</v>', celula_xml, re.S)
+        if m:
+            return strings[int(m.group(1))]
+        m = re.search(r'<is>.*?<t[^>]*>(.*?)</t>', celula_xml, re.S)
+        if m:
+            return html.unescape(m.group(1))
+        m = re.search(r'<v>([^<]*)</v>', celula_xml)
+        return m.group(1) if m else ''
+
+    linhas = {int(r): b for r, b in re.findall(r'<row r="(\d+)"[^>]*>(.*?)</row>', s, re.S)}
+
+    def celulas(r):
+        return {m.group(1): m.group(0) for m in re.finditer(r'<c r="([A-Z]+)' + str(r) + r'"(?:[^>]*?/>|[^>]*?>.*?</c>)', linhas.get(r, ''), re.S)}
+
+    ultima = max(r for r in linhas if r >= 3 and valor(celulas(r).get('C', '')))
+
+    def definir(r, col, xml_celula):
+        corpo = linhas.get(r)
+        if corpo is None:
+            linhas[r] = xml_celula
+            return
+        cs = celulas(r)
+        if col in cs:
+            linhas[r] = corpo.replace(cs[col], xml_celula, 1)
+        else:
+            todas = list(cs.items()) + [(col, xml_celula)]
+            ordem = lambda c: (len(c), c)
+            linhas[r] = ''.join(x for _, x in sorted(todas, key=lambda t: ordem(t[0])))
+
+    r = ultima
+    for culto in cultos_novos:
+        n = len(culto['musicas'])
+        for i, musica in enumerate(culto['musicas']):
+            r += 1
+            primeiro, ultimo_do_culto = i == 0, i == n - 1
+            sb, sc, sd = ('6', '7', '104') if primeiro else (('10', '11', '106') if ultimo_do_culto else ('8', '9', '105'))
+            definir(r, 'B', f'<c r="B{r}" s="{sb}"><v>{serial_excel(culto["data"])}</v></c>')
+            definir(r, 'C', f'<c r="C{r}" s="{sc}" t="inlineStr"><is><t>{esc(musica)}</t></is></c>')
+            if primeiro and culto.get('tipo'):
+                definir(r, 'D', f'<c r="D{r}" s="{sd}" t="inlineStr"><is><t>{esc(culto["tipo"])}</t></is></c>')
+            else:
+                definir(r, 'D', f'<c r="D{r}" s="{sd}"/>')
+            if primeiro and culto.get('evento'):
+                definir(r, 'E', f'<c r="E{r}" s="98" t="inlineStr"><is><t>{esc(culto["evento"])}</t></is></c>')
+    ultima_nova = r
+
+    # ranking (Tabela8 em J4:K...): conta tudo de novo e acrescenta músicas que ainda não estão nele
+    todas = [valor(celulas(x).get('C', '')) for x in range(3, ultima_nova + 1)]
+    todas = [t for t in todas if t]
+    contagem = {}
+    for t in todas:
+        contagem[chave(t)] = contagem.get(chave(t), 0) + 1
+    tp = os.path.join(tmp, 'xl', 'tables', 'table3.xml')
+    tab = open(tp, encoding='utf8').read()
+    fim_tab = int(re.search(r'ref="J4:K(\d+)"', tab).group(1))
+    no_ranking = {chave(valor(celulas(x).get('J', ''))) for x in range(5, fim_tab + 1)}
+    for x in range(5, fim_tab + 1):
+        nome = valor(celulas(x).get('J', ''))
+        k = celulas(x).get('K')
+        if nome and k:
+            definir(x, 'K', re.sub(r'<v>[^<]*</v>', f'<v>{contagem.get(chave(nome), 0)}</v>', k))
+    acrescentadas = []
+    for t in dict.fromkeys(todas):
+        if chave(t) not in no_ranking:
+            fim_tab += 1
+            no_ranking.add(chave(t))
+            acrescentadas.append(t)
+            definir(fim_tab, 'I', f'<c r="I{fim_tab}" s="2"><v>{fim_tab - 4}</v></c>')
+            definir(fim_tab, 'J', f'<c r="J{fim_tab}" s="20" t="inlineStr"><is><t>{esc(t)}</t></is></c>')
+            definir(fim_tab, 'K', f'<c r="K{fim_tab}" s="20"><f>COUNTIF($C$3:$C$582,J{fim_tab})</f><v>{contagem.get(chave(t), 0)}</v></c>')
+    tab = re.sub(r'ref="J4:K\d+"', f'ref="J4:K{fim_tab}"', tab)
+    tab = re.sub(r'ref="J5:K\d+"', f'ref="J5:K{fim_tab}"', tab)
+    tab = re.sub(r'ref="K4:K\d+"', f'ref="K4:K{fim_tab}"', tab)
+    open(tp, 'w', encoding='utf8').write(tab)
+
+    # monta o XML da aba de novo, linha por linha, em ordem
+    corpo_linhas = ''.join(f'<row r="{r}">{linhas[r]}</row>' for r in sorted(linhas))
+    s = re.sub(r'<sheetData>.*?</sheetData>|<sheetData/>', '<sheetData>' + corpo_linhas + '</sheetData>', s, count=1, flags=re.S)
+    maior = max(sorted(linhas))
+    s = re.sub(r'<dimension ref="([A-Z]+)\d+:([A-Z]+)\d+"/>', lambda m: f'<dimension ref="{m.group(1)}1:{m.group(2)}{maior}"/>', s, count=1)
+    open(sp, 'w', encoding='utf8').write(s)
+
+    # pede ao Excel para recalcular ao abrir
+    wp = os.path.join(tmp, 'xl', 'workbook.xml')
+    w = open(wp, encoding='utf8').read()
+    if '<calcPr' in w and 'fullCalcOnLoad' not in w:
+        w = w.replace('<calcPr', '<calcPr fullCalcOnLoad="1"', 1)
+    open(wp, 'w', encoding='utf8').write(w)
+    calc = os.path.join(tmp, 'xl', 'calcChain.xml')
+
+    saida = caminho + '.novo'
+    with zipfile.ZipFile(saida, 'w', zipfile.ZIP_DEFLATED) as z:
+        for n in nomes:
+            if n.endswith('/'):
+                continue
+            z.write(os.path.join(tmp, n), n)
+    os.replace(saida, caminho)
+    shutil.rmtree(tmp)
+    return {'linhas_registros_ate': ultima_nova, 'novas_no_ranking': acrescentadas}
+
+
+def gerar_html(repo):
+    d = os.path.join(repo, 'dados')
+    t = open(os.path.join(repo, 'automacao', 'template.html'), encoding='utf8').read()
+    rep = carregar(os.path.join(d, 'repertorio.json'), [])
+    tons = carregar(os.path.join(d, 'tons.json'), [])
+    reg = [{k: x.get(k, '') for k in ('data', 'musica', 'tipo', 'evento')} for x in carregar(os.path.join(d, 'registros.json'), [])]
+    j = lambda o: json.dumps(o, ensure_ascii=False).replace('</', '<\\/')
+    hoje = datetime.date.today().strftime('%d/%m/%Y')
+    logo = open(os.path.join(repo, 'automacao', 'logo.b64')).read().strip()
+    t = t.replace('__LOGO__', logo).replace('__REP__', j(rep)).replace('__TONS__', j(tons)).replace('__REG__', j(reg)).replace('__ATUALIZADO__', hoje)
+    open(os.path.join(repo, 'index.html'), 'w', encoding='utf8').write(t)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--repo', required=True)
+    ap.add_argument('--novos', required=True)
+    ap.add_argument('--xlsx')
+    a = ap.parse_args()
+    d = os.path.join(a.repo, 'dados')
+    rep = carregar(os.path.join(d, 'repertorio.json'), [])
+    reg = carregar(os.path.join(d, 'registros.json'), [])
+    aliases = carregar(os.path.join(d, 'aliases.json'), {})
+    canon = {chave(x['musica']): x['musica'] for x in rep}
+    for x in reg:
+        canon.setdefault(chave(x['musica']), x['musica'])
+    alias_k = {chave(k): v for k, v in aliases.items()}
+    base = {x['musica'] for x in rep}
+    datas = {x['data'] for x in reg}
+
+    novos = json.load(open(a.novos, encoding='utf8'))
+    adicionados, ignorados, padronizados, fora = [], [], [], set()
+    cultos_ok = []
+    for c in sorted(novos, key=lambda c: c['data']):
+        if c['data'] in datas:
+            ignorados.append(c['data'])
+            continue
+        musicas = []
+        for m in c['musicas']:
+            m = m.strip()
+            n = alias_k.get(chave(m)) or canon.get(chave(m)) or m
+            if n != m:
+                padronizados.append({'grupo': m, 'planilha': n})
+            musicas.append(n)
+            if n not in base:
+                fora.add(n)
+            canon.setdefault(chave(n), n)
+        c2 = {'data': c['data'], 'tipo': c.get('tipo', ''), 'evento': c.get('evento', ''), 'musicas': musicas}
+        cultos_ok.append(c2)
+        for m in musicas:
+            reg.append({'data': c['data'], 'musica': m, 'tipo': c2['tipo'], 'evento': c2['evento'], 'no_repertorio': 'Sim' if m in base else 'Não'})
+        datas.add(c['data'])
+        adicionados.append(c2)
+    salvar(os.path.join(d, 'registros.json'), reg)
+    planilha = editar_xlsx(a.xlsx, cultos_ok) if a.xlsx and cultos_ok else None
+    gerar_html(a.repo)
+    print(json.dumps({'adicionados': adicionados, 'ignorados_ja_registrados': ignorados, 'nomes_padronizados': padronizados,
+                      'fora_do_repertorio_base': sorted(fora), 'planilha': planilha}, ensure_ascii=False, indent=1))
+
+
+if __name__ == '__main__':
+    main()
