@@ -126,7 +126,7 @@ def letras(a, b):
 
 def editar_tons(tmp, strings, mudancas, base):
     """mudancas: lista de {musica, cantor, tom}. Atualiza a aba Tons (músicas do repertório base) ou a aba Outras (as demais)."""
-    feitos = []
+    feitos, divergentes = [], []
     tratadas = set()
     abas = {
         'Tons': (Aba(tmp, 'sheet2.xml', strings), 'A', letras('B', 'L'), 'table2.xml'),
@@ -169,6 +169,9 @@ def editar_tons(tmp, strings, mudancas, base):
             antes = aba.valor(aba.celulas(r).get(col, ''))
             if antes.strip() == str(mu['tom']).strip():
                 continue
+            if antes.strip() and not mu.get('forcar'):
+                divergentes.append({'aba': nome_aba, 'musica': mu['musica'], 'cantor': mu['cantor'], 'planilha': antes, 'grupo': mu['tom']})
+                continue
             aba.texto(r, col, mu['tom'], aba.estilo(r, col) or aba.estilo(2, col))
             feitos.append({'aba': nome_aba, 'musica': mu['musica'], 'cantor': mu['cantor'], 'antes': antes or '—', 'depois': mu['tom']})
             mexeu = True
@@ -176,7 +179,7 @@ def editar_tons(tmp, strings, mudancas, base):
             tab = re.sub(r'ref="([A-Z]+)1:([A-Z]+)\d+"', lambda x: f'ref="{x.group(1)}1:{x.group(2)}{fim}"', tab)
             open(tp, 'w', encoding='utf8').write(tab)
             aba.salvar()
-    return feitos
+    return feitos, divergentes
 
 
 def editar_xlsx(caminho, cultos_novos, mudancas_tons=None, base=frozenset()):
@@ -273,7 +276,7 @@ def editar_xlsx(caminho, cultos_novos, mudancas_tons=None, base=frozenset()):
     s = re.sub(r'<dimension ref="([A-Z]+)\d+:([A-Z]+)\d+"/>', lambda m: f'<dimension ref="{m.group(1)}1:{m.group(2)}{maior}"/>', s, count=1)
     open(sp, 'w', encoding='utf8').write(s)
 
-    tons_feitos = editar_tons(tmp, strings, mudancas_tons or [], base) if mudancas_tons else []
+    tons_feitos, tons_div = editar_tons(tmp, strings, mudancas_tons or [], base) if mudancas_tons else ([], [])
 
     # pede ao Excel para recalcular ao abrir
     wp = os.path.join(tmp, 'xl', 'workbook.xml')
@@ -291,7 +294,7 @@ def editar_xlsx(caminho, cultos_novos, mudancas_tons=None, base=frozenset()):
             z.write(os.path.join(tmp, n), n)
     os.replace(saida, caminho)
     shutil.rmtree(tmp)
-    return {'linhas_registros_ate': ultima_nova, 'novas_no_ranking': acrescentadas, 'tons_alterados': tons_feitos}
+    return {'linhas_registros_ate': ultima_nova, 'novas_no_ranking': acrescentadas, 'tons_alterados': tons_feitos, 'tons_divergentes': tons_div}
 
 
 def gerar_html(repo):
@@ -363,14 +366,18 @@ def main():
             n = alias_k.get(chave(aj['musica'])) or canon.get(chave(aj['musica'])) or aj['musica'].strip()
             for cantor in separar_cantores(aj['cantor']):
                 mudancas_tons = [x for x in mudancas_tons if not (x['musica'] == n and x['cantor'] == cantor)]
-                mudancas_tons.append({'musica': n, 'cantor': cantor, 'tom': str(aj['tom']).strip()})
+                mudancas_tons.append({'musica': n, 'cantor': cantor, 'tom': str(aj['tom']).strip(), 'forcar': True})
 
-    # tons.json
+    # tons.json: do grupo só entra tom que ainda não existe para o cantor; divergência só é avisada
+    tons_divergentes = []
     tons = carregar(os.path.join(d, 'tons.json'), [])
     tons_alterados = []
     for mu in mudancas_tons:
         atual = next((x for x in tons if chave(x['musica']) == chave(mu['musica']) and x['cantor'] == mu['cantor']), None)
         if atual and str(atual.get('tom', '')).strip() == mu['tom']:
+            continue
+        if atual and str(atual.get('tom', '')).strip() and not mu.get('forcar'):
+            tons_divergentes.append({'musica': mu['musica'], 'cantor': mu['cantor'], 'planilha': atual['tom'], 'grupo': mu['tom']})
             continue
         tons_alterados.append({'musica': mu['musica'], 'cantor': mu['cantor'], 'antes': (atual or {}).get('tom') or '—', 'depois': mu['tom']})
         if atual:
@@ -378,11 +385,13 @@ def main():
         else:
             tons.append({'musica': mu['musica'], 'cantor': mu['cantor'], 'tom': mu['tom'], 'origem': 'Repertório base' if mu['musica'] in base else 'Fora do repertório'})
     salvar(os.path.join(d, 'tons.json'), tons)
+    divergentes_k = {(chave(x['musica']), x['cantor']) for x in tons_divergentes}
+    mudancas_tons = [x for x in mudancas_tons if (chave(x['musica']), x['cantor']) not in divergentes_k]
 
     planilha = editar_xlsx(a.xlsx, cultos_ok, mudancas_tons, base) if a.xlsx and (cultos_ok or mudancas_tons) else None
     gerar_html(a.repo)
     print(json.dumps({'adicionados': adicionados, 'ignorados_ja_registrados': ignorados, 'nomes_padronizados': padronizados,
-                      'fora_do_repertorio_base': sorted(fora), 'tons_alterados': tons_alterados,
+                      'fora_do_repertorio_base': sorted(fora), 'tons_incluidos': tons_alterados, 'tons_divergentes_nao_alterados': tons_divergentes,
                       'cantores_nao_reconhecidos': cantores_desconhecidos, 'planilha': planilha}, ensure_ascii=False, indent=1))
 
 
