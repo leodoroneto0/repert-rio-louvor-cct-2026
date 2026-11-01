@@ -66,6 +66,7 @@
   .px-box{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px} .px-box .lbl{color:var(--muted);font-size:12px;margin-bottom:6px}
   .px-eq div{padding:3px 0} .px-eq b{font-weight:500;color:var(--muted)} .px-m{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)} .px-m:last-child{border-bottom:0}
   .px-m .who{color:var(--muted)} .px-m a{color:inherit;text-decoration:none} .px-m a:hover{text-decoration:underline} .px-tom{background:color-mix(in srgb,var(--c2) 18%,transparent);border-radius:999px;padding:0 10px;font-size:12px;white-space:nowrap}
+  .px-r{display:inline-flex;align-items:center;gap:6px;flex:none} .px-m a.px-letra{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:0 10px;white-space:nowrap;text-decoration:none} .px-m a.px-letra:hover{background:color-mix(in srgb,var(--c2) 12%,transparent);text-decoration:none}
   @media (max-width:640px) { .hide-narrow { display:none; } h1 { font-size:24px; } }
 </style>
 </head>
@@ -183,8 +184,10 @@ const PROX = __PROX__;
     if (m.link && m.link.startsWith('https://')) { const a = document.createElement('a'); a.href = m.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = (i + 1) + '. ' + m.titulo; nome = a; }
     const who = document.createElement('span'); who.className = 'who'; who.textContent = ' · 🎤 ' + (m.cantor || 'a confirmar');
     left.append(nome, who);
+    const right = document.createElement('span'); right.className = 'px-r';
+    if (m.letra && m.letra.startsWith('https://www.multitracks.com/')) { const l = document.createElement('a'); l.className = 'px-letra'; l.href = m.letra + '#lyricsSection'; l.target = '_blank'; l.rel = 'noopener'; l.textContent = '📖 Letra'; right.appendChild(l); }
     const tom = document.createElement('span'); tom.className = 'px-tom'; tom.textContent = m.tom || '❓';
-    row.append(left, tom); rp.appendChild(row);
+    right.appendChild(tom); row.append(left, right); rp.appendChild(row);
   });
   document.getElementById('px-nota').textContent = 'Atualizado em ' + PROX.atualizado.slice(8,10) + '/' + PROX.atualizado.slice(5,7) + ' pela tarefa automática, a partir do grupo de escala e repertório.';
 })();
