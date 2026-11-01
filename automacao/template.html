@@ -147,7 +147,7 @@
   <section class="card" id="fora">
     <h2><span class="ic">➕</span>Tocadas fora do repertório base</h2>
     <p class="note">Músicas que apareceram nos cultos mas não estão na aba de repertório base. Boas candidatas para entrar nele.</p>
-    <div class="tbox"><table><thead><tr><th>Música</th><th class="n">Vezes</th><th>Última vez</th></tr></thead><tbody id="fora-body"></tbody></table></div>
+    <div class="tbox"><table><thead><tr><th class="n">#</th><th>Música</th><th class="n">Vezes</th><th>Última vez</th></tr></thead><tbody id="fora-body"></tbody></table></div>
   </section>
 
   <section class="card" id="cultos">
@@ -233,7 +233,7 @@ const nb = document.getElementById('nunca-body');
 for (const r of nunca) { const tr = el('tr'); const td = el('td'); td.appendChild(pill(r.categoria)); tr.append(el('td', '', r.musica), el('td', 'hide-narrow', r.artista), td); nb.appendChild(tr); }
 // fora
 const fb = document.getElementById('fora-body');
-for (const r of ranking.filter(x => x.fora)) { const tr = el('tr'); tr.append(el('td', '', r.musica), el('td', 'n', r.vezes), el('td', '', fmtDate(r.ultima))); fb.appendChild(tr); }
+ranking.filter(x => x.fora).forEach((r, i) => { const tr = el('tr'); tr.append(el('td', 'n', i + 1), el('td', '', r.musica), el('td', 'n', r.vezes), el('td', '', fmtDate(r.ultima))); fb.appendChild(tr); });
 
 // repertório base
 let sortKey = 'padrao', sortDir = 1;
