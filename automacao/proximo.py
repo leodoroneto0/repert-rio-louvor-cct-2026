@@ -9,7 +9,7 @@ Entrada (montada a partir do grupo do Telegram):
 
 - Aplica as correções de escala do Neto (dados/ajustes_escala.json: troca "de" por "para" na data indicada).
 - Completa o link pelo repertório base quando faltar.
-- Regrava dados/proximo.json e o index.html, e imprime o resultado.
+- Regrava dados/proximo.json, dados/proximo_linhas.json (para o dashboard) e o index.html, e imprime o resultado.
 """
 import argparse, datetime, json, os, re, sys
 
@@ -46,6 +46,15 @@ def main():
             m[k] = (m.get(k) or '').strip()
     p['atualizado'] = datetime.date.today().isoformat()
     salvar(os.path.join(d, 'proximo.json'), p)
+    # versão em linhas simples para o dashboard (uma linha por pessoa da equipe e por música)
+    base = {'data': p.get('data', ''), 'culto': p.get('culto', ''), 'evento': p.get('evento', ''), 'atualizado': p['atualizado']}
+    linhas = [dict(base, parte='equipe', ordem=i + 1, funcao=e.get('funcao', ''), nomes=e.get('nomes', ''), titulo='', cantor='', tom='', link='')
+              for i, e in enumerate(p.get('equipe', []))]
+    linhas += [dict(base, parte='musica', ordem=i + 1, funcao='', nomes='', titulo=m['titulo'], cantor=m['cantor'], tom=m['tom'], link=m['link'])
+               for i, m in enumerate(p.get('musicas', []))]
+    if not linhas:
+        linhas = [dict(base, parte='info', ordem=0, funcao='', nomes='', titulo='', cantor='', tom='', link='')]
+    salvar(os.path.join(d, 'proximo_linhas.json'), linhas)
     gerar_html(a.repo)
     print(json.dumps({'proximo': p, 'ajustes_escala_aplicados': aplicados}, ensure_ascii=False, indent=1))
 
