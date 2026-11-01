@@ -206,7 +206,7 @@ for (const r of REG) {
   o.vezes++; if (r.data > o.ultima) o.ultima = r.data; rankMap.set(r.musica, o);
 }
 const ranking = [...rankMap.values()].sort((a,b) => b.vezes - a.vezes || a.musica.localeCompare(b.musica, 'pt'));
-ranking.forEach((r,i) => { r.pos = i > 0 && ranking[i-1].vezes === r.vezes ? ranking[i-1].pos : i + 1; });
+ranking.forEach((r,i) => { r.pos = i + 1; });
 const tocadasBase = new Set(REG.filter(r => base.has(r.musica)).map(r => r.musica));
 const rep = REP.map(r => ({ ...r, vezes: rankMap.get(r.musica)?.vezes || 0, ultima: rankMap.get(r.musica)?.ultima || '' }));
 const nunca = rep.filter(r => r.vezes === 0).sort((a,b) => ordem(a) - ordem(b) || a.musica.localeCompare(b.musica, 'pt'));
