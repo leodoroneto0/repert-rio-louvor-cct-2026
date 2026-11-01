@@ -61,6 +61,11 @@
   .ccard ol { margin:0; padding-left:1.3em; } .ccard li::marker { color:var(--t, var(--c0)); font-weight:600; }
   .ccard li.hit { font-weight:600; color:var(--ok); }
   footer { color:var(--muted); font-size:12px; text-align:center; }
+  #proximo{--a:var(--c2)} .px-hd{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .px-dt{font-family:Georgia,serif;font-size:24px;color:var(--c2)} .px-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+  .px-box{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px} .px-box .lbl{color:var(--muted);font-size:12px;margin-bottom:6px}
+  .px-eq div{padding:3px 0} .px-eq b{font-weight:500;color:var(--muted)} .px-m{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)} .px-m:last-child{border-bottom:0}
+  .px-m .who{color:var(--muted)} .px-m a{color:inherit;text-decoration:none} .px-m a:hover{text-decoration:underline} .px-tom{background:color-mix(in srgb,var(--c2) 18%,transparent);border-radius:999px;padding:0 10px;font-size:12px;white-space:nowrap}
   @media (max-width:640px) { .hide-narrow { display:none; } h1 { font-size:24px; } }
 </style>
 </head>
@@ -85,6 +90,15 @@
     <div class="tile"><div class="lbl">Repertório base já tocado</div><div class="num" id="t-pct">—</div></div>
     <div class="tile"><div class="lbl">Nunca tocadas este ano</div><div class="num" id="t-nunca">—</div></div>
     <div class="tile"><div class="lbl">Tocadas fora do repertório base</div><div class="num" id="t-fora">—</div></div>
+  </section>
+
+  <section class="card" id="proximo" hidden>
+    <div class="px-hd"><h2><span class="ic">📅</span>Próximo culto</h2><span class="px-dt" id="px-dt"></span></div>
+    <div class="px-grid">
+      <div class="px-box"><div class="lbl">Equipe</div><div class="px-eq" id="px-eq"></div></div>
+      <div class="px-box"><div class="lbl">Repertório</div><div id="px-rep"></div></div>
+    </div>
+    <p class="note" id="px-nota"></p>
   </section>
 
   <section class="grid">
@@ -149,6 +163,32 @@
 <script>
 const REP = __REP__;
 const TONS = __TONS__;
+// próximo culto
+const PROX = __PROX__;
+(function () {
+  if (!PROX || !PROX.data) return;
+  const box = document.getElementById('proximo'); box.hidden = false;
+  const dias = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const dt = new Date(PROX.data + 'T12:00:00');
+  document.getElementById('px-dt').textContent = dias[dt.getDay()] + ', ' + PROX.data.slice(8,10) + '/' + PROX.data.slice(5,7) + (PROX.evento ? ' · ' + PROX.evento : '');
+  const eq = document.getElementById('px-eq');
+  for (const e of PROX.equipe || []) { const d = document.createElement('div'); const b = document.createElement('b'); b.textContent = e.funcao + ': '; d.append(b, document.createTextNode(e.nomes)); eq.appendChild(d); }
+  const rp = document.getElementById('px-rep');
+  const ms = PROX.musicas || [];
+  if (!ms.length) rp.textContent = 'Repertório ainda não postado.';
+  ms.forEach((m, i) => {
+    const row = document.createElement('div'); row.className = 'px-m';
+    const left = document.createElement('span');
+    let nome = document.createTextNode((i + 1) + '. ' + m.titulo);
+    if (m.link && m.link.startsWith('https://')) { const a = document.createElement('a'); a.href = m.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = (i + 1) + '. ' + m.titulo; nome = a; }
+    const who = document.createElement('span'); who.className = 'who'; who.textContent = ' · 🎤 ' + (m.cantor || 'a confirmar');
+    left.append(nome, who);
+    const tom = document.createElement('span'); tom.className = 'px-tom'; tom.textContent = m.tom || '❓';
+    row.append(left, tom); rp.appendChild(row);
+  });
+  document.getElementById('px-nota').textContent = 'Atualizado em ' + PROX.atualizado.slice(8,10) + '/' + PROX.atualizado.slice(5,7) + ' pela tarefa automática, a partir do grupo de escala e repertório.';
+})();
+
 const REG = __REG__;
 
 const fmtDate = (s) => s ? s.slice(8,10) + '/' + s.slice(5,7) + '/' + s.slice(2,4) : '—';

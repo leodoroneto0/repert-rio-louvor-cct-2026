@@ -1,0 +1,54 @@
+{
+"data": "2026-11-01",
+"culto": "Domingo",
+"evento": "",
+"equipe": [
+{
+"funcao": "Voz",
+"nomes": "Talita e Débora"
+},
+{
+"funcao": "Teclado e baixo",
+"nomes": "Andrey"
+},
+{
+"funcao": "Guitarra",
+"nomes": "Neto"
+},
+{
+"funcao": "Violão",
+"nomes": "Bianca"
+},
+{
+"funcao": "Bateria",
+"nomes": "Cadu"
+}
+],
+"musicas": [
+{
+"titulo": "Meu Lugar",
+"cantor": "Débora",
+"tom": "C",
+"link": "https://www.youtube.com/watch?v=dwKww_Q_AXg"
+},
+{
+"titulo": "Tu És Deus (A Ele)",
+"cantor": "Débora",
+"tom": "C",
+"link": "https://www.youtube.com/watch?v=gS0Y4ID0HbY"
+},
+{
+"titulo": "Primeira Essência",
+"cantor": "Talita",
+"tom": "Ab",
+"link": "https://www.youtube.com/watch?v=eO9dUp5goWo"
+},
+{
+"titulo": "Me Atraiu",
+"cantor": "Talita",
+"tom": "C",
+"link": "https://www.youtube.com/watch?v=Z6cONvRUFZQ"
+}
+],
+"atualizado": "2026-11-01"
+}
