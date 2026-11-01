@@ -431,6 +431,9 @@ def main():
                 if chave(x['musica']) in {chave(al) for al in t.get('aliases', [])}:
                     x['musica'] = t['musica']; x['no_repertorio'] = 'Sim'
             teste_incluido = t['musica']
+            testes = carregar(os.path.join(d, 'testes.json'), [])
+            testes.append({'musica': t['musica'], 'mes': datetime.date.today().strftime('%Y-%m')})
+            salvar(os.path.join(d, 'testes.json'), testes)
             if a.xlsx:
                 incluir_teste(a.xlsx, t)
 
