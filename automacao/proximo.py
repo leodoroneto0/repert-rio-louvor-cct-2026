@@ -14,7 +14,7 @@ Entrada (montada a partir do grupo do Telegram):
 import argparse, datetime, json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from atualizar import carregar, salvar, chave, gerar_html  # noqa: E402
+from atualizar import carregar, salvar, chave, gerar_html, corrige_deus  # noqa: E402
 
 
 def main():
@@ -39,7 +39,7 @@ def main():
         t = (m.get('titulo') or '').strip()
         n = aliases.get(chave(t))
         b = por_nome.get(chave(n or t))
-        m['titulo'] = t
+        m['titulo'] = corrige_deus(t)
         if b and not m.get('link'):
             m['link'] = b.get('link', '')
         for k in ('cantor', 'tom', 'link'):

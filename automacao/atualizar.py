@@ -28,6 +28,11 @@ def chave(s):
     return re.sub(r'[^a-z0-9]', '', s)
 
 
+def corrige_deus(nome):
+    """Regra do Neto: em nome de música, "Deus" sempre com D maiúsculo."""
+    return re.sub(r'\bdeus\b', 'Deus', nome, flags=re.I)
+
+
 def carregar(p, padrao):
     return json.load(open(p, encoding='utf8')) if os.path.exists(p) else padrao
 
@@ -358,7 +363,7 @@ def main():
         for item in c['musicas']:
             m = (item.get('titulo') or item.get('musica') or '') if isinstance(item, dict) else item
             m = m.strip()
-            n = alias_k.get(chave(m)) or canon.get(chave(m)) or m
+            n = corrige_deus(alias_k.get(chave(m)) or canon.get(chave(m)) or m)
             if n != m:
                 padronizados.append({'grupo': m, 'planilha': n})
             musicas.append(n)
@@ -381,7 +386,7 @@ def main():
     # correções manuais de tom (valem por cima do repertório do grupo)
     if a.ajustes:
         for aj in carregar(a.ajustes, []):
-            n = alias_k.get(chave(aj['musica'])) or canon.get(chave(aj['musica'])) or aj['musica'].strip()
+            n = corrige_deus(alias_k.get(chave(aj['musica'])) or canon.get(chave(aj['musica'])) or aj['musica'].strip())
             for cantor in separar_cantores(aj['cantor']):
                 mudancas_tons = [x for x in mudancas_tons if not (x['musica'] == n and x['cantor'] == cantor)]
                 mudancas_tons.append({'musica': n, 'cantor': cantor, 'tom': str(aj['tom']).strip(), 'forcar': True})
