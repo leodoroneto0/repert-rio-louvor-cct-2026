@@ -1,4 +1,9 @@
 [
- {"musica": "Basta uma palavra", "mes": "anterior a 2026-11"},
+ {"musica": "A alegria está no coração", "mes": "2026-01", "definida": "Celebração"},
+ {"musica": "Grato sou", "mes": "2026-03", "definida": "Celebração", "obs": "anunciada com o vídeo de I Thank God (TRIBL)"},
+ {"musica": "Ah, Jesus", "mes": "2026-07", "definida": "Contemplação"},
+ {"musica": "Escape", "mes": "2026-08", "definida": "Contemplação"},
+ {"musica": "Tudo é Teu", "mes": "2026-09", "definida": "Contemplação"},
+ {"musica": "Basta uma palavra", "mes": "2026-10"},
  {"musica": "Sou Grato por seu Amor (God I'm Just Grateful)", "mes": "2026-11"}
 ]
