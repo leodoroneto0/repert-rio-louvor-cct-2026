@@ -185,7 +185,7 @@ const PROX = __PROX__;
     const who = document.createElement('span'); who.className = 'who'; who.textContent = ' · 🎤 ' + (m.cantor || 'a confirmar');
     left.append(nome, who);
     const right = document.createElement('span'); right.className = 'px-r';
-    if (m.letra && m.letra.startsWith('https://www.multitracks.com/')) { const l = document.createElement('a'); l.className = 'px-letra'; l.href = m.letra + '#lyricsSection'; l.target = '_blank'; l.rel = 'noopener'; l.textContent = '📖 Letra'; right.appendChild(l); }
+    if (m.letra && (m.letra.startsWith('https://www.multitracks.com/') || m.letra.startsWith('https://www.letras.mus.br/'))) { const l = document.createElement('a'); l.className = 'px-letra'; l.href = m.letra.startsWith('https://www.multitracks.com/') ? m.letra + '#lyricsSection' : m.letra; l.target = '_blank'; l.rel = 'noopener'; l.textContent = '📖 Letra'; right.appendChild(l); }
     const tom = document.createElement('span'); tom.className = 'px-tom'; tom.textContent = m.tom || '❓';
     right.appendChild(tom); row.append(left, right); rp.appendChild(row);
   });
