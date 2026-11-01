@@ -44,7 +44,7 @@
   .n { text-align:right; } .c { text-align:center; }
   a.ouvir { color:inherit; text-decoration:none; } a.ouvir::before { content:'▶ '; color:var(--muted); font-size:.8em; } a.ouvir:hover { text-decoration:underline; }
   .pill { display:inline-block; font-size:12px; padding:1px 8px; border-radius:999px; border:1px solid var(--p, var(--line)); background:color-mix(in srgb, var(--p, var(--muted)) 16%, transparent); white-space:nowrap; }
-  .cat-teste{--p:var(--c5)} .cat-pendente{--p:var(--c4)} .cat-celebracao{--p:var(--c1)} .cat-transicao{--p:var(--c2)} .cat-contemplacao{--p:var(--c3)}
+  .cat-teste{--p:var(--c5)} .cat-pendente{--p:var(--muted)} .cat-celebracao{--p:var(--c1)} .cat-transicao{--p:var(--c2)} .cat-contemplacao{--p:var(--c3)}
   .bar { display:inline-block; height:.55em; border-radius:4px; margin-right:6px; vertical-align:middle; background:var(--c0); }
   td.vz { white-space:nowrap; }
   .cmeses { display:flex; flex-direction:column; gap:8px; }
@@ -117,7 +117,7 @@
 
   <section class="card" id="repertorio">
     <h2><span class="ic">🎵</span>Repertório base</h2>
-    <p class="note">Música em teste no topo, depois em ordem de categoria (Celebração, Transição e Contemplação) e, dentro de cada uma, em ordem alfabética. Clique no nome para ouvir no YouTube ou no título de uma coluna para ordenar de outro jeito.</p>
+    <p class="note">Música em teste no topo, logo abaixo as pendentes (teste encerrado, ainda sem definição), depois em ordem de categoria (Celebração, Transição e Contemplação) e, dentro de cada uma, em ordem alfabética. Clique no nome para ouvir no YouTube ou no título de uma coluna para ordenar de outro jeito.</p>
     <div class="controls">
       <input id="q-base" type="search" placeholder="Buscar música ou artista…" aria-label="Buscar música ou artista">
       <select id="cat" aria-label="Categoria"></select>
