@@ -9,7 +9,8 @@ Entrada (montada a partir do grupo do Telegram):
 
 - Aplica as correções de escala do Neto (dados/ajustes_escala.json: troca "de" por "para" na data indicada).
 - Completa o link pelo repertório base quando faltar.
-- Completa "letra" (página da música no MultiTracks ou, se não houver lá, no Letras.mus.br; versão conferida) por dados/letras.json; o site e o
+- Completa "letra" por dados/letras.json: o link de letra indicado no grupo (prioridade), senão a página da música no
+  MultiTracks ou, se não houver lá, no Letras.mus.br (versão conferida); o site e o
   dashboard mostram um botão "Letra" que abre essa página. A letra NUNCA é copiada, só o link.
 - Regrava dados/proximo.json, dados/proximo_linhas.json (para o dashboard) e o index.html, e imprime o resultado.
 """
@@ -47,7 +48,7 @@ def main():
             m['link'] = b.get('link', '')
         if not m.get('letra'):
             m['letra'] = letras.get(chave(n or t)) or letras.get(chave(t)) or ''
-        if not (m.get('letra') or '').startswith(('https://www.multitracks.com/', 'https://www.letras.mus.br/')):
+        if not (m.get('letra') or '').startswith('https://'):
             m['letra'] = ''
         for k in ('cantor', 'tom', 'link', 'letra'):
             m[k] = (m.get(k) or '').strip()
