@@ -380,6 +380,39 @@ def incluir_teste(caminho, teste):
     return {'linha': nova}
 
 
+def marcar_pendentes(caminho, nomes):
+    """Muda a categoria das músicas indicadas de Teste para Pendente na aba Repertório Base (mês de teste já acabou, sem definição)."""
+    tmp = tempfile.mkdtemp()
+    with zipfile.ZipFile(caminho) as z:
+        lista = z.namelist()
+        z.extractall(tmp)
+    ss = open(os.path.join(tmp, 'xl', 'sharedStrings.xml'), encoding='utf8').read()
+    strings = [html.unescape(''.join(re.findall(r'<t[^>]*>(.*?)</t>', si, re.S))) for si in re.findall(r'<si>(.*?)</si>', ss, re.S)]
+    aba = Aba(tmp, 'sheet1.xml', strings)
+    alvo = {chave(n) for n in nomes}
+    feitos = []
+    for r in sorted(aba.linhas):
+        if r < 2:
+            continue
+        nome = aba.valor(aba.celulas(r).get('B', ''))
+        if chave(nome) in alvo and aba.valor(aba.celulas(r).get('H', '')).strip() == 'Teste':
+            aba.texto(r, 'H', 'Pendente')
+            g = aba.celulas(r).get('G')
+            if g:
+                aba.definir(r, 'G', re.sub(r'<v>[^<]*</v>', '<v>0.5</v>', g) if '<v>' in g else g.replace('/>', '><v>0.5</v></c>'))
+            feitos.append(nome)
+    if feitos:
+        aba.salvar()
+        saida = caminho + '.novo'
+        with zipfile.ZipFile(saida, 'w', zipfile.ZIP_DEFLATED) as z:
+            for n in lista:
+                if not n.endswith('/'):
+                    z.write(os.path.join(tmp, n), n)
+        os.replace(saida, caminho)
+    shutil.rmtree(tmp)
+    return feitos
+
+
 def gerar_html(repo):
     d = os.path.join(repo, 'dados')
     t = open(os.path.join(repo, 'automacao', 'template.html'), encoding='utf8').read()
@@ -411,8 +444,25 @@ def main():
         canon.setdefault(chave(x['musica']), x['musica'])
     alias_k = {chave(k): v for k, v in aliases.items()}
     base = {x['musica'] for x in rep}
-    teste_set = {x['musica'] for x in rep if x.get('categoria') == 'Teste'}
+    teste_set = {x['musica'] for x in rep if x.get('categoria') in ('Teste', 'Pendente')}
     datas = {x['data'] for x in reg}
+
+    # músicas teste de meses que já acabaram e ainda sem definição viram "Pendente"
+    mes_atual = datetime.date.today().strftime('%Y-%m')
+    meses = {chave(x['musica']): x.get('mes', '') for x in carregar(os.path.join(d, 'testes.json'), [])}
+    def venceu(nome):
+        m = meses.get(chave(nome), '') or ''
+        return not re.fullmatch(r'\d{4}-\d{2}', m) or m < mes_atual
+    vencidas = [x['musica'] for x in rep if x.get('categoria') == 'Teste' and venceu(x['musica'])]
+    pendentes_novas = []
+    if vencidas:
+        for x in rep:
+            if x['musica'] in vencidas:
+                x['categoria'] = 'Pendente'
+        salvar(os.path.join(d, 'repertorio.json'), rep)
+        pendentes_novas = vencidas
+        if a.xlsx:
+            marcar_pendentes(a.xlsx, vencidas)
 
     teste_incluido = None
     if a.teste:
@@ -502,7 +552,7 @@ def main():
     planilha = editar_xlsx(a.xlsx, cultos_ok, mudancas_tons, base) if a.xlsx and (cultos_ok or mudancas_tons) else None
     gerar_html(a.repo)
     print(json.dumps({'adicionados': adicionados, 'ignorados_ja_registrados': ignorados, 'nomes_padronizados': padronizados,
-                      'fora_do_repertorio_base': sorted(fora), 'tons_incluidos': tons_alterados, 'tons_divergentes_nao_alterados': tons_divergentes, 'musica_teste_incluida': teste_incluido,
+                      'fora_do_repertorio_base': sorted(fora), 'tons_incluidos': tons_alterados, 'tons_divergentes_nao_alterados': tons_divergentes, 'musica_teste_incluida': teste_incluido, 'viraram_pendentes': pendentes_novas,
                       'cantores_nao_reconhecidos': cantores_desconhecidos, 'planilha': planilha}, ensure_ascii=False, indent=1))
 
 

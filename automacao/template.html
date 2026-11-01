@@ -44,7 +44,7 @@
   .n { text-align:right; } .c { text-align:center; }
   a.ouvir { color:inherit; text-decoration:none; } a.ouvir::before { content:'▶ '; color:var(--muted); font-size:.8em; } a.ouvir:hover { text-decoration:underline; }
   .pill { display:inline-block; font-size:12px; padding:1px 8px; border-radius:999px; border:1px solid var(--p, var(--line)); background:color-mix(in srgb, var(--p, var(--muted)) 16%, transparent); white-space:nowrap; }
-  .cat-teste{--p:var(--c5)} .cat-celebracao{--p:var(--c1)} .cat-transicao{--p:var(--c2)} .cat-contemplacao{--p:var(--c3)}
+  .cat-teste{--p:var(--c5)} .cat-pendente{--p:var(--c4)} .cat-celebracao{--p:var(--c1)} .cat-transicao{--p:var(--c2)} .cat-contemplacao{--p:var(--c3)}
   .bar { display:inline-block; height:.55em; border-radius:4px; margin-right:6px; vertical-align:middle; background:var(--c0); }
   td.vz { white-space:nowrap; }
   .cmeses { display:flex; flex-direction:column; gap:8px; }
@@ -193,14 +193,14 @@ const REG = __REG__;
 
 const fmtDate = (s) => s ? s.slice(8,10) + '/' + s.slice(5,7) + '/' + s.slice(2,4) : '—';
 const slug = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
-const catOrdem = { 'Teste': 0, 'Celebração': 1, 'Transição': 2, 'Contemplação': 3 };
+const catOrdem = { 'Teste': 0, 'Pendente': 0.5, 'Celebração': 1, 'Transição': 2, 'Contemplação': 3 };
 const ordem = (r) => catOrdem[r.categoria] ?? 9;
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
 const pill = (cat) => el('span', 'pill cat-' + slug(cat), cat);
 
 // cálculos
 const base = new Set(REP.map(r => r.musica));
-const baseFixo = new Set(REP.filter(r => r.categoria !== 'Teste').map(r => r.musica)); // música em teste ainda é fora do repertório base
+const baseFixo = new Set(REP.filter(r => r.categoria !== 'Teste' && r.categoria !== 'Pendente').map(r => r.musica)); // música em teste ou pendente ainda é fora do repertório base
 const rankMap = new Map();
 for (const r of REG) {
   const o = rankMap.get(r.musica) || { musica: r.musica, vezes: 0, ultima: '', fora: !baseFixo.has(r.musica) };
