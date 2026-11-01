@@ -1,0 +1,32 @@
+{
+ "_info": "Nome com que cada pessoa aparece no grupo do Telegram 'Escala e Repertório' -> nome usado na escala/planilha e funções. Confirmado pelo Neto em 01/11/2026.",
+ "telegram": {
+  "Neto": "Neto",
+  "Talita": "Talita",
+  "Amor": "Bianca",
+  "Andrey": "Andrey",
+  "Pra.Iraci Teles": "Pra. Iraci",
+  "Marcelão CCT": "Marcelo",
+  "Marianne": "Marianne",
+  "Ana Negreli": "Ana",
+  "Débora Oliveira": "Débora",
+  "Lucas Isaac": "Lucas",
+  "Bia CCT": "Bia",
+  "Leonardo Santos": "Léo",
+  "Cadu": "Cadu",
+  "Levi": "Pr. Levi",
+  "Levi Teles": "Pr. Levi",
+  "Tondati": "Wesley",
+  "Dani": "Daniel"
+ },
+ "ignorar": ["Doug", "Kamila", "André", "Vinícius Bragas", "Pr Salomão"],
+ "funcoes": {
+  "Voz": ["Ana", "Bia", "Débora", "Léo", "Pr. Levi", "Lucas", "Marianne", "Pra. Iraci", "Talita", "Wesley"],
+  "Teclado": ["Andrey", "Léo", "Pr. Levi"],
+  "Guitarra": ["Neto", "Wesley"],
+  "Violão": ["Bianca", "Neto", "Samuel"],
+  "Baixo": ["Marcelo", "Andrey"],
+  "Bateria": ["Lucas", "Cadu", "Daniel"]
+ },
+ "observacoes": ["Pr. Levi é o líder: manda músicas toda semana mesmo quando não canta.", "Lucas canta só em cultos especiais.", "Samuel (violão) não está no grupo."]
+}
