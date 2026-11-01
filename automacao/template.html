@@ -200,9 +200,10 @@ const pill = (cat) => el('span', 'pill cat-' + slug(cat), cat);
 
 // cálculos
 const base = new Set(REP.map(r => r.musica));
+const baseFixo = new Set(REP.filter(r => r.categoria !== 'Teste').map(r => r.musica)); // música em teste ainda é fora do repertório base
 const rankMap = new Map();
 for (const r of REG) {
-  const o = rankMap.get(r.musica) || { musica: r.musica, vezes: 0, ultima: '', fora: !base.has(r.musica) };
+  const o = rankMap.get(r.musica) || { musica: r.musica, vezes: 0, ultima: '', fora: !baseFixo.has(r.musica) };
   o.vezes++; if (r.data > o.ultima) o.ultima = r.data; rankMap.set(r.musica, o);
 }
 const ranking = [...rankMap.values()].sort((a,b) => b.vezes - a.vezes || a.musica.localeCompare(b.musica, 'pt'));

@@ -411,6 +411,7 @@ def main():
         canon.setdefault(chave(x['musica']), x['musica'])
     alias_k = {chave(k): v for k, v in aliases.items()}
     base = {x['musica'] for x in rep}
+    teste_set = {x['musica'] for x in rep if x.get('categoria') == 'Teste'}
     datas = {x['data'] for x in reg}
 
     teste_incluido = None
@@ -429,7 +430,7 @@ def main():
             base.add(t['musica'])
             for x in reg:
                 if chave(x['musica']) in {chave(al) for al in t.get('aliases', [])}:
-                    x['musica'] = t['musica']; x['no_repertorio'] = 'Sim'
+                    x['musica'] = t['musica']; x['no_repertorio'] = 'Não'
             teste_incluido = t['musica']
             testes = carregar(os.path.join(d, 'testes.json'), [])
             testes.append({'musica': t['musica'], 'mes': datetime.date.today().strftime('%Y-%m')})
@@ -437,6 +438,7 @@ def main():
             if a.xlsx:
                 incluir_teste(a.xlsx, t)
 
+    base_fixo = base - teste_set - ({teste_incluido} if teste_incluido else set())  # música em teste ainda conta como fora do repertório base
     novos = json.load(open(a.novos, encoding='utf8'))
     adicionados, ignorados, padronizados, fora = [], [], [], set()
     cultos_ok = []
@@ -464,7 +466,7 @@ def main():
         c2 = {'data': c['data'], 'tipo': c.get('tipo', ''), 'evento': c.get('evento', ''), 'musicas': musicas}
         cultos_ok.append(c2)
         for m in musicas:
-            reg.append({'data': c['data'], 'musica': m, 'tipo': c2['tipo'], 'evento': c2['evento'], 'no_repertorio': 'Sim' if m in base else 'Não'})
+            reg.append({'data': c['data'], 'musica': m, 'tipo': c2['tipo'], 'evento': c2['evento'], 'no_repertorio': 'Sim' if m in base_fixo else 'Não'})
         datas.add(c['data'])
         adicionados.append(c2)
     salvar(os.path.join(d, 'registros.json'), reg)
