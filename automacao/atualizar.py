@@ -264,6 +264,23 @@ def editar_xlsx(caminho, cultos_novos, mudancas_tons=None, base=frozenset()):
             definir(fim_tab, 'I', f'<c r="I{fim_tab}" s="2"><v>{fim_tab - 4}</v></c>')
             definir(fim_tab, 'J', f'<c r="J{fim_tab}" s="20" t="inlineStr"><is><t>{esc(t)}</t></is></c>')
             definir(fim_tab, 'K', f'<c r="K{fim_tab}" s="20"><f>COUNTIF($C$3:$C$582,J{fim_tab})</f><v>{contagem.get(chave(t), 0)}</v></c>')
+    # reordena o ranking: mais tocada primeiro; empates em ordem alfabética; posições em sequência (1, 2, 3...)
+    nomes_rank = [valor(celulas(x).get('J', '')) for x in range(5, fim_tab + 1)]
+    nomes_rank = [n for n in nomes_rank if n]
+    alfa = lambda n: unicodedata.normalize('NFKD', n).encode('ascii', 'ignore').decode().lower()
+    nomes_rank.sort(key=lambda n: (-contagem.get(chave(n), 0), alfa(n)))
+    for i, nome in enumerate(nomes_rank):
+        x = 5 + i
+        si = re.search(r' s="(\d+)"', celulas(x).get('J', '')) or None
+        sj = si.group(1) if si else '20'
+        definir(x, 'I', re.sub(r'<v>[^<]*</v>', f'<v>{i + 1}</v>', celulas(x)['I']) if 'I' in celulas(x) and '<v>' in celulas(x)['I'] else f'<c r="I{x}" s="2"><v>{i + 1}</v></c>')
+        definir(x, 'J', f'<c r="J{x}" s="{sj}" t="inlineStr"><is><t>{esc(nome)}</t></is></c>')
+        k = celulas(x).get('K', '')
+        if '<f' in k and '<v>' in k:
+            definir(x, 'K', re.sub(r'<v>[^<]*</v>', f'<v>{contagem.get(chave(nome), 0)}</v>', k))
+        else:
+            sk = (re.search(r' s="(\d+)"', k) or re.search(r'(20)', '20')).group(1)
+            definir(x, 'K', f'<c r="K{x}" s="{sk}"><f>COUNTIF($C$3:$C$582,J{x})</f><v>{contagem.get(chave(nome), 0)}</v></c>')
     tab = re.sub(r'ref="J4:K\d+"', f'ref="J4:K{fim_tab}"', tab)
     tab = re.sub(r'ref="J5:K\d+"', f'ref="J5:K{fim_tab}"', tab)
     tab = re.sub(r'ref="K4:K\d+"', f'ref="K4:K{fim_tab}"', tab)
