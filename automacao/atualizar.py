@@ -335,7 +335,10 @@ def incluir_teste(caminho, teste):
            f'<c r="A{nova}" s="60"><v>{num}</v></c>'
            f'<c r="B{nova}" s="60" t="inlineStr"><is><t>{esc(teste["musica"])}</t></is></c>'
            f'<c r="C{nova}" s="60" t="inlineStr"><is><t>{esc(teste.get("artista", ""))}</t></is></c>'
-           f'<c r="D{nova}" s="60"/><c r="E{nova}" s="60"/><c r="F{nova}" s="93"/><c r="G{nova}" s="60"><v>0</v></c>'
+           + (f'<c r="D{nova}" s="60" t="inlineStr"><is><t>{esc(teste["tom"])}</t></is></c>' if teste.get('tom') else f'<c r="D{nova}" s="60"/>')
+           + (f'<c r="E{nova}" s="60"><v>{teste["bpm"]}</v></c>' if str(teste.get('bpm') or '').replace('.', '').isdigit() else f'<c r="E{nova}" s="60"/>')
+           + (f'<c r="F{nova}" s="93" t="inlineStr"><is><t>{esc(teste["compasso"])}</t></is></c>' if teste.get('compasso') else f'<c r="F{nova}" s="93"/>')
+           + f'<c r="G{nova}" s="60"><v>0</v></c>'
            f'<c r="H{nova}" s="60" t="inlineStr"><is><t>Teste</t></is></c><c r="I{nova}" s="77"/></row>')
     i = s.index('</row>', s.index(f'<row r="{ultima}"')) + len('</row>')
     s = s[:i] + row + s[i:]
@@ -470,7 +473,7 @@ def main():
         t['musica'] = corrige_deus(t['musica'].strip())
         ja = any(chave(x['musica']) == chave(t['musica']) for x in rep) or any(chave(al) in canon for al in t.get('aliases', []) if canon.get(chave(al)) in base)
         if not ja:
-            rep.append({'musica': t['musica'], 'artista': t.get('artista', ''), 'tom': '', 'bpm': '', 'compasso': '', 'categoria': 'Teste', 'link': t.get('link', '')})
+            rep.append({'musica': t['musica'], 'artista': t.get('artista', ''), 'tom': t.get('tom', ''), 'bpm': t.get('bpm', ''), 'compasso': t.get('compasso', ''), 'categoria': 'Teste', 'link': t.get('link', '')})
             salvar(os.path.join(d, 'repertorio.json'), rep)
             for al in t.get('aliases', []):
                 aliases[al] = t['musica']
