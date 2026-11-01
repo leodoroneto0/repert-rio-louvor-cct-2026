@@ -7,7 +7,7 @@
 <title>Repertório do Louvor CCT 2026</title>
 <style>
   :root { --bg:#f6f7fb; --panel:#ffffff; --fg:#1d1f24; --muted:#6b7280; --line:#e5e7eb;
-    --c0:#4f7cf7; --c1:#e0743c; --c2:#2fa37a; --c3:#a35ee0; --c4:#d4a017; --c5:#e0567b; --ok:#2fa37a; --r:10px; }
+    --c0:#4f7cf7; --c1:#e0743c; --c2:#2fa37a; --c3:#a35ee0; --c4:#d4a017; --c5:#e0567b; --c6:#3fb5c9; --ok:#2fa37a; --r:10px; }
   @media (prefers-color-scheme: dark) { :root { --bg:#14161a; --panel:#1d2026; --fg:#eceef2; --muted:#9aa1ad; --line:#2d313a; } }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size:15px; }
@@ -26,7 +26,7 @@
   .tile .lbl { color:var(--muted); font-size:12px; }
   .tile .num { font-family: Georgia, serif; font-size:30px; color:var(--a); margin-top:4px; font-variant-numeric:tabular-nums; }
   .tiles .tile:nth-child(1){--a:var(--c0)} .tiles .tile:nth-child(2){--a:var(--c1)} .tiles .tile:nth-child(3){--a:var(--c2)}
-  .tiles .tile:nth-child(4){--a:var(--c3)} .tiles .tile:nth-child(5){--a:var(--c4)} .tiles .tile:nth-child(6){--a:var(--c5)}
+  .tiles .tile:nth-child(4){--a:var(--c3)} .tiles .tile:nth-child(5){--a:var(--c4)} .tiles .tile:nth-child(6){--a:var(--c5)} .tiles .tile:nth-child(7){--a:var(--c6)}
   #mais-tocadas{--a:var(--c1)} #nunca-tocadas{--a:var(--c5)} #repertorio{--a:var(--c0)} #tons{--a:var(--c3)} #fora{--a:var(--c4)} #cultos{--a:var(--c2)}
   .ic { display:inline-flex; align-items:center; justify-content:center; width:1.8em; height:1.8em; border-radius:50%; margin-right:8px; background:color-mix(in srgb, var(--a) 18%, transparent); font-size:.9em; }
   .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap:12px; }
@@ -84,6 +84,7 @@
     <div class="tile"><div class="lbl">Músicas diferentes</div><div class="num" id="t-dist">—</div></div>
     <div class="tile"><div class="lbl">Repertório base já tocado</div><div class="num" id="t-pct">—</div></div>
     <div class="tile"><div class="lbl">Nunca tocadas este ano</div><div class="num" id="t-nunca">—</div></div>
+    <div class="tile"><div class="lbl">Tocadas fora do repertório base</div><div class="num" id="t-fora">—</div></div>
   </section>
 
   <section class="grid">
@@ -142,7 +143,7 @@
     <div class="cmeses" id="cultos-view"></div>
   </section>
 
-  <footer>Atualizado em <span id="upd">31/10/2026</span> · Dados da planilha do Ministério de Louvor CCT</footer>
+  <footer>Atualizado em <span id="upd">01/11/2026</span> · Dados da planilha do Ministério de Louvor CCT</footer>
 </div>
 
 <script>
@@ -176,7 +177,7 @@ set('k-cultos', datas.size); set('k-tocadas', REG.length);
 if (ranking[0]) { set('k-top', ranking[0].musica); set('k-topv', ranking[0].vezes); }
 set('t-base', REP.length); set('t-cultos', datas.size); set('t-tocadas', REG.length);
 set('t-dist', rankMap.size); set('t-pct', Math.round(tocadasBase.size / base.size * 100) + '%');
-set('t-nunca', nunca.length); set('n-nunca', nunca.length);
+set('t-nunca', nunca.length); set('t-fora', ranking.filter(r => r.fora).length); set('n-nunca', nunca.length);
 
 // mais tocadas
 const max = ranking.length ? ranking[0].vezes : 1;
