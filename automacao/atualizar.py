@@ -319,6 +319,67 @@ def editar_xlsx(caminho, cultos_novos, mudancas_tons=None, base=frozenset()):
     return {'linhas_registros_ate': ultima_nova, 'novas_no_ranking': acrescentadas, 'tons_alterados': tons_feitos, 'tons_divergentes': tons_div}
 
 
+def incluir_teste(caminho, teste):
+    """Acrescenta a música teste do mês na aba Repertório Base (categoria Teste), com o botão de link igual aos outros."""
+    tmp = tempfile.mkdtemp()
+    with zipfile.ZipFile(caminho) as z:
+        nomes = z.namelist()
+        z.extractall(tmp)
+    sp = os.path.join(tmp, 'xl', 'worksheets', 'sheet1.xml')
+    s = open(sp, encoding='utf8').read()
+    ultima = max(int(r) for r in re.findall(r'<row r="(\d+)"', s))
+    nova = ultima + 1
+    m = re.search(r'<c r="A%d"[^>]*><v>(\d+)</v>' % ultima, s)
+    num = int(m.group(1)) + 1 if m else nova - 1
+    row = (f'<row r="{nova}" spans="1:9" ht="15.75" x14ac:dyDescent="0.25">'
+           f'<c r="A{nova}" s="60"><v>{num}</v></c>'
+           f'<c r="B{nova}" s="60" t="inlineStr"><is><t>{esc(teste["musica"])}</t></is></c>'
+           f'<c r="C{nova}" s="60" t="inlineStr"><is><t>{esc(teste.get("artista", ""))}</t></is></c>'
+           f'<c r="D{nova}" s="60"/><c r="E{nova}" s="60"/><c r="F{nova}" s="93"/><c r="G{nova}" s="60"><v>0</v></c>'
+           f'<c r="H{nova}" s="60" t="inlineStr"><is><t>Teste</t></is></c><c r="I{nova}" s="77"/></row>')
+    i = s.index('</row>', s.index(f'<row r="{ultima}"')) + len('</row>')
+    s = s[:i] + row + s[i:]
+    s = re.sub(r'<dimension ref="A1:([A-Z]+)\d+"/>', lambda x: f'<dimension ref="A1:{x.group(1)}{nova}"/>', s, count=1)
+    open(sp, 'w', encoding='utf8').write(s)
+    for f in os.listdir(os.path.join(tmp, 'xl', 'tables')):
+        tp = os.path.join(tmp, 'xl', 'tables', f)
+        t = open(tp, encoding='utf8').read()
+        if 'Tabela3' in t:
+            t = re.sub(r'ref="B1:I\d+"', f'ref="B1:I{nova}"', t)
+            open(tp, 'w', encoding='utf8').write(t)
+    link = teste.get('link', '')
+    if link.startswith('https://'):
+        rp = os.path.join(tmp, 'xl', 'drawings', '_rels', 'drawing1.xml.rels')
+        r = open(rp, encoding='utf8').read()
+        nid = max(int(x) for x in re.findall(r'Id="rId(\d+)"', r)) + 1
+        r = r.replace('</Relationships>', f'<Relationship Id="rId{nid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="{esc(link)}" TargetMode="External"/></Relationships>')
+        open(rp, 'w', encoding='utf8').write(r)
+        dp = os.path.join(tmp, 'xl', 'drawings', 'drawing1.xml')
+        d = open(dp, encoding='utf8').read()
+        anchors = re.findall(r'<xdr:twoCellAnchor.*?</xdr:twoCellAnchor>', d, re.S)
+        lin = lambda a: int(re.search(r'<xdr:from>.*?<xdr:row>(\d+)</xdr:row>', a, re.S).group(1))
+        base_row = max(lin(a) for a in anchors)
+        modelo = [a for a in anchors if lin(a) == base_row]
+        mx = max(int(x) for x in re.findall(r'cNvPr id="(\d+)"', d))
+        novos = ''
+        for k, a in enumerate(modelo):
+            b = a.replace(f'<xdr:row>{base_row}</xdr:row>', f'<xdr:row>{nova - 1}</xdr:row>')
+            b = re.sub(r'<a:extLst>.*?</a:extLst>', '', b, count=1, flags=re.S)
+            b = re.sub(r'cNvPr id="\d+" name="([^"]*?) \d+"', lambda x: f'cNvPr id="{mx + 1 + k}" name="{x.group(1)} {mx + k}"', b)
+            b = re.sub(r'r:id="rId\d+"', f'r:id="rId{nid}"', b)
+            novos += b
+        d = d.replace('</xdr:wsDr>', novos + '</xdr:wsDr>')
+        open(dp, 'w', encoding='utf8').write(d)
+    saida = caminho + '.novo'
+    with zipfile.ZipFile(saida, 'w', zipfile.ZIP_DEFLATED) as z:
+        for n in nomes:
+            if not n.endswith('/'):
+                z.write(os.path.join(tmp, n), n)
+    os.replace(saida, caminho)
+    shutil.rmtree(tmp)
+    return {'linha': nova}
+
+
 def gerar_html(repo):
     d = os.path.join(repo, 'dados')
     t = open(os.path.join(repo, 'automacao', 'template.html'), encoding='utf8').read()
@@ -339,6 +400,7 @@ def main():
     ap.add_argument('--novos', required=True)
     ap.add_argument('--xlsx')
     ap.add_argument('--ajustes', help='correções de tom: lista de {musica, cantor, tom}')
+    ap.add_argument('--teste', help='música teste do mês para incluir no repertório base: {musica, artista, link, aliases: [...]}')
     a = ap.parse_args()
     d = os.path.join(a.repo, 'dados')
     rep = carregar(os.path.join(d, 'repertorio.json'), [])
@@ -350,6 +412,27 @@ def main():
     alias_k = {chave(k): v for k, v in aliases.items()}
     base = {x['musica'] for x in rep}
     datas = {x['data'] for x in reg}
+
+    teste_incluido = None
+    if a.teste:
+        t = json.load(open(a.teste, encoding='utf8'))
+        t['musica'] = corrige_deus(t['musica'].strip())
+        ja = any(chave(x['musica']) == chave(t['musica']) for x in rep) or any(chave(al) in canon for al in t.get('aliases', []) if canon.get(chave(al)) in base)
+        if not ja:
+            rep.append({'musica': t['musica'], 'artista': t.get('artista', ''), 'tom': '', 'bpm': '', 'compasso': '', 'categoria': 'Teste', 'link': t.get('link', '')})
+            salvar(os.path.join(d, 'repertorio.json'), rep)
+            for al in t.get('aliases', []):
+                aliases[al] = t['musica']
+            salvar(os.path.join(d, 'aliases.json'), aliases)
+            alias_k.update({chave(al): t['musica'] for al in t.get('aliases', [])})
+            canon[chave(t['musica'])] = t['musica']
+            base.add(t['musica'])
+            for x in reg:
+                if chave(x['musica']) in {chave(al) for al in t.get('aliases', [])}:
+                    x['musica'] = t['musica']; x['no_repertorio'] = 'Sim'
+            teste_incluido = t['musica']
+            if a.xlsx:
+                incluir_teste(a.xlsx, t)
 
     novos = json.load(open(a.novos, encoding='utf8'))
     adicionados, ignorados, padronizados, fora = [], [], [], set()
@@ -414,7 +497,7 @@ def main():
     planilha = editar_xlsx(a.xlsx, cultos_ok, mudancas_tons, base) if a.xlsx and (cultos_ok or mudancas_tons) else None
     gerar_html(a.repo)
     print(json.dumps({'adicionados': adicionados, 'ignorados_ja_registrados': ignorados, 'nomes_padronizados': padronizados,
-                      'fora_do_repertorio_base': sorted(fora), 'tons_incluidos': tons_alterados, 'tons_divergentes_nao_alterados': tons_divergentes,
+                      'fora_do_repertorio_base': sorted(fora), 'tons_incluidos': tons_alterados, 'tons_divergentes_nao_alterados': tons_divergentes, 'musica_teste_incluida': teste_incluido,
                       'cantores_nao_reconhecidos': cantores_desconhecidos, 'planilha': planilha}, ensure_ascii=False, indent=1))
 
 
