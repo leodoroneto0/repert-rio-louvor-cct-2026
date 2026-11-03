@@ -383,7 +383,7 @@ def incluir_teste(caminho, teste):
     return {'linha': nova}
 
 
-FIM_DA_LISTA = ('Stand By',)  # categorias que ficam sempre no fim da aba Repertório Base (regra do Neto)
+FIM_DA_LISTA = ('Stand By',)  # Stand By = agora não entrou, mas deve ser testada de novo em breve; só o Neto põe música nela. Fica sempre no fim da aba Repertório Base (regra do Neto)
 
 
 def mover_para_fim(caminho, categorias=FIM_DA_LISTA, definir=None):
