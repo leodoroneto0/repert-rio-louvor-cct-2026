@@ -383,6 +383,90 @@ def incluir_teste(caminho, teste):
     return {'linha': nova}
 
 
+FIM_DA_LISTA = ('Stand By',)  # categorias que ficam sempre no fim da aba Repertório Base (regra do Neto)
+
+
+def mover_para_fim(caminho, categorias=FIM_DA_LISTA, definir=None):
+    """Põe no fim da aba Repertório Base as linhas cuja categoria (coluna H) está em `categorias`,
+    renumerando a coluna A e levando junto os botões de link (desenhos ancorados na linha).
+    `definir` = {nome da música: categoria}: troca a categoria dessas músicas antes de mover
+    (coluna G recebe 4 para Stand By, a ordem usada no fim da lista)."""
+    tmp = tempfile.mkdtemp()
+    with zipfile.ZipFile(caminho) as z:
+        nomes = z.namelist()
+        z.extractall(tmp)
+    sp = os.path.join(tmp, 'xl', 'worksheets', 'sheet1.xml')
+    s = open(sp, encoding='utf8').read()
+    ss = os.path.join(tmp, 'xl', 'sharedStrings.xml')
+    si = re.findall(r'<si>(.*?)</si>', open(ss, encoding='utf8').read(), re.S) if os.path.exists(ss) else []
+    def val(c):
+        if not c or '<v>' not in c and '<t' not in c:
+            return ''
+        if 't="s"' in c.split('>')[0]:
+            return html.unescape(re.sub('<[^>]+>', '', si[int(re.search(r'<v>(\d+)</v>', c).group(1))]))
+        t = re.search(r'<t[^>]*>(.*?)</t>', c, re.S)
+        return html.unescape(t.group(1)) if t else re.search(r'<v>(.*?)</v>', c).group(1)
+    linhas = {int(m.group(1)): m.group(0) for m in re.finditer(r'<row r="(\d+)"[^>]*>.*?</row>', s, re.S)}
+    def cel(xml, col, r):
+        m = re.search(r'<c r="%s%d"[^>]*?(?:/>|>.*?</c>)' % (col, r), xml, re.S)
+        return m.group(0) if m else ''
+    orig = dict(linhas)
+    definir = {chave(k): v for k, v in (definir or {}).items()}
+    for r, xml in list(linhas.items()):
+        if r == 1:
+            continue
+        nova_cat = definir.get(chave(val(cel(xml, 'B', r))))
+        if nova_cat:
+            h = cel(xml, 'H', r)
+            st = re.search(r's="(\d+)"', h)
+            novo_h = f'<c r="H{r}"{" s=" + chr(34) + st.group(1) + chr(34) if st else ""} t="inlineStr"><is><t>{esc(nova_cat)}</t></is></c>'
+            xml = xml.replace(h, novo_h) if h else xml
+            g = cel(xml, 'G', r)
+            if g and nova_cat in categorias:
+                stg = re.search(r's="(\d+)"', g)
+                xml = xml.replace(g, f'<c r="G{r}"{" s=" + chr(34) + stg.group(1) + chr(34) if stg else ""}><v>4</v></c>')
+            linhas[r] = xml
+    dados = sorted(r for r in linhas if r > 1)
+    fim = [r for r in dados if val(cel(linhas[r], 'H', r)).strip() in categorias]
+    ordem = [r for r in dados if r not in fim] + fim
+    mapa = {velho: dados[i] for i, velho in enumerate(ordem)}  # linha antiga -> linha nova
+    if all(k == v for k, v in mapa.items()) and not definir:
+        shutil.rmtree(tmp)
+        return {'movidas': []}
+    base_num = 1
+    novas = []
+    for i, velho in enumerate(ordem):
+        novo = mapa[velho]
+        xml = linhas[velho]
+        xml = re.sub(r'<row r="%d"' % velho, f'<row r="{novo}"', xml, count=1)
+        xml = re.sub(r'(<c r="[A-Z]+)%d"' % velho, lambda m: f'{m.group(1)}{novo}"', xml)
+        xml = re.sub(r'(<c r="A%d"[^>]*><v>)\d+(</v>)' % novo, lambda m: f'{m.group(1)}{base_num + i}{m.group(2)}', xml)
+        novas.append(xml)
+    ini = s.index(orig[dados[0]])
+    fim_txt = s.index(orig[dados[-1]]) + len(orig[dados[-1]])
+    s = s[:ini] + ''.join(novas) + s[fim_txt:]
+    open(sp, 'w', encoding='utf8').write(s)
+    dp = os.path.join(tmp, 'xl', 'drawings', 'drawing1.xml')
+    if os.path.exists(dp):
+        d = open(dp, encoding='utf8').read()
+        def troca(m):
+            a = m.group(0)
+            def r0(x):
+                velho = int(x.group(2)) + 1
+                return f'{x.group(1)}{mapa.get(velho, velho) - 1}{x.group(3)}'
+            return re.sub(r'(<xdr:(?:from|to)>.*?<xdr:row>)(\d+)(</xdr:row>)', r0, a, flags=re.S)
+        d = re.sub(r'<xdr:twoCellAnchor.*?</xdr:twoCellAnchor>', troca, d, flags=re.S)
+        open(dp, 'w', encoding='utf8').write(d)
+    saida = caminho + '.novo'
+    with zipfile.ZipFile(saida, 'w', zipfile.ZIP_DEFLATED) as z:
+        for n in nomes:
+            if not n.endswith('/'):
+                z.write(os.path.join(tmp, n), n)
+    os.replace(saida, caminho)
+    shutil.rmtree(tmp)
+    return {'movidas': [val(cel(linhas[r], 'B', r)) for r in fim]}
+
+
 def marcar_pendentes(caminho, nomes):
     """Muda a categoria das músicas indicadas de Teste para Pendente na aba Repertório Base (mês de teste já acabou, sem definição)."""
     tmp = tempfile.mkdtemp()
@@ -447,7 +531,7 @@ def main():
         canon.setdefault(chave(x['musica']), x['musica'])
     alias_k = {chave(k): v for k, v in aliases.items()}
     base = {x['musica'] for x in rep}
-    teste_set = {x['musica'] for x in rep if x.get('categoria') in ('Teste', 'Pendente')}
+    teste_set = {x['musica'] for x in rep if x.get('categoria') in ('Teste', 'Pendente') + FIM_DA_LISTA}
     datas = {x['data'] for x in reg}
 
     # músicas teste de meses que já acabaram e ainda sem definição viram "Pendente"
@@ -474,6 +558,7 @@ def main():
         ja = any(chave(x['musica']) == chave(t['musica']) for x in rep) or any(chave(al) in canon for al in t.get('aliases', []) if canon.get(chave(al)) in base)
         if not ja:
             rep.append({'musica': t['musica'], 'artista': t.get('artista', ''), 'tom': t.get('tom', ''), 'bpm': t.get('bpm', ''), 'compasso': t.get('compasso', ''), 'categoria': 'Teste', 'link': t.get('link', '')})
+            rep.sort(key=lambda x: x.get('categoria') in FIM_DA_LISTA)  # Stand By no fim
             salvar(os.path.join(d, 'repertorio.json'), rep)
             for al in t.get('aliases', []):
                 aliases[al] = t['musica']
@@ -490,6 +575,7 @@ def main():
             salvar(os.path.join(d, 'testes.json'), testes)
             if a.xlsx:
                 incluir_teste(a.xlsx, t)
+                mover_para_fim(a.xlsx)  # Stand By continua no fim, abaixo da música teste
 
     base_fixo = base - teste_set - ({teste_incluido} if teste_incluido else set())  # música em teste ainda conta como fora do repertório base
     novos = json.load(open(a.novos, encoding='utf8'))
