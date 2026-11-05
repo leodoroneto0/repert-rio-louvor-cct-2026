@@ -24,6 +24,28 @@
 "nomes": "Lucas"
 }
 ],
-"musicas": [],
-"atualizado": "2026-11-03"
+"musicas": [
+{
+"titulo": "Sou Grato por seu Amor (God I'm Just Grateful)",
+"cantor": "Wesley",
+"tom": "",
+"link": "https://www.youtube.com/watch?v=YbGFYaA0SbY",
+"letra": "https://www.letras.mus.br/get-worship/sou-grato-por-seu-amor/"
+},
+{
+"titulo": "Tu és + Águas purificadoras",
+"cantor": "Marianne e Wesley",
+"tom": "",
+"link": "https://www.youtube.com/watch?v=YXnQ02HYB1w",
+"letra": "https://www.multitracks.com/songs/fhop-music/A-Boa-Parte/Tu-Es-Aguas-Purificadoras/"
+},
+{
+"titulo": "Pra Sempre (Forever)",
+"cantor": "",
+"tom": "",
+"link": "https://www.youtube.com/watch?v=huFra1mnIVE",
+"letra": "https://www.multitracks.com/songs/Kari-Jobe/Majestic/Forever-(Live-Version)/"
+}
+],
+"atualizado": "2026-11-05"
 }
