@@ -12,6 +12,9 @@ Entrada (montada a partir do grupo do Telegram):
 - Completa "letra" por dados/letras.json: página da música no MultiTracks ou no Letras.mus.br, da versão indicada no
   grupo para a letra (se houver) ou da versão do link do grupo; o site e o
   dashboard mostram um botão "Letra" que abre essa página. A letra NUNCA é copiada, só o link.
+- Música de um momento especial (ex.: a do momento da Santa Ceia) leva "momento": "Ceia". Ela não entra na
+  numeração das músicas e aparece como "🍷 Ceia: <música>". Se a entrada não trouxer o "momento", ele é mantido
+  do proximo.json atual para a mesma data e música.
 - Regrava dados/proximo.json, dados/proximo_linhas.json (para o dashboard) e o index.html, e imprime o resultado.
 """
 import argparse, datetime, json, os, re, sys
@@ -39,8 +42,13 @@ def main():
             if novo != e.get('nomes', ''):
                 aplicados.append({'funcao': e.get('funcao'), 'de': aj['de'], 'para': aj['para']})
                 e['nomes'] = novo
+    atual = carregar(os.path.join(d, 'proximo.json'), {}) or {}
+    momentos = {chave(x.get('titulo', '')): x['momento'] for x in atual.get('musicas', [])
+                if x.get('momento') and atual.get('data') == p.get('data')}
     for m in p.get('musicas', []):
         t = (m.get('titulo') or '').strip()
+        if not (m.get('momento') or '').strip() and chave(t) in momentos:
+            m['momento'] = momentos[chave(t)]
         n = aliases.get(chave(t))
         b = por_nome.get(chave(n or t))
         m['titulo'] = corrige_deus(t)
@@ -52,14 +60,23 @@ def main():
             m['letra'] = ''
         for k in ('cantor', 'tom', 'link', 'letra'):
             m[k] = (m.get(k) or '').strip()
+        if (m.get('momento') or '').strip():
+            m['momento'] = m['momento'].strip()
+        else:
+            m.pop('momento', None)
     p['atualizado'] = datetime.date.today().isoformat()
     salvar(os.path.join(d, 'proximo.json'), p)
     # versão em linhas simples para o dashboard (uma linha por pessoa da equipe e por música)
     base = {'data': p.get('data', ''), 'culto': p.get('culto', ''), 'evento': p.get('evento', ''), 'atualizado': p['atualizado']}
     linhas = [dict(base, parte='equipe', ordem=i + 1, funcao=e.get('funcao', ''), nomes=e.get('nomes', ''), titulo='', cantor='', tom='', link='', letra='')
               for i, e in enumerate(p.get('equipe', []))]
-    linhas += [dict(base, parte='musica', ordem=i + 1, funcao='', nomes='', titulo=m['titulo'], cantor=m['cantor'], tom=m['tom'], link=m['link'], letra=m['letra'])
-               for i, m in enumerate(p.get('musicas', []))]
+    # músicas numeradas primeiro; as de momento especial (ex.: Ceia) por último, com o momento no título
+    normais = [m for m in p.get('musicas', []) if not m.get('momento')]
+    especiais = [m for m in p.get('musicas', []) if m.get('momento')]
+    linhas += [dict(base, parte='musica', ordem=i + 1, funcao='', nomes='',
+                    titulo=(('🍷 ' if m.get('momento', '').lower() == 'ceia' else '⭐ ') + m['momento'] + ': ' + m['titulo']) if m.get('momento') else m['titulo'],
+                    cantor=m['cantor'], tom=m['tom'], link=m['link'], letra=m['letra'])
+               for i, m in enumerate(normais + especiais)]
     if not linhas:
         linhas = [dict(base, parte='info', ordem=0, funcao='', nomes='', titulo='', cantor='', tom='', link='', letra='')]
     salvar(os.path.join(d, 'proximo_linhas.json'), linhas)
