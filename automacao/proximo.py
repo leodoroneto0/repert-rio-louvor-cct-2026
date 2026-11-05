@@ -15,6 +15,8 @@ Entrada (montada a partir do grupo do Telegram):
 - Música de um momento especial (ex.: a do momento da Santa Ceia) leva "momento": "Ceia". Ela vem depois das
   músicas normais, sempre como nº 5 (ou depois da última, se houver mais de 4): "5. 🍷 Ceia: <música>". Se a entrada não trouxer o "momento", ele é mantido
   do proximo.json atual para a mesma data e música.
+- Links de letra do MultiTracks sempre no site brasileiro (https://www.multitracks.com.br/...), que mostra a letra
+  em português (regra do Neto).
 - Regrava dados/proximo.json, dados/proximo_linhas.json (para o dashboard) e o index.html, e imprime o resultado.
 """
 import argparse, datetime, json, os, re, sys
@@ -56,7 +58,10 @@ def main():
             m['link'] = b.get('link', '')
         if not m.get('letra'):
             m['letra'] = letras.get(chave(n or t)) or letras.get(chave(t)) or ''
-        if not (m.get('letra') or '').startswith(('https://www.multitracks.com/', 'https://www.letras.mus.br/')):
+        # regra do Neto: letra do MultiTracks sempre pelo site brasileiro (multitracks.com.br), que mostra a letra em português
+        if (m.get('letra') or '').startswith('https://www.multitracks.com/'):
+            m['letra'] = 'https://www.multitracks.com.br/' + m['letra'][len('https://www.multitracks.com/'):]
+        if not (m.get('letra') or '').startswith(('https://www.multitracks.com.br/', 'https://www.letras.mus.br/')):
             m['letra'] = ''
         for k in ('cantor', 'tom', 'link', 'letra'):
             m[k] = (m.get(k) or '').strip()

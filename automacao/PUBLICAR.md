@@ -13,7 +13,9 @@ Regra do Neto: o site e o dashboard têm que terminar SEMPRE iguais e certos. Se
 - **Música da Santa Ceia:** a do momento da Ceia não é uma das 4 músicas normais. Coloque nela `"momento":"Ceia"`.
   Ela é SEMPRE a nº 5: o site e o dashboard mostram "5. 🍷 Ceia: <música>" e as vagas 3/4 ainda sem música como
   "❓ A definir". No aviso pelo bot: "*5\. 🍷 Ceia: Nome da Música*".
-- Links de letra: só MultiTracks ou Letras.mus.br, gravados em `dados/letras.json` (nunca copiar a letra).
+- Links de letra: só MultiTracks ou Letras.mus.br, gravados em `dados/letras.json` (nunca copiar a letra). Link do
+  MultiTracks SEMPRE pelo site brasileiro `https://www.multitracks.com.br/songs/...` (regra do Neto: é ele que mostra a letra
+  em português que o ministério canta; o proximo.py converte sozinho se vier multitracks.com).
 
 ## 2. Gerar
 `python3 -I automacao/proximo.py --repo <clone> --entrada /tmp/proximo_bruto.json`
