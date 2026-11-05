@@ -177,13 +177,16 @@ const PROX = {"data": "2026-11-08", "culto": "Domingo", "evento": "Santa Ceia", 
   const rp = document.getElementById('px-rep');
   const ms = PROX.musicas || [];
   if (!ms.length) rp.textContent = 'Repertório ainda não postado.';
-  // músicas numeradas primeiro; as de momento especial (ex.: Ceia) por último, sem número
-  const ordenadas = ms.filter(m => !m.momento).concat(ms.filter(m => m.momento));
+  // músicas normais primeiro; a do momento da Ceia é sempre a nº 5 (vagas 3 e 4 sem música aparecem como "A definir")
+  const normais = ms.filter(m => !m.momento), especiais = ms.filter(m => m.momento);
+  const vagas = especiais.length ? Math.max(0, 4 - normais.length) : 0;
+  const ordenadas = normais.concat(Array.from({ length: vagas }, () => ({ vaga: true })), especiais);
   let num = 0;
   ordenadas.forEach((m) => {
     const row = document.createElement('div'); row.className = 'px-m';
     const left = document.createElement('span');
-    const rot = m.momento ? ((m.momento.toLowerCase() === 'ceia' ? '🍷 ' : '⭐ ') + m.momento + ': ' + m.titulo) : ((++num) + '. ' + m.titulo);
+    if (m.vaga) { left.textContent = (++num) + '. ❓ A definir'; left.style.opacity = '.6'; row.append(left); rp.appendChild(row); return; }
+    const rot = (++num) + '. ' + (m.momento ? ((m.momento.toLowerCase() === 'ceia' ? '🍷 ' : '⭐ ') + m.momento + ': ' + m.titulo) : m.titulo);
     let nome = document.createTextNode(rot);
     if (m.link && m.link.startsWith('https://')) { const a = document.createElement('a'); a.href = m.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = rot; nome = a; }
     const who = document.createElement('span'); who.className = 'who'; who.textContent = ' · 🎤 ' + (m.cantor || 'a confirmar');

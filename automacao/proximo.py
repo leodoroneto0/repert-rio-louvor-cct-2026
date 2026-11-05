@@ -12,8 +12,8 @@ Entrada (montada a partir do grupo do Telegram):
 - Completa "letra" por dados/letras.json: página da música no MultiTracks ou no Letras.mus.br, da versão indicada no
   grupo para a letra (se houver) ou da versão do link do grupo; o site e o
   dashboard mostram um botão "Letra" que abre essa página. A letra NUNCA é copiada, só o link.
-- Música de um momento especial (ex.: a do momento da Santa Ceia) leva "momento": "Ceia". Ela não entra na
-  numeração das músicas e aparece como "🍷 Ceia: <música>". Se a entrada não trouxer o "momento", ele é mantido
+- Música de um momento especial (ex.: a do momento da Santa Ceia) leva "momento": "Ceia". Ela vem depois das
+  músicas normais, sempre como nº 5 (ou depois da última, se houver mais de 4): "5. 🍷 Ceia: <música>". Se a entrada não trouxer o "momento", ele é mantido
   do proximo.json atual para a mesma data e música.
 - Regrava dados/proximo.json, dados/proximo_linhas.json (para o dashboard) e o index.html, e imprime o resultado.
 """
@@ -73,10 +73,15 @@ def main():
     # músicas numeradas primeiro; as de momento especial (ex.: Ceia) por último, com o momento no título
     normais = [m for m in p.get('musicas', []) if not m.get('momento')]
     especiais = [m for m in p.get('musicas', []) if m.get('momento')]
-    linhas += [dict(base, parte='musica', ordem=i + 1, funcao='', nomes='',
-                    titulo=(('🍷 ' if m.get('momento', '').lower() == 'ceia' else '⭐ ') + m['momento'] + ': ' + m['titulo']) if m.get('momento') else m['titulo'],
-                    cantor=m['cantor'], tom=m['tom'], link=m['link'], letra=m['letra'])
-               for i, m in enumerate(normais + especiais)]
+    rot = lambda m: ('🍷 ' if m['momento'].lower() == 'ceia' else '⭐ ') + m['momento'] + ': ' + m['titulo']
+    linhas += [dict(base, parte='musica', ordem=i + 1, funcao='', nomes='', titulo=m['titulo'],
+                    cantor=m['cantor'], tom=m['tom'], link=m['link'], letra=m['letra']) for i, m in enumerate(normais)]
+    if especiais:  # a música da Ceia é a nº 5: as vagas 3 e 4 ainda sem música aparecem como "A definir"
+        linhas += [dict(base, parte='musica', ordem=i + 1, funcao='', nomes='', titulo='❓ A definir', cantor='', tom='', link='', letra='')
+                   for i in range(len(normais), 4)]
+        n0 = max(4, len(normais))
+        linhas += [dict(base, parte='musica', ordem=n0 + i + 1, funcao='', nomes='', titulo=rot(m),
+                        cantor=m['cantor'], tom=m['tom'], link=m['link'], letra=m['letra']) for i, m in enumerate(especiais)]
     if not linhas:
         linhas = [dict(base, parte='info', ordem=0, funcao='', nomes='', titulo='', cantor='', tom='', link='', letra='')]
     salvar(os.path.join(d, 'proximo_linhas.json'), linhas)
