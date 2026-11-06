@@ -129,6 +129,39 @@ def letras(a, b):
         c = chr(ord(c) + 1)
 
 
+def _ordem_alfa(t):
+    import unicodedata
+    return unicodedata.normalize('NFD', str(t)).encode('ascii', 'ignore').decode().lower().strip()
+
+
+def inserir_linha_ordenada(tmp, aba, col_m, cols, tabela_xml, musica):
+    """Insere uma linha nova (vazia nos cantores) na aba de tons, em ordem alfabética pelo nome da música,
+    descendo as linhas de baixo e aumentando a tabela. Devolve o número da linha criada.
+    (Regra do Neto: toda música do repertório base, inclusive a música teste, aparece na aba Tons.)"""
+    usadas = sorted(r for r in aba.linhas if r > 1 and aba.valor(aba.celulas(r).get(col_m, '')))
+    alvo = next((r for r in usadas if _ordem_alfa(aba.valor(aba.celulas(r).get(col_m, ''))) > _ordem_alfa(musica)), (usadas[-1] + 1) if usadas else 2)
+    modelo = alvo if alvo in aba.linhas else (usadas[-1] if usadas else 2)
+    attrs_modelo = aba.attrs.get(modelo, '')
+    estilos = {c: aba.estilo(modelo, c) for c in [col_m] + cols}
+    novas, attrs = {}, {}
+    for r in sorted(aba.linhas, reverse=True):
+        n = r + 1 if r >= alvo else r
+        novas[n] = re.sub(r'(<c r="[A-Z]+)%d"' % r, lambda m: f'{m.group(1)}{n}"', aba.linhas[r]) if n != r else aba.linhas[r]
+        attrs[n] = aba.attrs.get(r, '')
+    aba.linhas, aba.attrs = novas, attrs
+    aba.attrs[alvo] = attrs_modelo
+    aba.linhas[alvo] = ''
+    aba.texto(alvo, col_m, musica, estilos[col_m])
+    for c in cols:
+        st = estilos[c]
+        aba.definir(alvo, c, f'<c r="{c}{alvo}"' + (f' s="{st}"' if st else '') + '/>')
+    tp = os.path.join(tmp, 'xl', 'tables', tabela_xml)
+    t = open(tp, encoding='utf8').read()
+    t = re.sub(r'ref="([A-Z]+\d+):([A-Z]+)(\d+)"', lambda m: f'ref="{m.group(1)}:{m.group(2)}{int(m.group(3)) + 1 if int(m.group(3)) >= alvo - 1 else m.group(3)}"', t)
+    open(tp, 'w', encoding='utf8').write(t)
+    return alvo
+
+
 def editar_tons(tmp, strings, mudancas, base):
     """mudancas: lista de {musica, cantor, tom}. Atualiza a aba Tons (músicas do repertório base) ou a aba Outras (as demais)."""
     feitos, divergentes = [], []
@@ -162,15 +195,12 @@ def editar_tons(tmp, strings, mudancas, base):
             tratadas.add(ident)
             r = linha_de.get(chave(mu['musica']))
             if r is None:
+                open(tp, 'w', encoding='utf8').write(tab)
+                r = inserir_linha_ordenada(tmp, aba, col_m, cols, tabela, mu['musica'])
+                tab = open(tp, encoding='utf8').read()
                 fim += 1
-                r = fim
-                modelo = r - 2 if r - 2 >= 2 else 2
-                aba.attrs[r] = aba.attrs.get(modelo, '').replace(f'r="{modelo}"', '')
-                aba.texto(r, col_m, mu['musica'], aba.estilo(modelo, col_m))
-                for c in cols:
-                    st = aba.estilo(modelo, c)
-                    aba.definir(r, c, f'<c r="{c}{r}"' + (f' s="{st}"' if st else '') + '/>')
-                linha_de[chave(mu['musica'])] = r
+                linha_de = {chave(aba.valor(aba.celulas(x).get(col_m, ''))): x for x in aba.linhas if x > 1 and aba.valor(aba.celulas(x).get(col_m, ''))}
+                mexeu = True
             antes = aba.valor(aba.celulas(r).get(col, ''))
             if antes.strip() == str(mu['tom']).strip():
                 continue
@@ -181,7 +211,6 @@ def editar_tons(tmp, strings, mudancas, base):
             feitos.append({'aba': nome_aba, 'musica': mu['musica'], 'cantor': mu['cantor'], 'antes': antes or '—', 'depois': mu['tom']})
             mexeu = True
         if mexeu:
-            tab = re.sub(r'ref="([A-Z]+)1:([A-Z]+)\d+"', lambda x: f'ref="{x.group(1)}1:{x.group(2)}{fim}"', tab)
             open(tp, 'w', encoding='utf8').write(tab)
             aba.salvar()
     return feitos, divergentes
@@ -319,6 +348,19 @@ def editar_xlsx(caminho, cultos_novos, mudancas_tons=None, base=frozenset()):
     return {'linhas_registros_ate': ultima_nova, 'novas_no_ranking': acrescentadas, 'tons_alterados': tons_feitos, 'tons_divergentes': tons_div}
 
 
+def garantir_em_tons(tmp, musica):
+    """Regra do Neto: a música teste (e toda música do repertório base) aparece na aba Tons, mesmo sem tons ainda.
+    Se ela não tiver linha na aba Tons, cria uma em ordem alfabética. Devolve True se criou."""
+    ss = open(os.path.join(tmp, 'xl', 'sharedStrings.xml'), encoding='utf8').read()
+    strings = [html.unescape(''.join(re.findall(r'<t[^>]*>(.*?)</t>', si, re.S))) for si in re.findall(r'<si>(.*?)</si>', ss, re.S)]
+    aba = Aba(tmp, 'sheet2.xml', strings)
+    if any(chave(aba.valor(aba.celulas(r).get('A', ''))) == chave(musica) for r in aba.linhas if r > 1):
+        return False
+    inserir_linha_ordenada(tmp, aba, 'A', letras('B', 'L'), 'table2.xml', musica)
+    aba.salvar()
+    return True
+
+
 def incluir_teste(caminho, teste):
     """Acrescenta a música teste do mês na aba Repertório Base (categoria Teste), com o botão de link igual aos outros."""
     tmp = tempfile.mkdtemp()
@@ -373,6 +415,7 @@ def incluir_teste(caminho, teste):
             novos += b
         d = d.replace('</xdr:wsDr>', novos + '</xdr:wsDr>')
         open(dp, 'w', encoding='utf8').write(d)
+    garantir_em_tons(tmp, teste['musica'])
     saida = caminho + '.novo'
     with zipfile.ZipFile(saida, 'w', zipfile.ZIP_DEFLATED) as z:
         for n in nomes:
