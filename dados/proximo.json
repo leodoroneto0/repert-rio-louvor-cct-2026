@@ -1,11 +1,11 @@
 {
-"data": "2026-11-08",
+"data": "2026-11-15",
 "culto": "Domingo",
-"evento": "Santa Ceia",
+"evento": "",
 "equipe": [
 {
 "funcao": "Voz",
-"nomes": "Wesley e Marianne"
+"nomes": "Pra. Iraci e Beatriz"
 },
 {
 "funcao": "Teclado",
@@ -13,54 +13,17 @@
 },
 {
 "funcao": "Guitarra",
-"nomes": "Wesley"
+"nomes": "Neto"
 },
 {
-"funcao": "Baixo",
-"nomes": "Marcelo"
+"funcao": "Violão",
+"nomes": "Samuel"
 },
 {
 "funcao": "Bateria",
-"nomes": "Lucas"
+"nomes": "Daniel"
 }
 ],
-"musicas": [
-{
-"titulo": "Sou Grato por seu Amor (God I'm Just Grateful)",
-"cantor": "Wesley",
-"tom": "G",
-"link": "https://www.youtube.com/watch?v=YbGFYaA0SbY",
-"letra": "https://www.letras.mus.br/get-worship/sou-grato-por-seu-amor/"
-},
-{
-"titulo": "Tu és + Águas purificadoras",
-"cantor": "Marianne e Wesley",
-"tom": "D",
-"link": "https://www.youtube.com/watch?v=YXnQ02HYB1w",
-"letra": "https://www.multitracks.com.br/songs/fhop-music/A-Boa-Parte/Tu-Es-Aguas-Purificadoras/"
-},
-{
-"titulo": "Behold",
-"cantor": "Marianne",
-"tom": "B",
-"link": "https://youtu.be/z9UB5U7kSec",
-"letra": "https://www.multitracks.com.br/songs/Hillsong-Worship/Let-There-Be-Light/Behold-(Then-Sings-My-Soul)/"
-},
-{
-"titulo": "Majestade",
-"cantor": "Wesley",
-"tom": "E",
-"link": "https://www.youtube.com/watch?v=e5gIy7FWwxM",
-"letra": "https://www.letras.mus.br/ministerio-isaac/majestade/"
-},
-{
-"titulo": "Pra Sempre (Forever)",
-"cantor": "",
-"tom": "",
-"link": "https://www.youtube.com/watch?v=huFra1mnIVE",
-"letra": "https://www.letras.mus.br/fernandinho/pra-sempre/",
-"momento": "Ceia"
-}
-],
+"musicas": [],
 "atualizado": "2026-11-08"
 }
