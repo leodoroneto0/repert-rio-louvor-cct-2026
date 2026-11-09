@@ -1594,5 +1594,40 @@
 "tipo": "Domingo",
 "evento": "",
 "no_repertorio": "Não"
+},
+{
+"data": "2026-11-08",
+"musica": "Sou Grato por seu Amor (God I'm Just Grateful)",
+"tipo": "Domingo",
+"evento": "Santa Ceia",
+"no_repertorio": "Não"
+},
+{
+"data": "2026-11-08",
+"musica": "Tu és + Águas purificadoras",
+"tipo": "Domingo",
+"evento": "Santa Ceia",
+"no_repertorio": "Sim"
+},
+{
+"data": "2026-11-08",
+"musica": "Behold",
+"tipo": "Domingo",
+"evento": "Santa Ceia",
+"no_repertorio": "Sim"
+},
+{
+"data": "2026-11-08",
+"musica": "Majestade",
+"tipo": "Domingo",
+"evento": "Santa Ceia",
+"no_repertorio": "Sim"
+},
+{
+"data": "2026-11-08",
+"musica": "Forever",
+"tipo": "Domingo",
+"evento": "Santa Ceia",
+"no_repertorio": "Não"
 }
 ]
