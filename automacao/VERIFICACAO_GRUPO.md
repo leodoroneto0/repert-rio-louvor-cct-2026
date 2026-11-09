@@ -26,6 +26,10 @@ Janela de leitura (mensagens postadas desde a execução anterior desta verifica
 - No domingo, se a execução das 10h13 ou das 15h13 foi pulada pela economia de limite, a janela vai desde a última execução que não foi pulada.
 - Execução fora desses horários (disparada manualmente pelo Neto): leia desde as 20h13 do dia anterior (ou do mesmo dia, se já passou das 20h13).
 
+CULTOS DE SEXTA E SÁBADO (regra do Neto)
+- A escala do mês (mensagem fixada "ESCALA LOUVOR – <MÊS> <ANO>", enviada no início do mês) às vezes tem cultos de sexta ou sábado (conferências, Semana da Família, eventos), além dos domingos e quintas. Leia a escala inteira e trate esses cultos como qualquer outro: entram no bloco "Próximo culto" quando forem o próximo da escala, recebem as músicas postadas para eles, contam para os avisos ao Neto quando ele estiver escalado e são registrados depois que acontecem.
+- Depois de um culto de quinta, o próximo culto pode ser o de sexta ou sábado (não pule direto para o domingo). Depois de um culto de sexta, o próximo pode ser o de sábado.
+
 QUEM É QUEM NO GRUPO (nome no Telegram → nome na escala)
 Neto → Neto · Talita → Talita · Amor → Bianca · Andrey → Andrey · Pra.Iraci Teles → Pra. Iraci · Marcelão CCT → Marcelo · Marianne → Marianne · Ana Negreli → Ana · Débora Oliveira → Débora · Lucas Isaac → Lucas · Bia CCT → Bia · Leonardo Santos → Léo · Cadu → Cadu · Levi e Levi Teles → Pr. Levi · Tondati → Wesley · Dani → Daniel.
 Doug, Kamila, André, Vinícius Bragas e Pr Salomão não são do louvor (pastor, som e audiovisual): não use mensagens deles para repertório.

@@ -16,6 +16,10 @@ REGRAS QUE NÃO PODEM SER QUEBRADAS
 - Se alguma etapa falhar (app fechado, Telegram deslogado, acesso negado), não invente: avise o Neto pelo bot dizendo exatamente o que falhou e o que ficou pendente, e encerre.
 - Regra do Neto: site, planilha e dashboard têm que terminar sempre certos e iguais. Confira cada publicação; se algo não bater, avise.
 
+CULTOS DE SEXTA E SÁBADO (regra do Neto)
+- A escala do mês (mensagem fixada "ESCALA LOUVOR – <MÊS> <ANO>", enviada no início do mês) às vezes tem cultos de sexta ou sábado (conferências, Semana da Família, eventos), além dos domingos e quintas. Leia a escala inteira e trate esses cultos como qualquer outro: entram no bloco "Próximo culto" quando forem o próximo da escala, recebem as músicas postadas para eles, contam para os avisos ao Neto quando ele estiver escalado e são registrados depois que acontecem.
+- Depois de um culto de quinta, o próximo culto pode ser o de sexta ou sábado (não pule direto para o domingo). Depois de um culto de sexta, o próximo pode ser o de sábado.
+
 QUEM É QUEM NO GRUPO (nome no Telegram → nome na escala)
 Neto → Neto · Talita → Talita · Amor → Bianca · Andrey → Andrey · Pra.Iraci Teles → Pra. Iraci · Marcelão CCT → Marcelo · Marianne → Marianne · Ana Negreli → Ana · Débora Oliveira → Débora · Lucas Isaac → Lucas · Bia CCT → Bia · Leonardo Santos → Léo · Cadu → Cadu · Levi e Levi Teles → Pr. Levi · Tondati → Wesley · Dani → Daniel.
 Doug, Kamila, André, Vinícius Bragas e Pr Salomão não são do louvor (pastor, som e audiovisual): não use mensagens deles para repertório. (A mesma lista está em dados/integrantes.json do repositório.)
@@ -54,6 +58,7 @@ MÚSICA DA SANTA CEIA (regra do Neto)
 - Em culto de Santa Ceia, a música do momento da Ceia não é uma das 4 músicas normais: no registro do culto ela entra por último (depois das 4); no bloco "Próximo culto" ela leva "momento":"Ceia" e aparece sempre como nº 5 (ver automacao/PUBLICAR.md).
 
 PASSO 0 — Preparar (o clone já foi feito pelo texto da tarefa)
+- Na sexta esta tarefa só chega aqui se houve culto na quinta; registre a quinta (e, se a escala tiver culto de sexta ou sábado já realizado, ele também). Cultos de sexta e sábado que ainda não aconteceram são registrados na segunda seguinte.
 - Leia automacao/atualizar.py (cabeçalho e main), automacao/PUBLICAR.md, dados/registros.json, dados/repertorio.json, dados/testes.json e dados/proximo.json.
 - JANELA DE LEITURA (regra do Neto: não precisa ler 3 semanas): a maior data em dados/registros.json é o último culto já registrado. Leia no grupo só as mensagens postadas a partir do DIA SEGUINTE a esse culto (é aí que começam os repertórios dos cultos que ainda faltam registrar). Se dados/registros.json estiver vazio, use as últimas 3 semanas.
 - O bloco "Próximo culto" (PASSO 5) só precisa ser atualizado se a data de dados/proximo.json for ANTERIOR a hoje (o culto dele já passou). Anote isso.
