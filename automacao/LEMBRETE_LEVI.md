@@ -29,16 +29,22 @@ TAREFA (regra do Neto, autorizada por ele): toda terça às 14h04 e toda quarta 
 - Saudação pela hora REAL do envio (Brasília): 5h–11h59 "Bom dia"; 12h–17h59 "Boa tarde"; 18h em diante "Boa noite".
 - <dia> = dia da semana do culto em minúsculas ("domingo", "quinta", "sexta", "sábado"); DD/MM = data do culto. Se o culto tiver evento especial (ex.: Santa Ceia, culto de ação de graças), pode acrescentar depois da data, ex.: "de domingo (13/12 – Santa Ceia)".
 - Nunca escreva o nome de um dia que não seja o de hoje (ex.: não diga "já é quarta-feira" numa terça). Releia o texto antes de enviar.
-- Clique na caixa "Digite uma mensagem" e escreva (Shift+Enter para quebrar linha; Enter só no fim para enviar):
+- Clique na caixa "Digite uma mensagem" e escreva. Regra do Neto: um espaço (linha em branco) entre os parágrafos — onde está "(linha em branco)", aperte Shift+Enter DUAS vezes (não escreva esse texto). Enter só no fim para enviar:
 - PRIMEIRO lembrete:
   <Saudação>, Pastor! Tudo bem? 🙏
+  (linha em branco)
   Passando só pra lembrar que ainda não temos o repertório de <dia> (DD/MM) definido.
+  (linha em branco)
   Quando der, manda as músicas no grupo pra gente já ir ensaiando. Valeu! 🎸
+  (linha em branco)
   🤖 Mensagem automática enviada pelo Claude, assistente do Neto
 - SEGUNDO lembrete:
   <Saudação>, Pastor! 🙏
+  (linha em branco)
   Passando de novo só pra lembrar do repertório de <dia> (DD/MM), que ainda não chegou no grupo.
+  (linha em branco)
   Se puder mandar hoje, ajuda bastante a gente nos ensaios. Valeu! 🎸
+  (linha em branco)
   🤖 Mensagem automática enviada pelo Claude, assistente do Neto
 - A última linha (🤖 Mensagem automática enviada pelo Claude, assistente do Neto) é obrigatória nos dois textos (regra do Neto: o Levi tem que saber que foi o Claude que mandou).
 - Antes do Enter, tire um screenshot e confira o texto na caixa. Envie, confira que a mensagem apareceu na conversa (último .message-out) com o texto certo e FECHE a aba do WhatsApp (tabs_close_mcp). O login do WhatsApp Web fica salvo no Chrome.
