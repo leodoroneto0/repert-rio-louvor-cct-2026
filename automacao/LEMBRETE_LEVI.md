@@ -34,10 +34,13 @@ TAREFA (regra do Neto, autorizada por ele): toda terça às 14h04 e toda quarta 
   <Saudação>, Pastor! Tudo bem? 🙏
   Passando só pra lembrar que ainda não temos o repertório de <dia> (DD/MM) definido.
   Quando der, manda as músicas no grupo pra gente já ir ensaiando. Valeu! 🎸
+  🤖 Mensagem automática enviada pelo Claude, assistente do Neto
 - SEGUNDO lembrete:
   <Saudação>, Pastor! 🙏
   Passando de novo só pra lembrar do repertório de <dia> (DD/MM), que ainda não chegou no grupo.
   Se puder mandar hoje, ajuda bastante a gente nos ensaios. Valeu! 🎸
+  🤖 Mensagem automática enviada pelo Claude, assistente do Neto
+- A última linha (🤖 Mensagem automática enviada pelo Claude, assistente do Neto) é obrigatória nos dois textos (regra do Neto: o Levi tem que saber que foi o Claude que mandou).
 - Antes do Enter, tire um screenshot e confira o texto na caixa. Envie, confira que a mensagem apareceu na conversa (último .message-out) com o texto certo e FECHE a aba do WhatsApp (tabs_close_mcp). O login do WhatsApp Web fica salvo no Chrome.
 
 ## PASSO 5 — Avisar o Neto
