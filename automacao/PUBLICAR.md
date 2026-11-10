@@ -10,6 +10,10 @@ Regra do Neto: o site e o dashboard têm que terminar SEMPRE iguais e certos. Se
   `{"data":"AAAA-MM-DD","culto":"Domingo","evento":"Santa Ceia ou vazio","equipe":[{"funcao":"Voz","nomes":"..."}],"musicas":[{"titulo":"...","cantor":"...","tom":"...","link":"https://...","letra":"<se já houver>"}]}`
 - Equipe na ordem Voz, Teclado, Guitarra, Violão, Baixo, Bateria (junte funções da mesma pessoa; omita VS).
 - Músicas na ordem do repertório, com QUEM CANTA (não o artista); sem cantor ou tom, deixe vazio.
+- **Tom da planilha (regra do Neto):** se a música chegou no grupo SEM tom, deixe o tom vazio na entrada: o proximo.py
+  preenche sozinho com o tom daquele cantor na planilha (dados/tons.json) e marca `"tom_origem": "planilha"`. Ao partir
+  do proximo.json atual, mantenha o campo `tom_origem` como está. Se o grupo postar um tom, coloque o tom do grupo
+  (ele vale por cima e o proximo.py tira a marca). No aviso pelo bot, tom da planilha aparece como "🎼 Tom: X (da planilha)".
 - **Música da Santa Ceia:** a do momento da Ceia não é uma das 4 músicas normais. Coloque nela `"momento":"Ceia"`.
   Ela é SEMPRE a nº 5: o site e o dashboard mostram "5. 🍷 Ceia: <música>" e as vagas 3/4 ainda sem música como
   "❓ A definir". No aviso pelo bot: "*5\. 🍷 Ceia: Nome da Música*".

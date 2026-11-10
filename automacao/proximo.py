@@ -17,12 +17,15 @@ Entrada (montada a partir do grupo do Telegram):
   do proximo.json atual para a mesma data e música.
 - Links de letra do MultiTracks sempre no site brasileiro (https://www.multitracks.com.br/...), que mostra a letra
   em português (regra do Neto).
+- Regra do Neto: música SEM tom no grupo, mas cujo cantor já tem tom para ela na planilha (dados/tons.json, abas
+  Tons/Outras), recebe esse tom automaticamente, com "tom_origem": "planilha". Com mais de um cantor, só se todos
+  tiverem o MESMO tom na planilha. Tom postado no grupo sempre vale por cima (e "tom_origem" some).
 - Regrava dados/proximo.json, dados/proximo_linhas.json (para o dashboard) e o index.html, e imprime o resultado.
 """
 import argparse, datetime, json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from atualizar import carregar, salvar, chave, gerar_html, corrige_deus  # noqa: E402
+from atualizar import carregar, salvar, chave, gerar_html, corrige_deus, separar_cantores  # noqa: E402
 
 
 def main():
@@ -33,6 +36,7 @@ def main():
     d = os.path.join(a.repo, 'dados')
     p = json.load(open(a.entrada, encoding='utf8'))
     rep = carregar(os.path.join(d, 'repertorio.json'), [])
+    tons = carregar(os.path.join(d, 'tons.json'), [])
     aliases = {chave(k): v for k, v in carregar(os.path.join(d, 'aliases.json'), {}).items()}
     por_nome = {chave(x['musica']): x for x in rep}
     letras = {chave(k): v for k, v in carregar(os.path.join(d, 'letras.json'), {}).items()}
@@ -65,6 +69,25 @@ def main():
             m['letra'] = ''
         for k in ('cantor', 'tom', 'link', 'letra'):
             m[k] = (m.get(k) or '').strip()
+        # regra do Neto: sem tom no grupo -> usa o tom do cantor na planilha (se houver e for único)
+        cs = separar_cantores(m['cantor'])
+        nomes = {chave(n or t), chave(t), chave(m['titulo'])}
+        achados = [next((x['tom'] for x in tons if chave(x['musica']) in nomes and x['cantor'] == c and x.get('tom')), None) for c in cs]
+        tom_plan = achados[0] if cs and all(achados) and len(set(achados)) == 1 else ''
+        if m.get('tom_origem') == 'planilha':
+            # veio da planilha numa execução anterior: se o tom mudou na entrada, foi o grupo que mudou (vale o grupo)
+            if m['tom'] and m['tom'] != tom_plan:
+                m.pop('tom_origem', None)
+            elif tom_plan:
+                m['tom'] = tom_plan
+            else:
+                m['tom'] = ''
+                m.pop('tom_origem', None)
+        elif not m['tom'] and tom_plan:
+            m['tom'] = tom_plan
+            m['tom_origem'] = 'planilha'
+        else:
+            m.pop('tom_origem', None)
         if (m.get('momento') or '').strip():
             m['momento'] = m['momento'].strip()
         else:
