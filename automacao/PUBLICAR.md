@@ -43,6 +43,7 @@ entrada e rode de novo.
    `{"at":<agora ISO>,"by":"Claude (tarefa automática): próximo culto DD/MM"}`. Se der conflito de versão, faça
    `db_get` de novo e repita.
 4. `db_get` de `datasets/proximo` mais uma vez e confira que o `source.url` é o do seu upload.
+O arquivo do dashboard (proximo_linhas.json) leva também a escala do mês (linhas com parte "escala") e o tom_origem; o dashboard mostra o botão "Ver escala de <mês>" e o "▶️ Ouvir o repertório" a partir dele, igual ao site. Por isso, mudança só na escala também passa por esta etapa.
 Se as ferramentas do dashboard não estiverem disponíveis, avise o Neto que o site foi atualizado mas o dashboard não.
 
 ## 5. Aviso de falha

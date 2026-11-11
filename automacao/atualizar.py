@@ -543,7 +543,42 @@ def marcar_pendentes(caminho, nomes):
     return feitos
 
 
+def gerar_linhas(repo):
+    """dados/proximo_linhas.json para o dashboard: uma linha por pessoa da equipe, por música e por pessoa da escala do mês."""
+    d = os.path.join(repo, 'dados')
+    p = carregar(os.path.join(d, 'proximo.json'), None) or {}
+    esc = carregar(os.path.join(d, 'escala.json'), None) or {}
+    vazio = {'funcao': '', 'nomes': '', 'titulo': '', 'cantor': '', 'tom': '', 'tom_origem': '', 'link': '', 'letra': '',
+             'esc_mes': '', 'esc_data': '', 'esc_culto': '', 'esc_evento': '', 'esc_extra': ''}
+    base = dict(vazio, data=p.get('data', ''), culto=p.get('culto', ''), evento=p.get('evento', ''), atualizado=p.get('atualizado', ''))
+    mus = lambda m: {'titulo': m.get('titulo', ''), 'cantor': m.get('cantor', ''), 'tom': m.get('tom', ''),
+                     'tom_origem': m.get('tom_origem', ''), 'link': m.get('link', ''), 'letra': m.get('letra', '')}
+    linhas = [dict(base, parte='equipe', ordem=i + 1, funcao=e.get('funcao', ''), nomes=e.get('nomes', ''))
+              for i, e in enumerate(p.get('equipe', []))]
+    # músicas numeradas primeiro; as de momento especial (ex.: Ceia) por último, com o momento no título
+    normais = [m for m in p.get('musicas', []) if not m.get('momento')]
+    especiais = [m for m in p.get('musicas', []) if m.get('momento')]
+    rot = lambda m: ('🍷 ' if m['momento'].lower() == 'ceia' else '⭐ ') + m['momento'] + ': ' + m['titulo']
+    linhas += [dict(base, parte='musica', ordem=i + 1, **mus(m)) for i, m in enumerate(normais)]
+    if especiais:  # a música da Ceia é a nº 5: as vagas 3 e 4 ainda sem música aparecem como "A definir"
+        linhas += [dict(base, parte='musica', ordem=i + 1, titulo='❓ A definir') for i in range(len(normais), 4)]
+        n0 = max(4, len(normais))
+        linhas += [dict(base, parte='musica', ordem=n0 + i + 1, **dict(mus(m), titulo=rot(m))) for i, m in enumerate(especiais)]
+    # escala do mês (botão "Ver escala de <mês>")
+    k = 0
+    for c in esc.get('cultos', []):
+        cab = dict(base, parte='escala', esc_mes=esc.get('mes', ''), esc_data=c.get('data', ''), esc_culto=c.get('culto', ''),
+                   esc_evento=c.get('evento', ''), esc_extra=c.get('extra', ''))
+        for e in c.get('equipe', []) or [{}]:
+            k += 1
+            linhas.append(dict(cab, ordem=1000 + k, funcao=e.get('funcao', ''), nomes=e.get('nomes', '')))
+    if not linhas:
+        linhas = [dict(base, parte='info', ordem=0)]
+    salvar(os.path.join(d, 'proximo_linhas.json'), linhas)
+
+
 def gerar_html(repo):
+    gerar_linhas(repo)
     d = os.path.join(repo, 'dados')
     t = open(os.path.join(repo, 'automacao', 'template.html'), encoding='utf8').read()
     rep = carregar(os.path.join(d, 'repertorio.json'), [])
