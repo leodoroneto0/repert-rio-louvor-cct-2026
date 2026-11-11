@@ -76,6 +76,7 @@
   .px-m .who{color:var(--muted)} .px-m a{color:inherit;text-decoration:none} .px-m a:hover{text-decoration:underline} .px-tom{background:color-mix(in srgb,var(--c2) 18%,transparent);border-radius:999px;padding:0 10px;font-size:12px;white-space:nowrap}
   .px-r{display:inline-flex;align-items:center;gap:6px;flex:none} .px-m a.px-letra{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:0 10px;white-space:nowrap;text-decoration:none} .px-m a.px-letra:hover{background:color-mix(in srgb,var(--c2) 12%,transparent);text-decoration:none}
   .px-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px} .px-btn{font:inherit;font-size:14px;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px} .px-btn:hover{background:color-mix(in srgb,var(--c2) 12%,transparent)}
+  .px-aviso{margin-top:10px;font-size:13.5px;padding:8px 12px;border-radius:var(--r);background:color-mix(in srgb,var(--c4) 16%,transparent)}
   .esc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:10px;margin-top:12px} .esc-c{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;font-size:13.5px;line-height:1.65} .esc-c .t{font-weight:600;margin-bottom:4px} .esc-c b{font-weight:500;color:var(--muted)} .esc-c .x{font-size:12px;color:var(--muted);margin-top:4px}
   .esc-c.passou{opacity:.5} .esc-c.prox{border:2px solid var(--c2)} .esc-tag{background:color-mix(in srgb,var(--c2) 18%,transparent);border-radius:999px;padding:0 8px;font-size:11.5px;font-weight:500;margin-left:6px}
   .tb-res{display:flex;flex-direction:column;gap:8px;margin-bottom:12px} .tb-card{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px} .tb-card .h{font-weight:600} .tb-card .s{color:var(--muted);font-size:12.5px;margin-left:6px;font-weight:400} .tb-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
@@ -113,6 +114,7 @@
       <div class="px-box"><div class="lbl">Repertório</div><div id="px-rep"></div></div>
     </div>
     <div class="px-acts"><a class="px-btn" id="px-ouvir" target="_blank" rel="noopener" hidden>▶️ Ouvir o repertório</a><button type="button" class="px-btn" id="px-escbtn" aria-expanded="false" hidden>📋 Ver escala do mês</button></div>
+    <div class="px-aviso" id="px-aviso" role="status" hidden></div>
     <div id="px-esc" hidden></div>
     <p class="note" id="px-nota"></p>
   </section>
@@ -216,7 +218,16 @@ const PROX = __PROX__;
   // playlist do YouTube com as músicas do próximo culto (link do grupo ou, se faltar, o do repertório base)
   const ytId = (u) => { const m = String(u || '').match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/)([\w-]{11})/); return m ? m[1] : ''; };
   const ids = [...new Set(ordenadas.filter(m => !m.vaga).map(m => ytId(m.link)).filter(Boolean))];
-  if (ids.length) { const o = document.getElementById('px-ouvir'); o.href = 'https://www.youtube.com/watch_videos?video_ids=' + ids.join(','); o.title = ids.length + (ids.length === 1 ? ' música' : ' músicas'); o.hidden = false; }
+  const o = document.getElementById('px-ouvir'); o.hidden = false;
+  if (ids.length) { o.href = 'https://www.youtube.com/watch_videos?video_ids=' + ids.join(','); o.title = ids.length + (ids.length === 1 ? ' música' : ' músicas'); }
+  else {
+    // sem música (ou sem link) ainda: o botão avisa em vez de abrir o YouTube
+    o.removeAttribute('href'); o.setAttribute('role', 'button'); o.tabIndex = 0;
+    const msg = ms.length ? 'As músicas do repertório ainda estão sem link do YouTube.' : 'O repertório deste culto ainda não foi postado.';
+    const av = document.getElementById('px-aviso');
+    const mostrar = () => { av.textContent = '⏳ ' + msg; av.hidden = false; clearTimeout(o._t); o._t = setTimeout(() => { av.hidden = true; }, 5000); };
+    o.addEventListener('click', mostrar); o.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); mostrar(); } });
+  }
 })();
 
 // escala do mês (recolhida dentro do próximo culto)
