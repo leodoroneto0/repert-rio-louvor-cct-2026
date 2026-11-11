@@ -29,6 +29,7 @@
   h2 { font-size:18px; font-weight:600; margin:0; display:flex; align-items:center; }
   .lead { color:var(--muted); margin:10px 0 0; }
   .lead b { color:var(--fg); }
+  .inst-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px} .inst-btn{font:inherit;font-size:14px;font-weight:500;color:#fff;background:var(--c2);border:0;border-radius:999px;padding:8px 16px;cursor:pointer} .inst-dica{margin-top:10px;font-size:13.5px;padding:8px 12px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line)}
   .tiles { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:12px; }
   .tile, .card { background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:16px; min-width:0; border-top:4px solid var(--a, var(--c0)); }
   .tile .lbl { color:var(--muted); font-size:12px; }
@@ -95,6 +96,8 @@
       </div>
     </div>
     <p class="lead">De janeiro até agora foram <b id="k-cultos">—</b> cultos registrados e <b id="k-tocadas">—</b> músicas tocadas. A mais tocada do ano é <b id="k-top">—</b>, com <b id="k-topv">—</b> vezes.</p>
+    <div class="inst-acts"><button type="button" class="inst-btn" id="inst-btn" hidden>📲 Instalar o app</button></div>
+    <div class="inst-dica" id="inst-dica" role="status" hidden></div>
   </header>
 
   <section class="tiles">
@@ -381,6 +384,24 @@ function drawCultos() {
 }
 document.getElementById('q-cultos').addEventListener('input', drawCultos); drawCultos();
 if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+// botão "Instalar o app" (some quando o site já está aberto como app)
+(function () {
+  const btn = document.getElementById('inst-btn'), dica = document.getElementById('inst-dica');
+  const jaApp = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  if (jaApp) return;
+  const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  let pedido = null;
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); pedido = e; btn.hidden = false; });
+  window.addEventListener('appinstalled', () => { btn.hidden = true; dica.textContent = '✅ App instalado! Procure o ícone "Louvor CCT" na tela inicial.'; dica.hidden = false; });
+  btn.hidden = false;
+  btn.addEventListener('click', async () => {
+    if (pedido) { pedido.prompt(); const r = await pedido.userChoice; pedido = null; if (r.outcome === 'accepted') btn.hidden = true; return; }
+    dica.textContent = ios
+      ? '📲 No iPhone: abra este site no Safari, toque em Compartilhar (o quadrado com a seta para cima) e depois em "Adicionar à Tela de Início".'
+      : '📲 No Android: abra este site no Chrome, toque nos três pontinhos (⋮) no canto de cima e depois em "Instalar app" ou "Adicionar à tela inicial".';
+    dica.hidden = !dica.hidden;
+  });
+})();
 </script>
 </body>
 </html>

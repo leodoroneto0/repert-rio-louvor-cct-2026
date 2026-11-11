@@ -1,5 +1,5 @@
 // App do Repertório CCT: sempre busca a versão mais nova na internet; sem internet, mostra a última que foi aberta.
-const CACHE = 'louvor-cct-v1';
+const CACHE = 'louvor-cct-v2';
 self.addEventListener('install', (e) => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png']).catch(() => {}))); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', (e) => {
