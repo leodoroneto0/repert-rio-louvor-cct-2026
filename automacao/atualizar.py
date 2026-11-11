@@ -550,10 +550,11 @@ def gerar_html(repo):
     tons = carregar(os.path.join(d, 'tons.json'), [])
     reg = [{k: x.get(k, '') for k in ('data', 'musica', 'tipo', 'evento')} for x in carregar(os.path.join(d, 'registros.json'), [])]
     prox = carregar(os.path.join(d, 'proximo.json'), None)
+    esc = carregar(os.path.join(d, 'escala.json'), None)
     j = lambda o: json.dumps(o, ensure_ascii=False).replace('</', '<\\/')
     hoje = datetime.date.today().strftime('%d/%m/%Y')
     logo = open(os.path.join(repo, 'automacao', 'logo.b64')).read().strip()
-    t = t.replace('__LOGO__', logo).replace('__REP__', j(rep)).replace('__TONS__', j(tons)).replace('__REG__', j(reg)).replace('__PROX__', j(prox)).replace('__ATUALIZADO__', hoje)
+    t = t.replace('__LOGO__', logo).replace('__REP__', j(rep)).replace('__TONS__', j(tons)).replace('__REG__', j(reg)).replace('__PROX__', j(prox)).replace('__ESC__', j(esc)).replace('__ATUALIZADO__', hoje)
     open(os.path.join(repo, 'index.html'), 'w', encoding='utf8').write(t)
 
 

@@ -13,7 +13,7 @@ Se algo falhar, imprime {"status": "erro", "etapa": ..., "detalhe": ...} e sai c
 """
 import argparse, datetime, hashlib, json, os, shutil, subprocess, sys, time
 
-ARQS = ['dados/proximo.json', 'dados/proximo_linhas.json', 'dados/letras.json', 'index.html']
+ARQS = ['dados/proximo.json', 'dados/proximo_linhas.json', 'dados/letras.json', 'dados/escala.json', 'index.html']
 
 
 def git(repo, *args, check=True):
@@ -46,7 +46,7 @@ def so_data_mudou(repo):
         return x
 
     # index.html é gerado a partir desses dados: basta comparar os JSON sem o campo "atualizado"
-    return all(sem_data(antes(c)) == sem_data(agora(c)) for c in ('dados/proximo.json', 'dados/letras.json'))
+    return all(sem_data(antes(c)) == sem_data(agora(c)) for c in ('dados/proximo.json', 'dados/letras.json', 'dados/escala.json'))
 
 
 def main():

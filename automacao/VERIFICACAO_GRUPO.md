@@ -30,6 +30,13 @@ CULTOS DE SEXTA E SÁBADO (regra do Neto)
 - A escala do mês (mensagem fixada "ESCALA LOUVOR – <MÊS> <ANO>", enviada no início do mês) às vezes tem cultos de sexta ou sábado (conferências, Semana da Família, eventos), além dos domingos e quintas. Leia a escala inteira e trate esses cultos como qualquer outro: entram no bloco "Próximo culto" quando forem o próximo da escala, recebem as músicas postadas para eles, contam para os avisos ao Neto quando ele estiver escalado e são registrados depois que acontecem.
 - Depois de um culto de quinta, o próximo culto pode ser o de sexta ou sábado (não pule direto para o domingo). Depois de um culto de sexta, o próximo pode ser o de sábado.
 
+ESCALA DO MÊS NO SITE (regra do Neto)
+- O site mostra a escala do mês (botão "Ver escala de <mês>" dentro do Próximo culto), lida de dados/escala.json:
+  {"mes":"AAAA-MM","cultos":[{"data":"AAAA-MM-DD","culto":"Domingo|Quinta|Sexta|Sábado","evento":"","equipe":[{"funcao":"Voz","nomes":"..."}],"extra":"Itápolis — Voz: ... · Teclado: ..."}]}
+  Equipe na ordem Voz, Teclado, Guitarra, Violão, Baixo, Bateria (junte funções da mesma pessoa, ex.: "Teclado e Baixo"; omita VS), com as correções de dados/ajustes_escala.json aplicadas. Culto ainda sem equipe: "equipe": [] (aparece "A definir"). Se o Levi definir depois a equipe de um culto que estava "a definir" (ex.: mensagem com a banda), use a definição dele.
+- Atualize dados/escala.json quando: a escala do mês for postada ou corrigida no grupo; houver troca de integrante num culto do mês; ou virar o mês (troque pela escala do mês novo, se já postada; se ainda não foi postada, mantenha a do mês anterior).
+- Depois de alterar, regenere a página (python3 -I -c "import sys; sys.path.insert(0,'automacao'); import atualizar; atualizar.gerar_html('.')" na pasta do clone) e publique com automacao/publicar.py (ele já considera dados/escala.json). A escala sozinha não gera aviso para o Neto.
+
 QUEM É QUEM NO GRUPO (nome no Telegram → nome na escala)
 Neto → Neto · Talita → Talita · Amor → Bianca · Andrey → Andrey · Pra.Iraci Teles → Pra. Iraci · Marcelão CCT → Marcelo · Marianne → Marianne · Ana Negreli → Ana · Débora Oliveira → Débora · Lucas Isaac → Lucas · Bia CCT → Bia · Leonardo Santos → Léo · Cadu → Cadu · Levi e Levi Teles → Pr. Levi · Tondati → Wesley · Dani → Daniel.
 Doug, Kamila, André, Vinícius Bragas e Pr Salomão não são do louvor (pastor, som e audiovisual): não use mensagens deles para repertório.

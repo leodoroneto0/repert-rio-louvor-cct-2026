@@ -5,11 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Repertório do Louvor CCT 2026</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2fa37a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Louvor CCT">
 <style>
   :root { --bg:#f6f7fb; --panel:#ffffff; --fg:#1d1f24; --muted:#6b7280; --line:#e5e7eb;
     --c0:#4f7cf7; --c1:#e0743c; --c2:#2fa37a; --c3:#a35ee0; --c4:#d4a017; --c5:#e0567b; --c6:#3fb5c9; --ok:#2fa37a; --r:10px; }
   @media (prefers-color-scheme: dark) { :root { --bg:#14161a; --panel:#1d2026; --fg:#eceef2; --muted:#9aa1ad; --line:#2d313a; } }
   * { box-sizing: border-box; }
+  [hidden] { display:none !important; }
   body { margin:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size:15px; }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 20px 16px 48px; display:flex; flex-direction:column; gap:18px; }
   header { background: linear-gradient(135deg, color-mix(in srgb, var(--c0) 22%, var(--panel)), color-mix(in srgb, var(--c3) 12%, var(--panel))); border:1px solid var(--line); border-radius:var(--r); padding:24px 20px; }
@@ -67,6 +75,11 @@
   .px-eq div{padding:3px 0} .px-eq b{font-weight:500;color:var(--muted)} .px-m{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)} .px-m:last-child{border-bottom:0}
   .px-m .who{color:var(--muted)} .px-m a{color:inherit;text-decoration:none} .px-m a:hover{text-decoration:underline} .px-tom{background:color-mix(in srgb,var(--c2) 18%,transparent);border-radius:999px;padding:0 10px;font-size:12px;white-space:nowrap}
   .px-r{display:inline-flex;align-items:center;gap:6px;flex:none} .px-m a.px-letra{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:0 10px;white-space:nowrap;text-decoration:none} .px-m a.px-letra:hover{background:color-mix(in srgb,var(--c2) 12%,transparent);text-decoration:none}
+  .px-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px} .px-btn{font:inherit;font-size:14px;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px} .px-btn:hover{background:color-mix(in srgb,var(--c2) 12%,transparent)}
+  .esc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:10px;margin-top:12px} .esc-c{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;font-size:13.5px;line-height:1.65} .esc-c .t{font-weight:600;margin-bottom:4px} .esc-c b{font-weight:500;color:var(--muted)} .esc-c .x{font-size:12px;color:var(--muted);margin-top:4px}
+  .esc-c.passou{opacity:.5} .esc-c.prox{border:2px solid var(--c2)} .esc-tag{background:color-mix(in srgb,var(--c2) 18%,transparent);border-radius:999px;padding:0 8px;font-size:11.5px;font-weight:500;margin-left:6px}
+  .tb-res{display:flex;flex-direction:column;gap:8px;margin-bottom:12px} .tb-card{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px} .tb-card .h{font-weight:600} .tb-card .s{color:var(--muted);font-size:12.5px;margin-left:6px;font-weight:400} .tb-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .tb-chip{font-size:13px;border-radius:999px;padding:1px 10px;background:color-mix(in srgb,var(--c3) 14%,transparent)} .tb-chip b{font-weight:600}
   @media (max-width:640px) { .hide-narrow { display:none; } h1 { font-size:24px; } }
 </style>
 </head>
@@ -99,6 +112,8 @@
       <div class="px-box"><div class="lbl">Equipe</div><div class="px-eq" id="px-eq"></div></div>
       <div class="px-box"><div class="lbl">Repertório</div><div id="px-rep"></div></div>
     </div>
+    <div class="px-acts"><a class="px-btn" id="px-ouvir" target="_blank" rel="noopener" hidden>▶️ Ouvir o repertório</a><button type="button" class="px-btn" id="px-escbtn" aria-expanded="false" hidden>📋 Ver escala do mês</button></div>
+    <div id="px-esc" hidden></div>
     <p class="note" id="px-nota"></p>
   </section>
 
@@ -137,11 +152,12 @@
 
   <section class="card" id="tons">
     <h2><span class="ic">🎤</span>Tons por cantor</h2>
-    <p class="note">Escolha o cantor para ver o tom de cada música. Inclui as músicas fora do repertório base.</p>
+    <p class="note">Digite o nome de uma música para ver o tom de cada cantor, ou escolha o cantor para ver todas as músicas dele. Inclui as músicas fora do repertório base.</p>
     <div class="controls">
       <select id="cantor" aria-label="Cantor"></select>
       <input id="q-tons" type="search" placeholder="Buscar música…" aria-label="Buscar música">
     </div>
+    <div class="tb-res" id="tons-res"></div>
     <div class="tbox"><table><thead><tr><th>Música</th><th>Cantor</th><th>Tom</th><th class="hide-narrow">Origem</th></tr></thead><tbody id="tons-body"></tbody></table></div>
   </section>
 
@@ -197,6 +213,37 @@ const PROX = __PROX__;
     right.appendChild(tom); row.append(left, right); rp.appendChild(row);
   });
   document.getElementById('px-nota').textContent = 'Atualizado em ' + PROX.atualizado.slice(8,10) + '/' + PROX.atualizado.slice(5,7) + ' pela tarefa automática, a partir do grupo de escala e repertório.';
+  // playlist do YouTube com as músicas do próximo culto (link do grupo ou, se faltar, o do repertório base)
+  const ytId = (u) => { const m = String(u || '').match(/(?:youtu\.be\/|[?&]v=|\/shorts\/|\/embed\/)([\w-]{11})/); return m ? m[1] : ''; };
+  const ids = [...new Set(ordenadas.filter(m => !m.vaga).map(m => ytId(m.link)).filter(Boolean))];
+  if (ids.length) { const o = document.getElementById('px-ouvir'); o.href = 'https://www.youtube.com/watch_videos?video_ids=' + ids.join(','); o.title = ids.length + (ids.length === 1 ? ' música' : ' músicas'); o.hidden = false; }
+})();
+
+// escala do mês (recolhida dentro do próximo culto)
+const ESC = __ESC__;
+(function () {
+  if (!ESC || !(ESC.cultos || []).length || document.getElementById('proximo').hidden) return;
+  const btn = document.getElementById('px-escbtn'), box = document.getElementById('px-esc');
+  const nomesM = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const mes = nomesM[Number(ESC.mes.slice(5,7)) - 1];
+  const rotulo = (aberto) => (aberto ? '🔼 Esconder escala de ' : '📋 Ver escala de ') + mes;
+  btn.textContent = rotulo(false); btn.hidden = false;
+  const hoje = new Date().toISOString().slice(0,10), dS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const grid = document.createElement('div'); grid.className = 'esc-grid';
+  for (const c of ESC.cultos) {
+    const card = document.createElement('div');
+    card.className = 'esc-c' + (PROX && c.data === PROX.data ? ' prox' : (c.data < hoje ? ' passou' : ''));
+    const dt = new Date(c.data + 'T12:00:00');
+    const t = document.createElement('div'); t.className = 't'; t.textContent = dS[dt.getDay()] + ' ' + c.data.slice(8,10) + '/' + c.data.slice(5,7) + (c.evento ? ' · ' + c.evento : '');
+    if (PROX && c.data === PROX.data) { const g = document.createElement('span'); g.className = 'esc-tag'; g.textContent = 'próximo'; t.appendChild(g); }
+    card.appendChild(t);
+    if (!(c.equipe || []).length) card.appendChild(document.createTextNode('A definir'));
+    for (const e of c.equipe || []) { const d = document.createElement('div'); const b = document.createElement('b'); b.textContent = e.funcao + ': '; d.append(b, document.createTextNode(e.nomes)); card.appendChild(d); }
+    if (c.extra) { const x = document.createElement('div'); x.className = 'x'; x.textContent = c.extra; card.appendChild(x); }
+    grid.appendChild(card);
+  }
+  box.appendChild(grid);
+  btn.addEventListener('click', () => { const abrir = box.hidden; box.hidden = !abrir; btn.setAttribute('aria-expanded', String(abrir)); btn.textContent = rotulo(abrir); });
 })();
 
 const REG = __REG__;
@@ -269,10 +316,25 @@ document.getElementById('q-base').addEventListener('input', drawBase); catSel.ad
 // tons
 const cSel = document.getElementById('cantor');
 cSel.append(new Option('Todos os cantores', ''), ...[...new Set(TONS.map(r => r.cantor))].sort((a,b) => a.localeCompare(b, 'pt')).map(c => new Option(c, c)));
+const sem = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 function drawTons() {
-  const q = document.getElementById('q-tons').value.toLowerCase(); const c = cSel.value;
+  const qRaw = document.getElementById('q-tons').value.trim(); const q = sem(qRaw); const c = cSel.value;
+  // resumo por música: tom de cada cantor + tom original, BPM e compasso
+  const res = document.getElementById('tons-res'); res.replaceChildren();
+  if (q.length >= 2) {
+    const nomesM = [...new Set(TONS.map(x => x.musica).concat(REP.map(x => x.musica)))].filter(m => sem(m).includes(q)).sort((a,b) => a.localeCompare(b, 'pt')).slice(0, 6);
+    for (const m of nomesM) {
+      const card = el('div', 'tb-card'); const h = el('div', 'h', m); const r = REP.find(x => x.musica === m);
+      const info = r ? [r.artista, r.tom ? 'original ' + r.tom : '', r.bpm !== '' && r.bpm ? r.bpm + ' bpm' : '', r.compasso, 'repertório base'].filter(Boolean).join(' · ') : 'fora do repertório base';
+      h.appendChild(el('span', 's', info)); card.appendChild(h);
+      const chips = el('div', 'tb-chips'); const ts = TONS.filter(x => x.musica === m).sort((a,b) => a.cantor.localeCompare(b.cantor, 'pt'));
+      if (!ts.length) chips.appendChild(el('span', 's', 'Nenhum cantor com tom registrado ainda.'));
+      for (const x of ts) { const ch = el('span', 'tb-chip'); ch.append(document.createTextNode(x.cantor + ' · '), el('b', '', x.tom)); chips.appendChild(ch); }
+      card.appendChild(chips); res.appendChild(card);
+    }
+  }
   const tb = document.getElementById('tons-body'); tb.replaceChildren();
-  for (const r of TONS.filter(x => (!c || x.cantor === c) && (!q || x.musica.toLowerCase().includes(q))).sort((a,b) => a.musica.localeCompare(b.musica, 'pt') || a.cantor.localeCompare(b.cantor, 'pt'))) {
+  for (const r of TONS.filter(x => (!c || x.cantor === c) && (!q || sem(x.musica).includes(q))).sort((a,b) => a.musica.localeCompare(b.musica, 'pt') || a.cantor.localeCompare(b.cantor, 'pt'))) {
     const tr = el('tr'); tr.append(el('td', '', r.musica), el('td', '', r.cantor), el('td', '', r.tom), el('td', 'hide-narrow', r.origem)); tb.appendChild(tr);
   }
 }
@@ -307,6 +369,7 @@ function drawCultos() {
   }
 }
 document.getElementById('q-cultos').addEventListener('input', drawCultos); drawCultos();
+if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 </script>
 </body>
 </html>

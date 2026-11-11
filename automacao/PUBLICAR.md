@@ -51,5 +51,5 @@ sem formatação especial): "⚠️ Próximo culto DD/MM: falhou <etapa> — <de
 Dashboard: <atualizado/não>." Nunca termine a tarefa com o site e o dashboard diferentes sem avisar.
 
 ## Arquivos
-No repositório, só altere `dados/proximo.json`, `dados/proximo_linhas.json`, `dados/letras.json` e `index.html`.
+No repositório, só altere `dados/proximo.json`, `dados/proximo_linhas.json`, `dados/letras.json`, `dados/escala.json` e `index.html`.
 Nunca altere a planilha nem os outros dados.
