@@ -5,10 +5,10 @@
 "equipe": [
 {
 "funcao": "Voz",
-"nomes": "Pra. Iraci e Beatriz"
+"nomes": "Pra. Iraci"
 },
 {
-"funcao": "Teclado",
+"funcao": "Voz e Teclado",
 "nomes": "Leonardo"
 },
 {
@@ -54,5 +54,5 @@
 "letra": ""
 }
 ],
-"atualizado": "2026-11-11"
+"atualizado": "2026-11-12"
 }
