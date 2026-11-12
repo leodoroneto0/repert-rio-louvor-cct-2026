@@ -24,6 +24,35 @@
 "nomes": "Daniel"
 }
 ],
-"musicas": [],
-"atualizado": "2026-11-08"
+"musicas": [
+{
+"titulo": "❓ A definir",
+"cantor": "",
+"tom": "",
+"link": "",
+"letra": ""
+},
+{
+"titulo": "Sou Grato por seu Amor",
+"cantor": "",
+"tom": "",
+"link": "https://www.youtube.com/watch?v=YbGFYaA0SbY",
+"letra": "https://www.letras.mus.br/get-worship/sou-grato-por-seu-amor/"
+},
+{
+"titulo": "Tudo é Teu",
+"cantor": "",
+"tom": "",
+"link": "https://www.youtube.com/watch?v=1yorXvlZd6s",
+"letra": "https://www.multitracks.com.br/songs/Drops-INA/E-Ele/Tudo-e-Teu/"
+},
+{
+"titulo": "❓ A definir",
+"cantor": "",
+"tom": "",
+"link": "",
+"letra": ""
+}
+],
+"atualizado": "2026-11-11"
 }

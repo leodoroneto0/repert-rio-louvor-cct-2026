@@ -206,7 +206,7 @@ const PROX = __PROX__;
   ordenadas.forEach((m) => {
     const row = document.createElement('div'); row.className = 'px-m';
     const left = document.createElement('span');
-    if (m.vaga) { left.textContent = (++num) + '. ❓ A definir'; left.style.opacity = '.6'; row.append(left); rp.appendChild(row); return; }
+    if (m.vaga || String(m.titulo || '').startsWith('❓')) { left.textContent = (++num) + '. ❓ A definir'; left.style.opacity = '.6'; row.append(left); rp.appendChild(row); return; }
     const rot = (++num) + '. ' + (m.momento ? ((m.momento.toLowerCase() === 'ceia' ? '🍷 ' : '⭐ ') + m.momento + ': ' + m.titulo) : m.titulo);
     let nome = document.createTextNode(rot);
     if (m.link && m.link.startsWith('https://')) { const a = document.createElement('a'); a.href = m.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = rot; nome = a; }
