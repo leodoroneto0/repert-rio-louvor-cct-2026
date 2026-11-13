@@ -16,10 +16,13 @@ TAREFA (regra do Neto, autorizada por ele): toda terça às 14h04 e toda quarta 
 - Só na QUARTA: abra também a conversa particular "Levi" no Telegram (NÃO abra canais; confira o telefone +55 16 98249 5104 no perfil) e veja se o PRIMEIRO lembrete deste culto foi mandado por lá (antes da troca para o WhatsApp, os lembretes iam pelo Telegram; ex.: 10/11).
 - FECHE a aba do Telegram Web (tabs_close) — aberta, ela impede as notificações no celular do Neto.
 
-## PASSO 3 — Abrir o WhatsApp do Levi (aplicativo WhatsApp Desktop, regra do Neto)
-- Siga À RISCA automacao/WHATSAPP_LEVI.md (WhatsApp Desktop pelo uso do computador; nunca Chrome/WhatsApp Web). Se não
-  conseguir abrir o WhatsApp ou achar o Levi certo (+55 16 99744-4381), NÃO mande nada e vá ao PASSO 5 com o motivo.
-- Veja as últimas mensagens da conversa (as do Neto ficam à direita, em verde). Se já existe um lembrete do repertório DESTE culto enviado HOJE, NÃO mande de novo.
+## PASSO 3 — Abrir o WhatsApp do Levi (Chrome do Neto, extensão Claude in Chrome)
+- O WhatsApp Web NÃO funciona no navegador embutido. Use o Chrome do Neto: carregue numa única chamada do ToolSearch "select:mcp__claude-in-chrome__tabs_context_mcp,mcp__claude-in-chrome__list_connected_browsers,mcp__claude-in-chrome__select_browser,mcp__claude-in-chrome__navigate,mcp__claude-in-chrome__computer,mcp__claude-in-chrome__find,mcp__claude-in-chrome__javascript_tool,mcp__claude-in-chrome__tabs_create_mcp,mcp__claude-in-chrome__tabs_close_mcp".
+- Chame tabs_context_mcp com createIfEmpty true. Se disser que a extensão não está conectada, chame list_connected_browsers: se houver exatamente um navegador, chame select_browser com o deviceId dele e repita tabs_context_mcp; se houver nenhum (Chrome fechado) ou mais de um, NÃO mande nada e vá ao PASSO 5 com o motivo "Chrome fechado/extensão desconectada" (o texto da tarefa diz quando tentar de novo).
+- Crie uma aba nova (tabs_create_mcp) e navegue para https://web.whatsapp.com/send?phone=5516997444381 . Espere carregar (até ~30 s).
+- Se aparecer o QR code ("Escaneie para entrar"), o WhatsApp Web deslogou: NÃO mande nada, feche a aba e avise o Neto no PASSO 5 ("o WhatsApp Web deslogou; abra web.whatsapp.com no Chrome e escaneie o QR").
+- Confira o cabeçalho da conversa (document.querySelector('#main header').innerText): tem que ser o contato "Levi". Se aparecer outro nome, um grupo, ou aviso de número inválido, NÃO mande nada e avise o Neto.
+- Veja as últimas mensagens da conversa (elementos .message-out = enviadas pelo Neto). Se já existe um lembrete do repertório DESTE culto enviado HOJE, NÃO mande de novo.
 - Na quarta, use o texto do SEGUNDO lembrete só se o primeiro lembrete deste culto já tiver sido enviado (nesta conversa do WhatsApp ou, antes da troca, pelo Telegram — PASSO 2); se não tiver sido (ex.: computador desligado na terça), use o texto do PRIMEIRO.
 
 ## PASSO 4 — Mandar (COERÊNCIA OBRIGATÓRIA, regra do Neto)
@@ -44,7 +47,7 @@ TAREFA (regra do Neto, autorizada por ele): toda terça às 14h04 e toda quarta 
   (linha em branco)
   🤖 Mensagem automática enviada pelo Claude, assistente do Neto
 - A última linha (🤖 Mensagem automática enviada pelo Claude, assistente do Neto) é obrigatória nos dois textos (regra do Neto: o Levi tem que saber que foi o Claude que mandou).
-- Antes do Enter, tire um screenshot e confira o texto na caixa. Envie, confira que a mensagem apareceu na conversa com o texto certo, apague a busca, FECHE o WhatsApp (X no canto superior direito da janela) e chame computer_release_lock.
+- Antes do Enter, tire um screenshot e confira o texto na caixa. Envie, confira que a mensagem apareceu na conversa (último .message-out) com o texto certo e FECHE a aba do WhatsApp (tabs_close_mcp). O login do WhatsApp Web fica salvo no Chrome.
 
 ## PASSO 5 — Avisar o Neto
 - Ferramenta "reply" do plugin telegram (nome contendo "telegram__reply"; carregue com ToolSearch), chat_id "1008078957", texto simples, UMA mensagem curta:
