@@ -12,7 +12,9 @@ conferido no MultiTracks). Pronto quer dizer:
 - nenhuma música é "❓ A definir" e há pelo menos 4 músicas (no culto de Santa Ceia, também a da Ceia; em culto com
   repertório maior, como o de ação de graças, todas as que o grupo postou); E
 - TODAS têm tom (do grupo ou da planilha, `tom_origem: "planilha"`).
-Se não estiver pronto, não mexa no MultiTracks.
+Se não estiver pronto, não mexa no MultiTracks — EXCETO se o setlist deste culto já existir (`"ja_criado_antes": true`; o
+Neto às vezes pede para criar antes com o que já tem): aí mantenha-o igual ao proximo.json a cada mudança (músicas
+"❓ A definir" ficam fora do setlist, na ordem das definidas).
 
 ## Onde fazer
 - Use o Chrome do Neto pelo Claude in Chrome (ferramentas mcp__claude-in-chrome__*; ele já está logado no MultiTracks
@@ -40,18 +42,30 @@ Se não estiver pronto, não mexa no MultiTracks.
 1. Na lista de repertórios, procure um chamado exatamente `Culto DD/MM/AAAA` (busca "Pesquisar"; o filtro padrão é
    "Repertórios Futuros"). Se já existir, vá para o passo 4.
 2. Criar: botão "Novo Repertório" → "Nome do Repertório*" = `Culto DD/MM/AAAA`; NÃO marque "Fixar Repertório";
-   "Data*" = data do culto (DD/MM/AAAA); deixe o resto como está → "Próximo"/"Criar".
+   confira "Data*" = data do culto (DD/MM/AAAA); deixe o "Tipo de Culto" e o horário como vierem (na igreja o padrão é
+   "Celebração de Domingo" 18:00–20:00) → "CRIAR REPERTÓRIO". Depois clique em "Editar Repertório" para adicionar músicas.
 3. No repertório criado (ou em "Editar Repertório"), para cada música na ordem do proximo.json (a da Ceia por último):
-   "Adicionar Item" → no campo de busca, digite o nome da música (o nome em inglês costuma funcionar melhor para versões,
-   ex.: "Sou Grato por seu Amor" = "God I'm Just Grateful") → escolha a MESMA versão do link da música (artista do
-   repertório base em dados/repertorio.json ou o canal do link pelo oEmbed do YouTube) → "Adicionar".
+   "Adicionar Item" → no campo de busca, digite o nome da música (para versão em inglês use o nome original, ex.:
+   "Sou Grato por seu Amor" = "God I'm Just Grateful (Live)" do Elevation Worship; se a busca pelo nome não achar, busque
+   pelo ARTISTA, ex.: "Drops INA" → "Tudo é Teu") → escolha a MESMA versão do link da música (artista do repertório base
+   em dados/repertorio.json ou o canal do link pelo oEmbed do YouTube) → abre "Adicionar Música ao Repertório": escolha o
+   Tom ali (passo 4) → "ADICIONAR". Ao trocar de busca, limpe o campo antes (ctrl+a e digite), senão o texto se junta.
+   Nunca clique em "Comprar ou Alugar Tracks" nem "Solicitar Pad da Música".
    Se a música não existir no MultiTracks, NÃO crie música no Cloud: pule e anote para o aviso.
-4. Tons: com o repertório em edição, clique no tom de cada música (coluna "Tom") e escolha o tom do proximo.json
-   (C D E F G A B, sustenido/bemol e Maior/Menor; ex.: "Bb" = B bemol maior, "F#m" = F sustenido menor). Se o
-   seletor não tiver o tom, anote para o aviso.
+4. Tons: na janela "Adicionar Música ao Repertório" (ou clicando no tom da música com o repertório em edição) há os
+   botões C D E F G A B e, embaixo, ♭ e #. A música vem marcada no tom original, às vezes com ♭ ou # ligado: clique na
+   nota do proximo.json e depois confira o ♭/#: ligue o certo ou DESLIGUE clicando nele de novo (ex.: veio Bb e o tom é
+   G → clique G e desligue o ♭). Dê um zoom para conferir antes de adicionar. Menor (ex.: "F#m") → "Menor".
+4b. PESSOAS (só na organização da igreja): menu "..." do repertório → "Adicionar/Remover Pessoas" → do lado esquerdo,
+   clique no ⊕ de cada pessoa escalada no culto (equipe do proximo.json; nomes no MultiTracks: Ana Negreli, Andrey
+   Monteiro Bertoletti, Beatriz Vasconcelos (Bia), Bianca Scavoni, Débora Oliveira, Leonardo Santos (Léo), Lucas Isaac,
+   Marcelo Rodrigues, Marianne Gonçalves, Neto Leodoro, Talita Freire, Wesley Tondati; o Cadu e o Levi só depois de
+   aceitarem o convite) → "Atualizar Repertório". Quem saiu da escala: ⊖ do lado direito. Quem não está no MultiTracks
+   (ex.: Samuel, Daniel, Pra. Iraci) fica de fora sem aviso. NÃO use "Notificar Time"/"Email Team" nem "Adicionar Todas as
+   Pessoas". Na organização pessoal não há pessoas.
 5. Se o repertório já existia: compare com o proximo.json e corrija só o que mudou (músicas, ordem pelo arraste das
-   três barras, tons). Música que saiu do repertório: remova pelo menu "..." da linha.
-6. "Salvar no Cloud". Recarregue a página e confira pelo texto (get_page_text) que nomes, ordem e tons batem com o
+   três barras, tons) e, na igreja, as pessoas. Música que saiu do repertório: remova pelo menu "..." da linha.
+6. "Salvar no Cloud" (abre uma janela com "Nota": deixe vazia e clique "Salvar no Cloud" de novo). Recarregue a página e confira pelo texto (get_page_text) que nomes, ordem e tons batem com o
    proximo.json. Feche a aba.
 7. Só se tudo bateu NAS DUAS organizações (ou só faltou o que não existe no MultiTracks, já anotado para o aviso): rode
    `python3 -I automacao/setlist_status.py --repo <clone> --marcar` e publique o registro:

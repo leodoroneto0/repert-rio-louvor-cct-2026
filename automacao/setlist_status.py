@@ -14,7 +14,9 @@ p = json.load(open(os.path.join(d, 'proximo.json'), encoding='utf8'))
 ms = p.get('musicas', [])
 normais = [m for m in ms if not m.get('momento')]
 especiais = [m for m in ms if m.get('momento')]
-lista = [{'titulo': m['titulo'], 'tom': m.get('tom', ''), 'momento': m.get('momento', '')} for m in normais + especiais]
+lista = [{'titulo': m['titulo'], 'tom': m.get('tom', ''), 'momento': m.get('momento', '')} for m in normais + especiais
+         if m.get('titulo') and not m['titulo'].startswith('❓')]
+equipe = [e.get('funcao', '') + ': ' + e.get('nomes', '') for e in p.get('equipe', [])]
 vagas = [m for m in ms if not m.get('titulo') or m['titulo'].startswith('❓')]
 sem_tom = [m['titulo'] for m in ms if m not in vagas and not m.get('tom')]
 ceia_falta = 'ceia' in (p.get('evento') or '').lower() and not especiais
@@ -23,13 +25,13 @@ dt = p.get('data', '')
 nome = 'Culto ' + dt[8:10] + '/' + dt[5:7] + '/' + dt[:4] if dt else ''
 arq = os.path.join(d, 'setlist_mt.json')
 feito = json.load(open(arq, encoding='utf8')) if os.path.exists(arq) else {}
-atual = {'nome': nome, 'data': dt, 'musicas': lista}
+atual = {'nome': nome, 'data': dt, 'musicas': lista, 'equipe': equipe}
 if a.marcar:
-    if not pronto:
-        raise SystemExit('repertório não está pronto; nada marcado')
+    if not pronto and feito.get('nome') != nome:
+        raise SystemExit('repertório não está pronto e o setlist deste culto ainda não existe; nada marcado')
     json.dump(atual, open(arq, 'w', encoding='utf8'), ensure_ascii=False, indent=1)
     print(json.dumps({'marcado': nome}, ensure_ascii=False))
 else:
-    print(json.dumps({'pronto': pronto, 'precisa_mexer_no_multitracks': pronto and feito != atual,
-                      'ja_criado_antes': feito.get('nome') == nome, 'nome': nome, 'musicas': lista,
+    print(json.dumps({'pronto': pronto, 'precisa_mexer_no_multitracks': (pronto or feito.get('nome') == nome) and feito != atual,
+                      'ja_criado_antes': feito.get('nome') == nome, 'nome': nome, 'musicas': lista, 'equipe': equipe,
                       'faltando': {'vagas': len(vagas), 'sem_tom': sem_tom, 'ceia': ceia_falta}}, ensure_ascii=False))

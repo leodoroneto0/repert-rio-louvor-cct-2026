@@ -1,0 +1,23 @@
+{
+ "nome": "Culto 15/11/2026",
+ "data": "2026-11-15",
+ "musicas": [
+  {
+   "titulo": "Sou Grato por seu Amor",
+   "tom": "G",
+   "momento": ""
+  },
+  {
+   "titulo": "Tudo é Teu",
+   "tom": "G",
+   "momento": ""
+  }
+ ],
+ "equipe": [
+  "Voz: Pra. Iraci",
+  "Voz e Teclado: Leonardo",
+  "Guitarra: Neto",
+  "Violão: Samuel",
+  "Bateria: Daniel"
+ ]
+}
