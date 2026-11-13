@@ -34,15 +34,15 @@
 },
 {
 "titulo": "Sou Grato por seu Amor",
-"cantor": "",
-"tom": "",
+"cantor": "Leonardo",
+"tom": "G",
 "link": "https://www.youtube.com/watch?v=YbGFYaA0SbY",
 "letra": "https://www.letras.mus.br/get-worship/sou-grato-por-seu-amor/"
 },
 {
 "titulo": "Tudo é Teu",
-"cantor": "",
-"tom": "",
+"cantor": "Leonardo",
+"tom": "G",
 "link": "https://www.youtube.com/watch?v=1yorXvlZd6s",
 "letra": "https://www.multitracks.com.br/songs/Drops-INA/E-Ele/Tudo-e-Teu/"
 },
@@ -54,5 +54,5 @@
 "letra": ""
 }
 ],
-"atualizado": "2026-11-12"
+"atualizado": "2026-11-13"
 }
