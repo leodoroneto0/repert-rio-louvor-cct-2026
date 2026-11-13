@@ -64,7 +64,7 @@ PASSO 1 — Ler o grupo do Telegram
 - Abra o grupo "Escala e Repertório (Apenas Arquivo)" (busque por "Escala e Repertório").
 - Veja as mensagens postadas dentro da janela de leitura (datas e horários das mensagens).
 - CONFERÊNCIA OBRIGATÓRIA (regra do Neto: nunca deixar passar música enviada; vale em TODA execução, mesmo sem mensagem nova na janela): procure no grupo a(s) mensagem(ns) MAIS RECENTE(S) com o repertório do culto que está no bloco (mesma data de dados/proximo.json; costuma ser "Repertório de Domingo" reenviado com as músicas numeradas e a da Ceia) e todas as mensagens posteriores sobre ele, mesmo que sejam de ANTES da janela. Leia o texto completo pelo javascript_tool (ex.: o innerText de .message de cada .bubble, com o nome de quem mandou e a data/hora do title de .time-inner), não só por screenshot. Compare música por música com dados/proximo.json: títulos, quantidade (inclusive a nº 4 e a da Ceia), quem canta, tom e link. Anote toda diferença. Atenção: música com "tom_origem": "planilha" em dados/proximo.json tem o tom vindo da planilha (o grupo não postou tom); isso NÃO é diferença, a não ser que o grupo tenha postado um tom (aí vale o do grupo).
-- Só se NÃO houver nenhuma mensagem nova na janela, o culto do bloco NÃO tiver passado E a conferência acima não achar nenhuma diferença, feche a aba e encerre sem fazer mais nada (isso economiza o limite de uso).
+- Só se NÃO houver nenhuma mensagem nova na janela, o culto do bloco NÃO tiver passado E a conferência acima não achar nenhuma diferença, feche a aba e faça só o PASSO 2B (setlist do MultiTracks; normalmente o script diz que não há nada a fazer) e encerre sem fazer mais nada (isso economiza o limite de uso).
 - Senão: leia a escala do mês vigente (mensagem fixada "ESCALA LOUVOR – <MÊS> <ANO>"; se preciso, também a do mês seguinte) e identifique os cultos dos PRÓXIMOS 7 DIAS em que o Neto está escalado e, se o culto do bloco já passou, o novo próximo culto (data, culto, evento, equipe). Para o culto do bloco (ou o novo, se for trocar) e para os cultos afetados pelas novidades, leia o repertório completo atual (todas as mensagens sobre ele; vale a informação mais recente) e versões de letra indicadas.
 - Ao terminar, FECHE a aba do Telegram Web (tabs_close) — se ficar aberta, o celular do Neto deixa de receber notificações.
 
@@ -73,6 +73,9 @@ PASSO 2 — Atualizar o bloco "Próximo culto" (partes B e C)
 - Complete dados/letras.json pela regra do botão "Letra" acima.
 - Depois siga À RISCA o arquivo automacao/PUBLICAR.md do repositório (leia-o inteiro antes): montar a entrada partindo do proximo.json atual, música da Santa Ceia como nº 5, rodar proximo.py, publicar no site com publicar.py e SÓ ENTÃO atualizar o dashboard conferindo o sha256, e avisar o Neto pelo bot se qualquer etapa falhar. Regra do Neto: o site e o dashboard têm que terminar sempre iguais e certos.
 - No aviso do PASSO 4, a linha "🌐 Site e dashboard já atualizados" só entra se o publicar.py deu "publicado" E o dashboard foi conferido.
+
+PASSO 2B — Setlist no MultiTracks (regra do Neto)
+- Rode python3 -I automacao/setlist_status.py --repo <clone>. Se "precisa_mexer_no_multitracks" for true, siga À RISCA automacao/SETLIST_MULTITRACKS.md (criar ou corrigir o repertório "Culto DD/MM/AAAA" no MultiTracks, pelo Chrome do Neto, com as músicas e os tons certos). Se for false, não abra o MultiTracks.
 
 PASSO 3 — Decidir o aviso (parte A)
 Conta como novidade relevante (postada dentro da janela):

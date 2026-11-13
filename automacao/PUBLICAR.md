@@ -53,4 +53,4 @@ Dashboard: <atualizado/não>." Nunca termine a tarefa com o site e o dashboard d
 
 ## Arquivos
 No repositório, só altere `dados/proximo.json`, `dados/proximo_linhas.json`, `dados/letras.json`, `dados/escala.json` e `index.html`.
-Nunca altere a planilha nem os outros dados.
+(`dados/setlist_mt.json` é gravado só pelo procedimento do automacao/SETLIST_MULTITRACKS.md.) Nunca altere a planilha nem os outros dados.
