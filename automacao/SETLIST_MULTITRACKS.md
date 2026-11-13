@@ -17,10 +17,11 @@ Neto às vezes pede para criar antes com o que já tem): aí mantenha-o igual ao
 "❓ A definir" ficam fora do setlist, na ordem das definidas).
 
 ## Onde fazer
-- Use o Chrome do Neto pelo Claude in Chrome (ferramentas mcp__claude-in-chrome__*; ele já está logado no MultiTracks
-  lá). Leia antes a skill chrome-browser. O Chrome tem que estar aberto. Se as ferramentas não existirem ou não
-  responderem, avise pelo bot: "⚠️ Repertório DD/MM: não consegui criar o setlist no MultiTracks (Chrome fechado)" e
-  siga com o resto da tarefa; a próxima verificação tenta de novo.
+- SEMPRE pelo navegador interno do app do Claude (ferramentas mcp__remote-devices__Claude_Browser__*; regra do Neto),
+  NUNCA pelo Chrome. Se o navegador interno não estiver disponível ou o MultiTracks estiver deslogado lá ("Entrar no
+  MultiTracks.com.br" / "Sua conta se conectou em outro local"), não digite senha e não use outro navegador: avise pelo
+  bot "⚠️ Repertório DD/MM: não consegui atualizar o setlist no MultiTracks (<motivo>)" e siga com o resto da tarefa; a
+  próxima verificação tenta de novo. A conta só aceita um login por vez.
 - ORGANIZAÇÕES (regra do Neto): o mesmo setlist `Culto DD/MM/AAAA` fica nas DUAS organizações da conta dele:
   "Comunidade" (#366786, a pessoal, que ele usa para estudar em casa) e "Comunidade Cristã de Taquaritinga" (#75254, a
   da igreja, que dispara os VS). Faça o passo a passo abaixo inteiro numa organização e depois na outra.
@@ -29,7 +30,7 @@ Neto às vezes pede para criar antes com o que já tem): aí mantenha-o igual ao
   e escolha pelo nome e número. Confira a organização antes de criar/editar em cada uma. No fim, deixe o MultiTracks na
   organização "Comunidade Cristã de Taquaritinga".
   Se não conseguir terminar numa delas, não marque o registro (passo 7) e avise o Neto dizendo em qual faltou.
-- Abra uma aba nova (tabs_create_mcp) e feche-a no fim. Lista de repertórios:
+- Abra uma aba nova (tabs_create) e feche-a no fim. Lista de repertórios:
   https://www.multitracks.com.br/premium/setlists/ (os links ficam como details.aspx?setlistID=<id>).
 
 ## Regras de segurança (do Neto)

@@ -26,13 +26,6 @@
 ],
 "musicas": [
 {
-"titulo": "O Escudo + Sou Um Milagre",
-"cantor": "Pra. Iraci",
-"tom": "",
-"link": "https://www.youtube.com/watch?v=lWax47zymUE",
-"letra": "https://www.letras.mus.br/lukas-agustinho/o-escudo-sou-um-milagre/"
-},
-{
 "titulo": "Sou Grato por seu Amor",
 "cantor": "Leonardo",
 "tom": "G",
@@ -40,18 +33,25 @@
 "letra": "https://www.letras.mus.br/get-worship/sou-grato-por-seu-amor/"
 },
 {
-"titulo": "Tudo é Teu",
-"cantor": "Leonardo",
-"tom": "G",
-"link": "https://www.youtube.com/watch?v=1yorXvlZd6s",
-"letra": "https://www.multitracks.com.br/songs/Drops-INA/E-Ele/Tudo-e-Teu/"
-},
-{
 "titulo": "Bondade de Deus",
 "cantor": "Pra. Iraci",
 "tom": "",
 "link": "https://www.youtube.com/watch?v=n0FBb6hnwTo",
 "letra": "https://www.letras.mus.br/isaias-saad/bondade-de-deus/"
+},
+{
+"titulo": "O Escudo + Sou Um Milagre",
+"cantor": "Pra. Iraci",
+"tom": "",
+"link": "https://www.youtube.com/watch?v=lWax47zymUE",
+"letra": "https://www.letras.mus.br/lukas-agustinho/o-escudo-sou-um-milagre/"
+},
+{
+"titulo": "Tudo é Teu",
+"cantor": "Leonardo",
+"tom": "G",
+"link": "https://www.youtube.com/watch?v=1yorXvlZd6s",
+"letra": "https://www.multitracks.com.br/songs/Drops-INA/E-Ele/Tudo-e-Teu/"
 }
 ],
 "atualizado": "2026-11-13"
