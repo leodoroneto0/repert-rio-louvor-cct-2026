@@ -19,6 +19,11 @@ Se não estiver pronto, não mexa no MultiTracks.
   lá). Leia antes a skill chrome-browser. O Chrome tem que estar aberto. Se as ferramentas não existirem ou não
   responderem, avise pelo bot: "⚠️ Repertório DD/MM: não consegui criar o setlist no MultiTracks (Chrome fechado)" e
   siga com o resto da tarefa; a próxima verificação tenta de novo.
+- ORGANIZAÇÃO (regra do Neto): os setlists dos cultos ficam SEMPRE na organização "Comunidade Cristã de Taquaritinga"
+  (#75254), nunca em "Comunidade" (#366786). Antes de qualquer coisa, abra https://www.multitracks.com.br/premium/account/user/
+  e confira o nome ao lado de "Mudar Organização" no topo. Se não for "Comunidade Cristã de Taquaritinga", clique em
+  "Mudar Organização" e escolha "Comunidade Cristã de Taquaritinga #75254" (https://www.multitracks.com.br/login/orgSelector.aspx).
+  Confira de novo antes de criar ou editar o setlist. Se não conseguir trocar, não crie nada e avise o Neto pelo bot.
 - Abra uma aba nova (tabs_create_mcp) e feche-a no fim. Lista de repertórios:
   https://www.multitracks.com.br/premium/setlists/ (os links ficam como details.aspx?setlistID=<id>).
 
