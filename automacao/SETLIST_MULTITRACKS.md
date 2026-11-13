@@ -19,11 +19,14 @@ Se não estiver pronto, não mexa no MultiTracks.
   lá). Leia antes a skill chrome-browser. O Chrome tem que estar aberto. Se as ferramentas não existirem ou não
   responderem, avise pelo bot: "⚠️ Repertório DD/MM: não consegui criar o setlist no MultiTracks (Chrome fechado)" e
   siga com o resto da tarefa; a próxima verificação tenta de novo.
-- ORGANIZAÇÃO (regra do Neto): os setlists dos cultos ficam SEMPRE na organização "Comunidade Cristã de Taquaritinga"
-  (#75254), nunca em "Comunidade" (#366786). Antes de qualquer coisa, abra https://www.multitracks.com.br/premium/account/user/
-  e confira o nome ao lado de "Mudar Organização" no topo. Se não for "Comunidade Cristã de Taquaritinga", clique em
-  "Mudar Organização" e escolha "Comunidade Cristã de Taquaritinga #75254" (https://www.multitracks.com.br/login/orgSelector.aspx).
-  Confira de novo antes de criar ou editar o setlist. Se não conseguir trocar, não crie nada e avise o Neto pelo bot.
+- ORGANIZAÇÕES (regra do Neto): o mesmo setlist `Culto DD/MM/AAAA` fica nas DUAS organizações da conta dele:
+  "Comunidade" (#366786, a pessoal, que ele usa para estudar em casa) e "Comunidade Cristã de Taquaritinga" (#75254, a
+  da igreja, que dispara os VS). Faça o passo a passo abaixo inteiro numa organização e depois na outra.
+  Para saber em qual está: abra https://www.multitracks.com.br/premium/account/user/ e leia o nome ao lado de
+  "Mudar Organização" no topo. Para trocar: "Mudar Organização" (https://www.multitracks.com.br/login/orgSelector.aspx)
+  e escolha pelo nome e número. Confira a organização antes de criar/editar em cada uma. No fim, deixe o MultiTracks na
+  organização "Comunidade Cristã de Taquaritinga".
+  Se não conseguir terminar numa delas, não marque o registro (passo 7) e avise o Neto dizendo em qual faltou.
 - Abra uma aba nova (tabs_create_mcp) e feche-a no fim. Lista de repertórios:
   https://www.multitracks.com.br/premium/setlists/ (os links ficam como details.aspx?setlistID=<id>).
 
@@ -50,13 +53,13 @@ Se não estiver pronto, não mexa no MultiTracks.
    três barras, tons). Música que saiu do repertório: remova pelo menu "..." da linha.
 6. "Salvar no Cloud". Recarregue a página e confira pelo texto (get_page_text) que nomes, ordem e tons batem com o
    proximo.json. Feche a aba.
-7. Só se tudo bateu (ou só faltou o que não existe no MultiTracks, já anotado para o aviso): rode
+7. Só se tudo bateu NAS DUAS organizações (ou só faltou o que não existe no MultiTracks, já anotado para o aviso): rode
    `python3 -I automacao/setlist_status.py --repo <clone> --marcar` e publique o registro:
    `git add dados/setlist_mt.json && git commit -m "Setlist MultiTracks: Culto DD/MM/AAAA" && git pull --rebase && git push`.
    Se não bateu, não marque (a próxima verificação tenta de novo) e avise o Neto.
 
 ## Aviso pelo bot (ferramenta "reply" do plugin telegram, chat_id 1008078957, sem formatação especial)
-- Criou: "🎛️ Setlist criado no MultiTracks: Culto DD/MM/AAAA — 1. Música (Tom) · 2. ..."
+- Criou: "🎛️ Setlist criado no MultiTracks (pessoal e igreja): Culto DD/MM/AAAA — 1. Música (Tom) · 2. ..."
 - Corrigiu: "🎛️ Setlist Culto DD/MM/AAAA atualizado no MultiTracks: <o que mudou>"
 - Faltou algo: acrescente "⚠️ Não encontrei no MultiTracks: <música>" ou "⚠️ Tom não disponível: <música> (<tom>)".
 - Se nada mudou no MultiTracks, não mande nada. Se o aviso de repertório do PASSO 4 da verificação também for enviado,
