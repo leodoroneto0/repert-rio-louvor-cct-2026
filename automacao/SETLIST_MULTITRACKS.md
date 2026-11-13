@@ -50,7 +50,7 @@ Neto às vezes pede para criar antes com o que já tem): aí mantenha-o igual ao
    "Sou Grato por seu Amor" = "God I'm Just Grateful (Live)" do Elevation Worship; se a busca pelo nome não achar, busque
    pelo ARTISTA, ex.: "Drops INA" → "Tudo é Teu") → escolha a MESMA versão do link da música (artista do repertório base
    em dados/repertorio.json ou o canal do link pelo oEmbed do YouTube) → abre "Adicionar Música ao Repertório": escolha o
-   Tom ali (passo 4) → "ADICIONAR". Ao trocar de busca, limpe o campo antes (ctrl+a e digite), senão o texto se junta.
+   Tom ali (passo 4) → "ADICIONAR". Ao trocar de busca, limpe o campo antes (ctrl+a e digite), senão o texto se junta. Se a busca não disparar depois de digitar, aperte espaço e Backspace. Os títulos aparecem traduzidos (ex.: "Goodness of God" do Bethel aparece como "Bondade de Deus — Bethel Music").
    Nunca clique em "Comprar ou Alugar Tracks" nem "Solicitar Pad da Música".
    Se a música não existir no MultiTracks, NÃO crie música no Cloud: pule e anote para o aviso.
 4. Tons: na janela "Adicionar Música ao Repertório" (ou clicando no tom da música com o repertório em edição) há os
@@ -64,8 +64,13 @@ Neto às vezes pede para criar antes com o que já tem): aí mantenha-o igual ao
    aceitarem o convite) → "Atualizar Repertório". Quem saiu da escala: ⊖ do lado direito. Quem não está no MultiTracks
    (ex.: Samuel, Daniel, Pra. Iraci) fica de fora sem aviso. NÃO use "Notificar Time"/"Email Team" nem "Adicionar Todas as
    Pessoas". Na organização pessoal não há pessoas.
+4c. Música SEM TOM ainda (só quando o setlist já existe e o Neto pediu para manter): adicione no tom original que o
+   MultiTracks sugere e diga no aviso que o tom é provisório; corrija quando o grupo postar o tom.
 5. Se o repertório já existia: compare com o proximo.json e corrija só o que mudou (músicas, ordem pelo arraste das
-   três barras, tons) e, na igreja, as pessoas. Música que saiu do repertório: remova pelo menu "..." da linha.
+   tons) e, na igreja, as pessoas. Música que saiu do repertório: remova pelo menu "..." da linha.
+   TROCAR A ORDEM: o arraste pelas três barras NÃO funciona pela automação. Faça assim (combinado com o Neto): remova
+   pelo "..." → "Remover" as músicas que precisam ir para depois e adicione-as de novo, na ordem, conferindo o tom de
+   cada uma (passo 4). Só salve no fim, depois de conferir a ordem pelo texto da página.
 6. "Salvar no Cloud" (abre uma janela com "Nota": deixe vazia e clique "Salvar no Cloud" de novo). Recarregue a página e confira pelo texto (get_page_text) que nomes, ordem e tons batem com o
    proximo.json. Feche a aba.
 7. Só se tudo bateu NAS DUAS organizações (ou só faltou o que não existe no MultiTracks, já anotado para o aviso): rode
