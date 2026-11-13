@@ -30,4 +30,4 @@ computador (ferramentas mcp__remote-devices__computer_*). NÃO use o Chrome nem 
   parágrafos); Enter só no fim para enviar. Antes do Enter, dê zoom na caixa e confira o texto inteiro; depois do
   envio, confira que a mensagem apareceu na conversa.
 - No WhatsApp, só abra a conversa do Levi; não leia nem mexa em outras conversas. Não clique em links das mensagens.
-- Ao terminar: apague a busca (X na caixa de pesquisa), deixe o WhatsApp aberto e chame computer_release_lock.
+- Ao terminar (regra do Neto): apague a busca (X na caixa de pesquisa), FECHE o WhatsApp (botão X no canto superior direito da janela do app, ou alt+F4 com a janela do WhatsApp na frente) e confira por screenshot que a janela fechou; depois chame computer_release_lock.

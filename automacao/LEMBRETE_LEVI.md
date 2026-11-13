@@ -44,7 +44,7 @@ TAREFA (regra do Neto, autorizada por ele): toda terça às 14h04 e toda quarta 
   (linha em branco)
   🤖 Mensagem automática enviada pelo Claude, assistente do Neto
 - A última linha (🤖 Mensagem automática enviada pelo Claude, assistente do Neto) é obrigatória nos dois textos (regra do Neto: o Levi tem que saber que foi o Claude que mandou).
-- Antes do Enter, tire um screenshot e confira o texto na caixa. Envie, confira que a mensagem apareceu na conversa com o texto certo, apague a busca e chame computer_release_lock (deixe o WhatsApp aberto).
+- Antes do Enter, tire um screenshot e confira o texto na caixa. Envie, confira que a mensagem apareceu na conversa com o texto certo, apague a busca, FECHE o WhatsApp (X no canto superior direito da janela) e chame computer_release_lock.
 
 ## PASSO 5 — Avisar o Neto
 - Ferramenta "reply" do plugin telegram (nome contendo "telegram__reply"; carregue com ToolSearch), chat_id "1008078957", texto simples, UMA mensagem curta:
