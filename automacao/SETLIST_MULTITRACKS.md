@@ -1,5 +1,7 @@
 # Repertório no MultiTracks (regra do Neto, nov/2026)
 
+QUANDO RODA (regra do Neto, 14/11): só no SÁBADO DE MANHÃ (na verificação do grupo de sábado 10h13) ou quando o Neto pedir.
+
 Sempre que o repertório do culto que está no bloco "Próximo culto" ficar PRONTO, crie no MultiTracks da conta do Neto
 um repertório (setlist) chamado `Culto DD/MM/AAAA` (ex.: `Culto 15/11/2026`), com as músicas na ordem e nos tons certos.
 Se o repertório mudar depois (troca de música, de ordem ou de tom), corrija ESSE MESMO repertório no MultiTracks e
