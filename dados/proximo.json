@@ -5,7 +5,7 @@
 "equipe": [
 {
 "funcao": "Voz",
-"nomes": "Pra. Iraci"
+"nomes": "Marianne"
 },
 {
 "funcao": "Voz e Teclado",
@@ -34,17 +34,17 @@
 },
 {
 "titulo": "Bondade de Deus",
-"cantor": "Pra. Iraci",
-"tom": "",
+"cantor": "Marianne",
+"tom": "G",
 "link": "https://www.youtube.com/watch?v=n0FBb6hnwTo",
 "letra": "https://www.letras.mus.br/isaias-saad/bondade-de-deus/"
 },
 {
-"titulo": "O Escudo + Sou Um Milagre",
-"cantor": "Pra. Iraci",
-"tom": "D",
-"link": "https://www.youtube.com/watch?v=lWax47zymUE",
-"letra": "https://www.letras.mus.br/lukas-agustinho/o-escudo-sou-um-milagre/"
+"titulo": "Touch of heaven",
+"cantor": "Marianne",
+"tom": "Ab",
+"link": "https://youtu.be/nxxr47zEUxE",
+"letra": "https://www.multitracks.com.br/songs/Hillsong-Worship/There-Is-More/Touch-Of-Heaven/"
 },
 {
 "titulo": "Tudo é Teu",
@@ -54,5 +54,5 @@
 "letra": "https://www.multitracks.com.br/songs/Drops-INA/E-Ele/Tudo-e-Teu/"
 }
 ],
-"atualizado": "2026-11-13"
+"atualizado": "2026-11-14"
 }
