@@ -57,15 +57,20 @@ Neto às vezes pede para criar antes com o que já tem): aí mantenha-o igual ao
    botões C D E F G A B e, embaixo, ♭ e #. A música vem marcada no tom original, às vezes com ♭ ou # ligado: clique na
    nota do proximo.json e depois confira o ♭/#: ligue o certo ou DESLIGUE clicando nele de novo (ex.: veio Bb e o tom é
    G → clique G e desligue o ♭). Dê um zoom para conferir antes de adicionar. Menor (ex.: "F#m") → "Menor".
+   ATENÇÃO: a janela às vezes muda de altura depois do primeiro clique; tire um screenshot antes de clicar em ♭/#.
+   PAD AMBIENTE (regra do Neto, 14/11): na organização da IGREJA, toda música fica com "Guitar Pads" no campo "Pad Ambiente"
+   (select #ambientPad, valor 22; pelo javascript_tool: el.value='22' + evento change). Na pessoal, deixe "Pad Ambiente Padrão".
 4b. PESSOAS (só na organização da igreja): menu "..." do repertório → "Adicionar/Remover Pessoas" → do lado esquerdo,
    clique no ⊕ de cada pessoa escalada no culto (equipe do proximo.json; nomes no MultiTracks: Ana Negreli, Andrey
    Monteiro Bertoletti, Beatriz Vasconcelos (Bia), Bianca Scavoni, Débora Oliveira, Leonardo Santos (Léo), Lucas Isaac,
-   Marcelo Rodrigues, Marianne Gonçalves, Neto Leodoro, Talita Freire, Wesley Tondati; o Cadu e o Levi só depois de
+   Marcelo Rodrigues, Marianne Gonçalves, Neto Leodoro, Samuel Silva (Samuel), Talita Freire, Wesley Tondati; o Cadu e o Levi só depois de
    aceitarem o convite) → "Atualizar Repertório". Quem saiu da escala: ⊖ do lado direito. Quem não está no MultiTracks
-   (ex.: Samuel, Daniel, Pra. Iraci) fica de fora sem aviso. NÃO use "Notificar Time"/"Email Team" nem "Adicionar Todas as
+   (ex.: Daniel, Pra. Iraci) fica de fora sem aviso. NÃO use "Notificar Time"/"Email Team" nem "Adicionar Todas as
    Pessoas". Na organização pessoal não há pessoas.
 4c. Música SEM TOM ainda (só quando o setlist já existe e o Neto pediu para manter): adicione no tom original que o
    MultiTracks sugere e diga no aviso que o tom é provisório; corrija quando o grupo postar o tom.
+4d. Item que não é música (ex.: click "70BPM 4/4" que o Neto pôs no lugar de uma música fora do MultiTracks): se a música
+   que ele substituía saiu do repertório, pergunte ao Neto (ou, sem ele, deixe e avise) antes de remover.
 5. Se o repertório já existia: compare com o proximo.json e corrija só o que mudou (músicas, ordem pelo arraste das
    tons) e, na igreja, as pessoas. Música que saiu do repertório: remova pelo menu "..." da linha.
    TROCAR A ORDEM: o arraste pelas três barras NÃO funciona pela automação. Faça assim (combinado com o Neto): remova
