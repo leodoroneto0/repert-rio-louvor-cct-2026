@@ -396,7 +396,10 @@ if ('serviceWorker' in navigator) window.addEventListener('load', () => navigato
   btn.hidden = false;
   btn.addEventListener('click', async () => {
     if (pedido) { pedido.prompt(); const r = await pedido.userChoice; pedido = null; if (r.outcome === 'accepted') btn.hidden = true; return; }
-    dica.textContent = ios
+    const ipad = /iPad/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    dica.textContent = ipad
+      ? '📲 No iPad: abra este site no Safari, toque em Compartilhar (o quadrado com a seta para cima, no canto de cima à direita, ao lado do endereço), role a lista e toque em "Adicionar à Tela de Início" e depois em "Adicionar".'
+      : ios
       ? '📲 No iPhone: abra este site no Safari, toque em Compartilhar (o quadrado com a seta para cima) e depois em "Adicionar à Tela de Início".'
       : '📲 No Android: abra este site no Chrome, toque nos três pontinhos (⋮) no canto de cima e depois em "Instalar app" ou "Adicionar à tela inicial".';
     dica.hidden = !dica.hidden;
