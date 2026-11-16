@@ -87,7 +87,7 @@ PASSO 2 — Montar os dados
   [{"data":"AAAA-MM-DD","tipo":"Domingo|Quinta|Sexta|Sábado","evento":"nome do evento ou vazio (ex.: Fornalha, Santa Ceia; em evento de vários dias, o nome dele em todos os dias)","musicas":[{"titulo":"Título 1","cantor":"Talita","tom":"G"},{"titulo":"Título 2","cantor":"Talita e Débora","tom":"D"}]}]
   Use só o título de cada música (sem artista). Escreva "cantor" com o nome da escala (o script também entende Bia/Beatriz, Levi, Iraci, Leonardo etc. e separa "X e Y"). Sem cantor ou tom, deixe o campo vazio (a música é registrada, mas nenhum tom muda). Culto sem repertório completo postado: não inclua e cite nas pendências. Sem cultos novos, use [].
 - Música teste: monte /tmp/teste.json conforme a regra acima, se for o caso.
-- TOM TROCADO PELO NETO NO CULTO (regra do Neto, 16/11): se o Neto definiu o tom de uma música do culto (campo "tons" de dados/ajustes_repertorio.json, ou tom que ele mandou mudar no bloco), isso é ordem dele: além de registrar o culto com esse tom, coloque {"musica","cantor","tom"} de cada cantor dessa música em dados/ajustes_tons.json, para o tom do cantor na planilha ser TROCADO (não só avisado como divergente). Ex.: 15/11, Touch of heaven, Marianne: Ab → G.
+- DIVERGÊNCIA DE TOM = PERGUNTAR (regra do Neto, 16/11): sempre que o tom tocado no culto for diferente do tom do cantor na planilha (inclusive quando foi o próprio Neto que trocou o tom no culto), NÃO troque sozinho e NÃO só avise: PERGUNTE ao Neto qual tom fica, no aviso do PASSO 6 ("❓ Qual tom fica? Música — Cantor: planilha X, tocado Y"). Ele responde no app do Claude; só então o tom é trocado (por dados/ajustes_tons.json).
 - Correções de tom mandadas pelo Neto: se existir dados/ajustes_tons.json com itens (lista de {"musica","cantor","tom"}), passe-o com --ajustes; esses valem por cima de tudo (inclusive sobrescrevem tom existente, porque foi ele quem mandou).
 - Se não houver nenhum culto novo, nenhum ajuste, nenhuma música teste a incluir e nenhuma música em "Teste" de mês já encerrado (ver dados/testes.json), pule os PASSOS 3 e 4.
 
@@ -122,7 +122,7 @@ PASSO 6 — Avisar o Neto
   • 🧪 Música teste incluída no repertório base (se musica_teste_incluida), com tom, BPM e compasso do MultiTracks e a versão usada
   • ⏳ Passaram para Pendente (se viraram_pendentes): "<nome> — teste encerrado; no dia 1º eu pergunto ao Levi se entrou."
   • 🎼 Tons incluídos: "Música — Cantor: Tom" (de tons_incluidos; para ajustes do Neto, "antes → depois")
-  • ⚠️ Tons divergentes (NÃO alterados): "Música — Cantor: planilha X, grupo Y" (de tons_divergentes_nao_alterados). Termine com: "Se quiser trocar algum, me avise no app do Claude."
+  • ❓ Qual tom fica? (divergências, NÃO alteradas): "Música — Cantor: planilha X, tocado Y" (de tons_divergentes_nao_alterados). Termine com: "Me diga no app do Claude qual tom fica em cada uma."
   • Músicas com quem cantou não identificado (ficaram sem tom) e cantores não reconhecidos
   • Nomes padronizados (como estava no grupo → como ficou na planilha)
   • 🎵 Fora do repertório base: só uma linha listando as músicas esporádicas tocadas (os tons delas ficam na aba "Outras"). NÃO pergunte se elas entram no repertório base (regra do Neto: esporádicas não entram; só as músicas teste têm chance).
