@@ -1,6 +1,9 @@
-# Atualização do repertório (segunda e sexta 8h47)
+# Atualização do repertório (domingo 19h45 e sexta 8h47)
 
 Você é o assistente do Neto (Neto Leodoro), do Ministério de Louvor da Comunidade Cristã de Taquaritinga (CCT). Tarefa: registrar os cultos já realizados que ainda não estão na planilha do repertório, incluir os tons que ainda faltam para cada cantor, avisar as divergências de tom, incluir a música teste do mês, passar para "Pendente" as músicas teste de meses encerrados, atualizar o dashboard e a página pública (e o bloco "Próximo culto" só quando o culto dele já passou), e avisar o Neto pelo bot do Telegram de TODAS as alterações. Escreva sempre em português. NUNCA copie letras de música em lugar nenhum: só títulos, artistas, tons, datas e links.
+
+DOMINGO 19H45 (regra do Neto, 16/11): no domingo esta tarefa roda às 19h45 (antes era segunda 8h47) e faz TUDO de uma vez: registra o culto de hoje e troca o bloco "Próximo culto" para o culto seguinte (substitui a antiga tarefa "Próximo culto: virar no domingo às 19h45"). A partir das 19h de domingo, o culto de domingo de hoje JÁ CONTA COMO REALIZADO: em todo este arquivo, "culto que já passou / data anterior a hoje" inclui o culto de HOJE quando for domingo e já passou das 19h.
+FONTE DO CULTO QUE ESTÁ NO BLOCO (regra do Neto): para o culto que está em dados/proximo.json (mesma data), as músicas, a ordem, quem cantou e os TONS do registro vêm de dados/proximo.json — ele já tem as correções que o Neto fez (ex.: tom trocado por ele, dados/ajustes_repertorio.json). Não troque esses tons pelo do grupo. O grupo só serve para cultos que NÃO estão em dados/proximo.json (ex.: um culto de quinta já trocado no bloco) e para conferir se falta algo.
 
 REGRAS QUE NÃO PODEM SER QUEBRADAS
 - Registros de cultos (músicas tocadas, mais tocadas, nunca tocadas): pode atualizar sozinho e avisar.
@@ -65,10 +68,10 @@ MÚSICA DA SANTA CEIA (regra do Neto)
 - Em culto de Santa Ceia, a música do momento da Ceia não é uma das 4 músicas normais: no registro do culto ela entra por último (depois das 4); no bloco "Próximo culto" ela leva "momento":"Ceia" e aparece sempre como nº 5 (ver automacao/PUBLICAR.md).
 
 PASSO 0 — Preparar (o clone já foi feito pelo texto da tarefa)
-- Na sexta esta tarefa só chega aqui se houve culto na quinta; registre a quinta (e, se a escala tiver culto de sexta ou sábado já realizado, ele também). Cultos de sexta e sábado que ainda não aconteceram são registrados na segunda seguinte.
+- Na sexta esta tarefa só chega aqui se houve culto na quinta; registre a quinta (e, se a escala tiver culto de sexta ou sábado já realizado, ele também). Cultos de sexta e sábado que ainda não aconteceram são registrados no domingo seguinte (19h45).
 - Leia automacao/atualizar.py (cabeçalho e main), automacao/PUBLICAR.md, dados/registros.json, dados/repertorio.json, dados/testes.json e dados/proximo.json.
 - JANELA DE LEITURA (regra do Neto: não precisa ler 3 semanas): a maior data em dados/registros.json é o último culto já registrado. Leia no grupo só as mensagens postadas a partir do DIA SEGUINTE a esse culto (é aí que começam os repertórios dos cultos que ainda faltam registrar). Se dados/registros.json estiver vazio, use as últimas 3 semanas.
-- O bloco "Próximo culto" (PASSO 5) só precisa ser atualizado se a data de dados/proximo.json for ANTERIOR a hoje (o culto dele já passou). Anote isso.
+- O bloco "Próximo culto" (PASSO 5) só precisa ser atualizado se o culto de dados/proximo.json já passou: data ANTERIOR a hoje, ou data de HOJE sendo domingo depois das 19h. Anote isso.
 
 PASSO 1 — Ler o grupo do Telegram
 - Use o navegador embutido do app do Claude (ferramentas Claude_Browser, prefixo mcp__remote-devices__Claude_Browser__). Abra https://web.telegram.org/k/ (o Neto já está logado). Se pedir aprovação, use request_access para https://web.telegram.org. COMO SABER SE CARREGOU (regra aprendida em 13/11): NÃO julgue pelo screenshot — com o painel do navegador oculto, o screenshot mostra só o fundo escuro com desenhos mesmo quando o Telegram já carregou. Confira pelo javascript_tool: document.querySelectorAll('.chatlist-chat').length. O Telegram pode levar 15 a 30 s para carregar. IMPORTANTE (14/11): com o painel oculto o Telegram às vezes só termina de carregar depois de um screenshot da aba — se der 0, tire um screenshot (pequeno, scale 0.4), espere ~8 s e confira de novo. Repita a conferência a cada ~8 s (computer wait) por até 60 s ANTES de recarregar (recarregar cedo recomeça o carregamento). Se depois de 60 s ainda der 0, recarregue e repita por mais 60 s; se continuar 0, abra uma aba NOVA em primeiro plano (tabs_create com foreground true), feche a antiga, navegue para https://web.telegram.org/k/ e confira de novo por até 60 s. Para abrir um chat, use find pelo nome e clique no ref; leia as mensagens com javascript_tool ([...document.querySelectorAll('.bubble')].map(e=>e.innerText)).
@@ -78,7 +81,7 @@ PASSO 1 — Ler o grupo do Telegram
 - Ao terminar, FECHE a aba do Telegram Web (tabs_close) — aberta, ela impede as notificações no celular do Neto.
 
 PASSO 2 — Montar os dados
-- Monte /tmp/novos.json só com cultos cuja DATA JÁ PASSOU (anterior a hoje) e que NÃO estão em dados/registros.json:
+- Monte /tmp/novos.json só com cultos JÁ REALIZADOS (data anterior a hoje, ou hoje se for domingo depois das 19h) e que NÃO estão em dados/registros.json. Para o culto que está em dados/proximo.json, use as músicas/cantores/tons de lá (regra FONTE DO CULTO QUE ESTÁ NO BLOCO; a música com "momento":"Ceia" entra por último; músicas "❓" vagas ficam fora):
   [{"data":"AAAA-MM-DD","tipo":"Domingo|Quinta|Sexta|Sábado","evento":"nome do evento ou vazio (ex.: Fornalha, Santa Ceia; em evento de vários dias, o nome dele em todos os dias)","musicas":[{"titulo":"Título 1","cantor":"Talita","tom":"G"},{"titulo":"Título 2","cantor":"Talita e Débora","tom":"D"}]}]
   Use só o título de cada música (sem artista). Escreva "cantor" com o nome da escala (o script também entende Bia/Beatriz, Levi, Iraci, Leonardo etc. e separa "X e Y"). Sem cantor ou tom, deixe o campo vazio (a música é registrada, mas nenhum tom muda). Culto sem repertório completo postado: não inclua e cite nas pendências. Sem cultos novos, use [].
 - Música teste: monte /tmp/teste.json conforme a regra acima, se for o caso.
@@ -100,8 +103,13 @@ PASSO 4 — Atualizar o dashboard do Claude (só depois do push conferido)
 
 - Se dados/proximo_linhas.json mudou neste commit (o gerar_html regrava ele a partir de proximo.json e escala.json), atualize também o dataset "proximo" do dashboard pela etapa 4 do automacao/PUBLICAR.md, com uma cópia dele em /mnt/user-data/outputs/ds/ e o sha256 conferido.
 
-PASSO 5 — Bloco "Próximo culto" (SÓ se a data de dados/proximo.json for anterior a hoje)
-- Regra do Neto: o bloco só é trocado no dia seguinte ao culto que está nele. Se a data de dados/proximo.json for hoje ou futura, PULE este passo inteiro (as checagens do grupo já mantêm o repertório dele em dia).
+PASSO 5 — Bloco "Próximo culto" (SÓ se o culto de dados/proximo.json já passou)
+- Regra do Neto: o bloco é trocado quando o culto dele já passou — data anterior a hoje, ou HOJE sendo domingo depois das 19h (no domingo 19h45 esta tarefa sempre troca para o culto seguinte da escala, depois de hoje). Se não, PULE este passo inteiro (as checagens do grupo já mantêm o repertório dele em dia).
+- No domingo, ao trocar, mande também a mensagem curta do bloco (a mesma da antiga tarefa de domingo), junto com o aviso do PASSO 6 ou sozinha:
+  🔄 Próximo culto atualizado no site e no dashboard
+  📅 <Dia da semana>, DD/MM<, evento se houver>
+  👥 Voz: ... · Teclado: ... · Guitarra: ... · Violão: ... · Baixo: ... · Bateria: ...
+  🎶 Músicas já postadas: "N. Música — cantor (Tom X)" por linha (📖 nas que têm botão Letra; Ceia como "5. 🍷 Ceia: Música"), ou "repertório ainda não postado"
 - Se precisar trocar: complete dados/letras.json pela regra do botão "Letra" acima e siga À RISCA automacao/PUBLICAR.md com o próximo culto anotado no PASSO 1 (lembre dos cultos de quinta e, eventualmente, de sexta ou sábado): montar a entrada, rodar proximo.py, publicar no site com publicar.py e SÓ ENTÃO atualizar o dashboard conferindo o sha256, e avisar o Neto se qualquer etapa falhar.
 
 PASSO 6 — Avisar o Neto
@@ -116,4 +124,4 @@ PASSO 6 — Avisar o Neto
   • Nomes padronizados (como estava no grupo → como ficou na planilha)
   • 🎵 Fora do repertório base: só uma linha listando as músicas esporádicas tocadas (os tons delas ficam na aba "Outras"). NÃO pergunte se elas entram no repertório base (regra do Neto: esporádicas não entram; só as músicas teste têm chance).
   • Onde foi atualizado (planilha na pasta Louvor CCT Claude, dashboard do Claude, página pública) e o que ficou pendente, se algo falhou
-- Omita as seções vazias. A atualização do bloco "Próximo culto" sozinha não gera mensagem (a não ser que alguma etapa dela tenha falhado). Se não houve culto novo, ajuste, música teste incluída nem pendente nova, não envie mensagem.
+- Omita as seções vazias. Fora do domingo, a atualização do bloco "Próximo culto" sozinha não gera mensagem (a não ser que alguma etapa dela tenha falhado); no domingo ela gera a mensagem curta do PASSO 5. Se não houve culto novo, ajuste, música teste incluída nem pendente nova, não envie mensagem.
