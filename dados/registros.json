@@ -1629,5 +1629,33 @@
 "tipo": "Domingo",
 "evento": "Santa Ceia",
 "no_repertorio": "Não"
+},
+{
+"data": "2026-11-15",
+"musica": "Sou Grato por seu Amor (God I'm Just Grateful)",
+"tipo": "Domingo",
+"evento": "",
+"no_repertorio": "Não"
+},
+{
+"data": "2026-11-15",
+"musica": "Bondade de Deus",
+"tipo": "Domingo",
+"evento": "",
+"no_repertorio": "Sim"
+},
+{
+"data": "2026-11-15",
+"musica": "Touch of heaven",
+"tipo": "Domingo",
+"evento": "",
+"no_repertorio": "Sim"
+},
+{
+"data": "2026-11-15",
+"musica": "Tudo é Teu",
+"tipo": "Domingo",
+"evento": "",
+"no_repertorio": "Sim"
 }
 ]
