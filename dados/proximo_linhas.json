@@ -16,7 +16,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "equipe",
 "ordem": 1
 },
@@ -37,7 +37,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "equipe",
 "ordem": 2
 },
@@ -58,7 +58,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "equipe",
 "ordem": 3
 },
@@ -79,7 +79,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "equipe",
 "ordem": 4
 },
@@ -100,9 +100,93 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "equipe",
 "ordem": 5
+},
+{
+"funcao": "",
+"nomes": "",
+"titulo": "Vem, esta é a hora",
+"cantor": "Talita",
+"tom": "B",
+"tom_origem": "",
+"link": "https://www.youtube.com/watch?v=7j5aLkEe_vE",
+"letra": "",
+"esc_mes": "",
+"esc_data": "",
+"esc_culto": "",
+"esc_evento": "",
+"esc_extra": "",
+"data": "2026-11-22",
+"culto": "Domingo",
+"evento": "",
+"atualizado": "2026-11-20",
+"parte": "musica",
+"ordem": 1
+},
+{
+"funcao": "",
+"nomes": "",
+"titulo": "Primeira essência",
+"cantor": "Pr. Levi",
+"tom": "C",
+"tom_origem": "",
+"link": "https://www.youtube.com/watch?v=eO9dUp5goWo",
+"letra": "https://www.multitracks.com.br/songs/Felipe-Rodrigues/Primeira-Essencia/Primeira-Essencia/",
+"esc_mes": "",
+"esc_data": "",
+"esc_culto": "",
+"esc_evento": "",
+"esc_extra": "",
+"data": "2026-11-22",
+"culto": "Domingo",
+"evento": "",
+"atualizado": "2026-11-20",
+"parte": "musica",
+"ordem": 2
+},
+{
+"funcao": "",
+"nomes": "",
+"titulo": "Uma vez",
+"cantor": "Talita",
+"tom": "D#",
+"tom_origem": "",
+"link": "https://youtu.be/fOBGrF-bQbA",
+"letra": "",
+"esc_mes": "",
+"esc_data": "",
+"esc_culto": "",
+"esc_evento": "",
+"esc_extra": "",
+"data": "2026-11-22",
+"culto": "Domingo",
+"evento": "",
+"atualizado": "2026-11-20",
+"parte": "musica",
+"ordem": 3
+},
+{
+"funcao": "",
+"nomes": "",
+"titulo": "Jesus, meu primeiro amor",
+"cantor": "Pr. Levi",
+"tom": "G",
+"tom_origem": "",
+"link": "https://www.youtube.com/watch?v=SRYvje6Dv_I",
+"letra": "",
+"esc_mes": "",
+"esc_data": "",
+"esc_culto": "",
+"esc_evento": "",
+"esc_extra": "",
+"data": "2026-11-22",
+"culto": "Domingo",
+"evento": "",
+"atualizado": "2026-11-20",
+"parte": "musica",
+"ordem": 4
 },
 {
 "funcao": "Voz",
@@ -121,7 +205,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1001
 },
@@ -142,7 +226,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1002
 },
@@ -163,7 +247,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1003
 },
@@ -184,7 +268,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1004
 },
@@ -205,7 +289,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1005
 },
@@ -226,7 +310,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1006
 },
@@ -247,7 +331,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1007
 },
@@ -268,7 +352,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1008
 },
@@ -289,7 +373,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1009
 },
@@ -310,7 +394,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1010
 },
@@ -331,7 +415,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1011
 },
@@ -352,7 +436,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1012
 },
@@ -373,7 +457,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1013
 },
@@ -394,7 +478,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1014
 },
@@ -415,7 +499,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1015
 },
@@ -436,7 +520,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1016
 },
@@ -457,7 +541,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1017
 },
@@ -478,7 +562,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1018
 },
@@ -499,7 +583,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1019
 },
@@ -520,7 +604,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1020
 },
@@ -541,7 +625,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1021
 },
@@ -562,7 +646,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1022
 },
@@ -583,7 +667,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1023
 },
@@ -604,7 +688,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1024
 },
@@ -625,7 +709,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1025
 },
@@ -646,7 +730,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1026
 },
@@ -667,7 +751,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1027
 },
@@ -688,7 +772,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1028
 },
@@ -709,7 +793,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1029
 },
@@ -730,7 +814,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1030
 },
@@ -751,7 +835,7 @@
 "data": "2026-11-22",
 "culto": "Domingo",
 "evento": "",
-"atualizado": "2026-11-15",
+"atualizado": "2026-11-20",
 "parte": "escala",
 "ordem": 1031
 }

@@ -24,6 +24,35 @@
 "nomes": "Lucas"
 }
 ],
-"musicas": [],
-"atualizado": "2026-11-15"
+"musicas": [
+{
+"titulo": "Vem, esta é a hora",
+"cantor": "Talita",
+"tom": "B",
+"link": "https://www.youtube.com/watch?v=7j5aLkEe_vE",
+"letra": ""
+},
+{
+"titulo": "Primeira essência",
+"cantor": "Pr. Levi",
+"tom": "C",
+"link": "https://www.youtube.com/watch?v=eO9dUp5goWo",
+"letra": "https://www.multitracks.com.br/songs/Felipe-Rodrigues/Primeira-Essencia/Primeira-Essencia/"
+},
+{
+"titulo": "Uma vez",
+"cantor": "Talita",
+"tom": "D#",
+"link": "https://youtu.be/fOBGrF-bQbA",
+"letra": ""
+},
+{
+"titulo": "Jesus, meu primeiro amor",
+"cantor": "Pr. Levi",
+"tom": "G",
+"link": "https://www.youtube.com/watch?v=SRYvje6Dv_I",
+"letra": ""
+}
+],
+"atualizado": "2026-11-20"
 }
