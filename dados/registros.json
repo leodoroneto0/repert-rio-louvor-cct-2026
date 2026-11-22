@@ -1657,5 +1657,33 @@
 "tipo": "Domingo",
 "evento": "",
 "no_repertorio": "Sim"
+},
+{
+"data": "2026-11-22",
+"musica": "Vem, esta é a hora",
+"tipo": "Domingo",
+"evento": "",
+"no_repertorio": "Sim"
+},
+{
+"data": "2026-11-22",
+"musica": "Primeira essência",
+"tipo": "Domingo",
+"evento": "",
+"no_repertorio": "Sim"
+},
+{
+"data": "2026-11-22",
+"musica": "Uma vez",
+"tipo": "Domingo",
+"evento": "",
+"no_repertorio": "Não"
+},
+{
+"data": "2026-11-22",
+"musica": "Jesus, meu primeiro amor",
+"tipo": "Domingo",
+"evento": "",
+"no_repertorio": "Não"
 }
 ]
