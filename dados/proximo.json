@@ -1,76 +1,29 @@
 {
-"data": "2026-11-26",
-"culto": "Quinta",
-"evento": "Culto de ação de graças",
+"data": "2026-11-29",
+"culto": "Domingo",
+"evento": "",
 "equipe": [
 {
 "funcao": "Voz",
-"nomes": "Ana, Leonardo, Débora, Bia, Marianne e Talita"
+"nomes": "Wesley e Marianne"
 },
 {
-"funcao": "Teclado",
-"nomes": "Pr. Levi"
+"funcao": "Teclado e Baixo",
+"nomes": "Andrey"
 },
 {
 "funcao": "Guitarra",
-"nomes": "Neto"
+"nomes": "Wesley"
 },
 {
 "funcao": "Violão",
 "nomes": "Samuel"
 },
 {
-"funcao": "Baixo",
-"nomes": "Andrey"
-},
-{
 "funcao": "Bateria",
-"nomes": "Lucas"
+"nomes": "Daniel"
 }
 ],
-"musicas": [
-{
-"titulo": "Grato sou",
-"cantor": "Ana",
-"tom": "B",
-"link": "https://youtu.be/Yo9G3hvl_UI",
-"letra": "https://www.letras.mus.br/drops-ina/grato-sou-i-thank-god/"
-},
-{
-"titulo": "Sou Grato por seu Amor (God I'm Just Grateful)",
-"cantor": "Léo",
-"tom": "G",
-"link": "https://youtu.be/2B9hzpfkWVg",
-"letra": "https://www.letras.mus.br/get-worship/sou-grato-por-seu-amor/"
-},
-{
-"titulo": "Tu és Deus (A Ele)",
-"cantor": "Bia",
-"tom": "D#",
-"link": "https://youtu.be/gS0Y4ID0HbY",
-"letra": "https://www.multitracks.com.br/songs/O-Canto-das-Igrejas/Tu-Es-Deus-(A-Ele)/Tu-Es-Deus-(A-Ele)/"
-},
-{
-"titulo": "Um novo dia",
-"cantor": "Débora",
-"tom": "D",
-"link": "https://youtu.be/6NvkZY-va0E",
-"letra": "https://www.multitracks.com.br/songs/Get-Worship/Um-Novo-Dia/Um-Novo-Dia/"
-},
-{
-"titulo": "Te agradeço",
-"cantor": "Marianne",
-"tom": "B",
-"link": "",
-"letra": ""
-},
-{
-"titulo": "Gratidão",
-"cantor": "Talita",
-"tom": "D",
-"link": "https://youtu.be/D_3VUEOqPc4",
-"letra": ""
-}
-],
-"atualizado": "2026-11-22"
+"musicas": [],
+"atualizado": "2026-11-27"
 }
