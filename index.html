@@ -198,9 +198,9 @@ const PROX = {"data": "2026-11-29", "culto": "Domingo", "evento": "", "equipe": 
   const rp = document.getElementById('px-rep');
   const ms = PROX.musicas || [];
   if (!ms.length) rp.textContent = 'Repertório ainda não postado.';
-  // músicas normais primeiro; a do momento da Ceia é sempre a nº 5 (vagas 3 e 4 sem música aparecem como "A definir")
+  // músicas normais primeiro; sempre 4 (as que faltam aparecem como "A definir"); a do momento da Ceia é sempre a nº 5
   const normais = ms.filter(m => !m.momento), especiais = ms.filter(m => m.momento);
-  const vagas = especiais.length ? Math.max(0, 4 - normais.length) : 0;
+  const vagas = (normais.length || especiais.length) ? Math.max(0, 4 - normais.length) : 0; // regra do Neto: sempre 4 músicas
   const ordenadas = normais.concat(Array.from({ length: vagas }, () => ({ vaga: true })), especiais);
   let num = 0;
   ordenadas.forEach((m) => {

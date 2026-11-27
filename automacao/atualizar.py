@@ -560,8 +560,9 @@ def gerar_linhas(repo):
     especiais = [m for m in p.get('musicas', []) if m.get('momento')]
     rot = lambda m: ('🍷 ' if m['momento'].lower() == 'ceia' else '⭐ ') + m['momento'] + ': ' + m['titulo']
     linhas += [dict(base, parte='musica', ordem=i + 1, **mus(m)) for i, m in enumerate(normais)]
-    if especiais:  # a música da Ceia é a nº 5: as vagas 3 e 4 ainda sem música aparecem como "A definir"
+    if normais or especiais:  # regra do Neto: são sempre 4 músicas; as que ainda faltam aparecem como "A definir" (a da Ceia é a nº 5)
         linhas += [dict(base, parte='musica', ordem=i + 1, titulo='❓ A definir') for i in range(len(normais), 4)]
+    if especiais:
         n0 = max(4, len(normais))
         linhas += [dict(base, parte='musica', ordem=n0 + i + 1, **dict(mus(m), titulo=rot(m))) for i, m in enumerate(especiais)]
     # escala do mês (botão "Ver escala de <mês>")
