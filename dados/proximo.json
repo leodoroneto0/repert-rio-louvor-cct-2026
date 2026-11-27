@@ -24,6 +24,23 @@
 "nomes": "Daniel"
 }
 ],
-"musicas": [],
+"musicas": [
+{
+"titulo": "Eternamente Deus",
+"cantor": "Marianne",
+"tom": "F",
+"link": "https://www.youtube.com/watch?v=p5Ve4V3AZyY",
+"letra": "https://www.multitracks.com.br/songs/Ipalpha/Novo-Canto,-Vol.-3/Eternamente-Deus/",
+"tom_origem": "planilha"
+},
+{
+"titulo": "Efésios 1",
+"cantor": "Wesley",
+"tom": "Bb",
+"link": "https://www.youtube.com/watch?v=6UFnLQJ-Z1Q",
+"letra": "https://www.multitracks.com.br/songs/Projeto-Sola/Descanso-And-Celebracao/Efesios-1/",
+"tom_origem": "planilha"
+}
+],
 "atualizado": "2026-11-27"
 }
