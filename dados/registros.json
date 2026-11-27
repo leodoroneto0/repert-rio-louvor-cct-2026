@@ -1685,5 +1685,47 @@
 "tipo": "Domingo",
 "evento": "",
 "no_repertorio": "Não"
+},
+{
+"data": "2026-11-26",
+"musica": "Grato sou",
+"tipo": "Quinta",
+"evento": "Culto de ação de graças",
+"no_repertorio": "Sim"
+},
+{
+"data": "2026-11-26",
+"musica": "Sou Grato por seu Amor (God I'm Just Grateful)",
+"tipo": "Quinta",
+"evento": "Culto de ação de graças",
+"no_repertorio": "Não"
+},
+{
+"data": "2026-11-26",
+"musica": "Tu és Deus (A Ele)",
+"tipo": "Quinta",
+"evento": "Culto de ação de graças",
+"no_repertorio": "Sim"
+},
+{
+"data": "2026-11-26",
+"musica": "Um novo dia",
+"tipo": "Quinta",
+"evento": "Culto de ação de graças",
+"no_repertorio": "Não"
+},
+{
+"data": "2026-11-26",
+"musica": "Te agradeço",
+"tipo": "Quinta",
+"evento": "Culto de ação de graças",
+"no_repertorio": "Não"
+},
+{
+"data": "2026-11-26",
+"musica": "Gratidão",
+"tipo": "Quinta",
+"evento": "Culto de ação de graças",
+"no_repertorio": "Não"
 }
 ]
